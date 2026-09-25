@@ -1,6 +1,7 @@
 package misiones;
 
 import exceptions.*;
+import asistentes.*;
 
 /**
  * TO DO: Implementar esqueleto de la clase asistente.
@@ -28,6 +29,7 @@ public abstract class Mision {
      * implementaciones de cada uno de los métodos.
      *
      * No sé si conviene que este método esté en el asistente o en la misión, preguntar.
+     * Hay que asignar una misión y después arrancarla o esta función también tiene que asignar?
      */
     public void iniciarMision() throws Exception{ // Definir las excepeciones
         try {
@@ -41,20 +43,27 @@ public abstract class Mision {
         }
     }
 
+    private boolean puedeHacerMision(Asistente asistente){
+        // En esta función se checkea si la nave tiene los recursos suficientes para encarar una misión.
+        // Como hago una función booleana que si falla tira exception??????? no puedo retornar y a la vez arrrojar
+        return true;
+    }
+
     /**
      *
      * @param asistente -> Objeto del asistente que quiere hacer esta misión. Si puede hacerla, asigna el atributo asistente de esta misión a la referencia del asistente recibido por parámetro y vicecersa!!
-     * @return Devuelve true si el método pudo asignar misión con asistente y asistente con misión. false si no.
      * @throws Exception Arroja una excepeción de MisionImposible (no es refe a la peli) si la nave no es capaz de ejecutar esta misión.
      */
-    public boolean asignaMisionAsistente(Asistente asistente){
-        if (this.puedeHacerMision(asistente)){
-            this.asistente = asistente;
-            asistente.misionAct = this;
-            return true;
+    public void asignaMisionAsistente(Asistente asistente) throws Exception{
+        try {
+            if (this.puedeHacerMision(asistente)) {
+                this.asistente = asistente;
+                asistente.setMisionAct(this);
+            }
+            throw new Exception("No se pudo asignar la misión.");
         }
-        catch(MisionImposibleException e){ // Catcheo cualquier excepción de misión imposible.
-
+        catch(Exception e){ // Catcheo cualquier excepción de misión imposible.
+            System.out.println(e.getMessage());
         }
     }
 }
