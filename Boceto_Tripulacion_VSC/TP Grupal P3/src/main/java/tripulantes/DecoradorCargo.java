@@ -1,4 +1,4 @@
-package com.example;
+package tripulantes;
 
 abstract class DecoradorCargo extends Tripulante{
     
