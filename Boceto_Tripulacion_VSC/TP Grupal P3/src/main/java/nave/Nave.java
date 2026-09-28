@@ -6,8 +6,7 @@ import tripulantes.*;
 
 abstract public class Nave{
 
-    protected int combustible,energia,desgaste;
-    protected double nivelDesgaste;
+    protected int combustible,energia,desgaste = 0;
     protected final Asistente asistenteCabina;
     protected final Warp motor;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
@@ -16,14 +15,6 @@ abstract public class Nave{
         super();
         this.asistenteCabina = ac;
         this.motor = motor;
-    }
-
-    public double getNivelDesgaste() {
-        return nivelDesgaste;
-    }
-
-    public void setNivelDesgaste(double nivelDesgaste) {
-        this.nivelDesgaste = nivelDesgaste;
     }
 
     public int getCombustible() {

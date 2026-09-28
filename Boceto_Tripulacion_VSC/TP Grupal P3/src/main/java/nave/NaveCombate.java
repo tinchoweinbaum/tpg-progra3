@@ -7,6 +7,8 @@ public class NaveCombate extends Nave{
     public NaveCombate(Asistente ac,Warp motor,int canones){
         super(ac,motor);
         this.canones = canones;
+        this.setCombustible(80);
+        this.setEnergia(100);
     }
 
     public double getCanones() {
