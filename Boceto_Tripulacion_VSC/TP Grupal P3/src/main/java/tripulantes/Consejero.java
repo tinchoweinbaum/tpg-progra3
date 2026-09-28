@@ -4,13 +4,12 @@ public class Consejero extends DecoradorCargo{
 
     private int consejosDados = 0;
 
-    public Consejero(Tripulante tripulante,int consejos){
-        super(tripulante);
-        this.consejosDados = consejos;
-    }
-
     public Consejero(Tripulante tripulante){
         super(tripulante);
+    }
+
+    public int getConsejos(){
+        return this.consejosDados;
     }
     
     @Override 

@@ -4,7 +4,7 @@ abstract class Tripulante {
     
     protected final String nombre;
     protected int antiguedad;
-    protected double sueldo;
+    protected double sueldo = 0;
 
     public Tripulante(String nom,int ant){
         super();
