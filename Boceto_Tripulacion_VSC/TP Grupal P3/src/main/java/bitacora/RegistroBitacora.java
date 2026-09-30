@@ -11,24 +11,41 @@ public abstract class RegistroBitacora {
     private Date fechaRegistro;
     private String descripcionRegistro;
 
+    /**
+     * Constructor que crea un objeto de tipo RegistroBitacora
+     * <b>Pre</b>
+     * -fechaRegistro != null
+     * -descripcionRegistro != null && descripcion no esta vacia
+     * <b>Post</b>
+     * - getFechaRegistro() == fechaRegistro
+     * - getDescripcionRegistro() == descripcionRegistro
+     * @param fechaRegistro la fecha en la que se guarda la informacion
+     * @param descripcionRegistro s
+     */
     public RegistroBitacora(Date fechaRegistro, String descripcionRegistro) {
+        assert fechaRegistro != null : "La fecha no puede ser nula";
+        assert descripcionRegistro != null && !descripcionRegistro.trim().isEmpty() : "Descripción inválida";
         this.fechaRegistro = fechaRegistro;
         this.descripcionRegistro = descripcionRegistro;
+    }
+
+    public RegistroBitacora(String descripcionRegistro) {
+        this(new Date(), descripcionRegistro); // Llama al constructor principal asignando la fecha actual
     }
 
     public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
     public String getDescripcionRegistro() {
         return descripcionRegistro;
     }
 
-    public void setDescripcionRegistro(String descripcionRegistro) {
-        this.descripcionRegistro = descripcionRegistro;
+    // No se ponen setters porque los registros que quedan grabados en la bitacora NO se deben cambiar
+
+    @Override
+    public String toString() {
+        return "[" + fechaRegistro + "] " + descripcionRegistro;
     }
+
 }
