@@ -1,8 +1,16 @@
 package nave;
 
 public class FactoryNaves {
+    public static Nave _instance = null;
 
-    public Nave getTipo(String tipoNave){
+    public Nave getInstance(String tipoNave){
+        if (_instance==null){
+            _instance = getTipo(tipoNave);
+        }
+        return  _instance;
+    }
+
+    private Nave getTipo(String tipoNave){
         switch (tipoNave.toUpperCase()){
             case "CARGUERO" :
                 return new NaveCarguero();
