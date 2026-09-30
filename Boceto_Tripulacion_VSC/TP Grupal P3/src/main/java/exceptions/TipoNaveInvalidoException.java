@@ -2,7 +2,7 @@ package exceptions;
 
 
 /**
- * Exception que se arroja cuando no se logra aceptar una misión porque no alcanza el combustible de la nave.
+ * Exception que se arroja cuando el tipo de creacion de la nave es invalido.
  */
 public class TipoNaveInvalidoException extends NaveException {
     public TipoNaveInvalidoException(String message) {
