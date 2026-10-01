@@ -23,6 +23,7 @@ public abstract class Mision {
      *
      * @return True si es posible para la nave aceptar la mision, false si no.
      */
+
     private boolean puedeHacerMision(float combustibleDisponible, float energiaDisponible){
         return (combustibleDisponible >= this.combustibleRequerido) && (energiaDisponible >= this.energiaRequerida);
     }
