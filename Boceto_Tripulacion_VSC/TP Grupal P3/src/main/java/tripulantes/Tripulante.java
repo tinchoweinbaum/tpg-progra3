@@ -1,6 +1,6 @@
 package tripulantes;
 
-abstract class Tripulante {
+public abstract class Tripulante {
     
     protected final String nombre;
     protected int antiguedad;

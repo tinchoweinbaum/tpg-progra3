@@ -2,11 +2,6 @@ package nave;
 
 
 public class FactoryNaves {
-
-    public FactoryNaves(){
-        super();
-    }
-
     /*
     <b> pre: </b> El tipo de nave es un tipo valido
     <b> post: </b> El tipo de nave fue creado, no puede reutilizarse la funcion
@@ -15,7 +10,7 @@ public class FactoryNaves {
     @throws tipoNaveInvalidoException si el tipoNave no es valido arroja una
                                       excepcion indicando que no se puede crear el tipo
      */
-    public Nave getTipo(String tipoNave){// throws tipoNaveInvalidoException{
+    public static Nave getTipo(String tipoNave){// throws tipoNaveInvalidoException{
         //try {
             switch (tipoNave.toUpperCase()) {
                 case "CARGUERO":

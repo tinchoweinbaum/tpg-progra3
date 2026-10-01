@@ -5,9 +5,7 @@ public class Enfriamiento implements State {
     
     private MotorWarp motor;
     private Date fecha = new Date();
-    
-    
-    
+
     public Enfriamiento (MotorWarp motor){
         this.motor = motor;
     }

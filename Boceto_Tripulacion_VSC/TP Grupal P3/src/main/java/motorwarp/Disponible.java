@@ -6,9 +6,7 @@ public class Disponible implements State {
     
     private MotorWarp motor;
     private Date fecha = new Date();
-    
-    
-    
+
     public Disponible (MotorWarp motor){
         this.motor = motor;
     }
