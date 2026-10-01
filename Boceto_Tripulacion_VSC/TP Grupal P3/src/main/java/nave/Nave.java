@@ -1,19 +1,16 @@
 
 package nave;
-import asistentes.*;
 import java.util.ArrayList;
 import tripulantes.*;
+import motorwarp.*;
 
 abstract public class Nave{
 
     protected int combustible,energia,desgaste = 0;
-    protected final Asistente asistenteCabina;
-    protected final Warp motor;
+    protected final MotorWarp motor;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
 
-    public Nave(Asistente ac,Warp motor){
-        super();
-        this.asistenteCabina = ac;
+    public Nave(Warp motor){
         this.motor = motor;
     }
 
@@ -39,14 +36,6 @@ abstract public class Nave{
 
     public void setDesgaste(int desgaste) {
         this.desgaste = desgaste;
-    }
-
-    public Asistente getAsistenteCabina() {
-        return asistenteCabina;
-    }
-
-    public Warp getMotor() {
-        return motor;
     }
 
     public void agregaTripulante(Tripulante tripulantes){
