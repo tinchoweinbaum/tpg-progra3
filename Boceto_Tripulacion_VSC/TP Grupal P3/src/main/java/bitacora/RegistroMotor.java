@@ -1,7 +1,7 @@
 package bitacora;
 
 import java.util.Date;
-//import motor.State; No sabemos como se va a llamar el paquete del motor ni sus clases
+import motorwarp.State;
 
 public class RegistroMotor extends  RegistroBitacora{
     private State estado;
