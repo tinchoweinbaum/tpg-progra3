@@ -13,7 +13,7 @@ public class Disponible implements State {
     
     @Override
     public void disponible(){
-        motor.registrarEvento(fecha,"ERROR: El motor ya esta disponible", this);
+        //motor.registrarEvento(fecha,"ERROR: El motor ya esta disponible", this);
         throw new IllegalStateException("El motor ya esta disponible");
     }
         
@@ -26,13 +26,13 @@ public class Disponible implements State {
     
     @Override
     public void saltoWarp(){
-        motor.registrarEvento(fecha,"ERROR: No se puede realizar salto warp, el motor no preparo el salto warp",this);
+        //motor.registrarEvento(fecha,"ERROR: No se puede realizar salto warp, el motor no preparo el salto warp",this);
         throw new IllegalStateException("El motor no preparo el salto warp");
     }
     
     @Override
     public void enfriamiento(){
-        motor.registrarEvento(fecha,"ERROR: No se puede entrar en enfriamiento, el motor no esta disponible",this);
+        //motor.registrarEvento(fecha,"ERROR: No se puede entrar en enfriamiento, el motor no esta disponible",this);
         throw new IllegalStateException("El motor no está disponible");
     }
      
