@@ -2,16 +2,14 @@
 package nave;
 import java.util.ArrayList;
 import tripulantes.*;
-import motorwarp.*;
 
 abstract public class Nave{
 
     protected int combustible,energia,desgaste = 0;
-    protected final MotorWarp motor;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
 
-    public Nave(Warp motor){
-        this.motor = motor;
+    public Nave(){
+        super();
     }
 
     public int getCombustible() {

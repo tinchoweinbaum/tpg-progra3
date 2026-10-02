@@ -1,18 +1,21 @@
 package asistentes;
 import misiones.*;
+import java.util.*;
+import nave*;
+import motorwarp.*;
+import bitacora.*;
 
 public class Asistente {
-    private String nombre;
-    Mision misionAct = null; // Cuando el asistente nace no tiene misión asignada.
-    // Maquina de estados de warpeo
-    // Motor warp
+    private Nave nave;
+    private ArrayList <Bitacora> bitacorasNave;
+    private MotorWarp motor;
 
-
-    public Asistente(String nombre) {
-        this.nombre = nombre;
+    public Asistente(String tipoNave){
+        this.nave = FactoryNaves.getTipo(tipoNave);
+        if  (this.nave){
+            this.bitacorasNave = new ArrayList();
+            this.motor = new MotorWarp();
+        }
     }
 
-    public void setMisionAct(Mision mision){
-        this.misionAct = mision;
-    }
 }

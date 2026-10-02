@@ -4,7 +4,7 @@ package nave;
 public class FactoryNaves {
     /*
     <b> pre: </b> El tipo de nave es un tipo valido
-    <b> post: </b> El tipo de nave fue creado, no puede reutilizarse la funcion
+    <b> post: </b> El tipo de nave fue creado
 
     @param tipoNave Es el tipo de la nave. tipoNave!=null,tipoNave!=""
     @throws tipoNaveInvalidoException si el tipoNave no es valido arroja una
