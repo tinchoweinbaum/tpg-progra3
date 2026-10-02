@@ -1,7 +1,7 @@
 package asistentes;
 import misiones.*;
 import java.util.*;
-import nave*;
+import nave.*;
 import motorwarp.*;
 import bitacora.*;
 
@@ -35,6 +35,7 @@ public class Asistente {
     }
 
     public void ejecutarSalto(){
-
+        int estadoActual = this.motor.getEstado();
+        this.motor.llamarProximoEstado(estadoActual);
     }
 }

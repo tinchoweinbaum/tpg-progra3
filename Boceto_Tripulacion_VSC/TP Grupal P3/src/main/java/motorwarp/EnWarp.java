@@ -5,6 +5,11 @@ public class EnWarp implements State {
     
     private MotorWarp motor;
     private Date fecha = new Date();
+    private final int ID = 2;
+
+    public int getID(){
+        return ID;
+    }
     
     
     

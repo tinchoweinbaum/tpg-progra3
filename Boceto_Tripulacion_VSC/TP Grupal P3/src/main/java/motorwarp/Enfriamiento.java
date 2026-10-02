@@ -5,6 +5,11 @@ public class Enfriamiento implements State {
     
     private MotorWarp motor;
     private Date fecha = new Date();
+    private final int ID = 3;
+
+    public int getID(){
+        return ID;
+    }
 
     public Enfriamiento (MotorWarp motor){
         this.motor = motor;

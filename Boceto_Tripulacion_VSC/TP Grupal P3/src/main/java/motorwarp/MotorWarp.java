@@ -10,8 +10,25 @@ public class MotorWarp {
         this.estadoActual = new Disponible(this);
     }
     
-    public State getEstado (){
-        return this.estadoActual;
+    public int getEstado (){
+        return this.estadoActual.getID;
+    }
+
+    public void llamaProximoEstado(int i){
+        switch (i){
+            case 0:
+                this.prepararSalto();
+                break;
+            case 1:
+                this.saltoWarp();
+                break;
+            case 2:
+                this.enfriamiento();
+                break;
+            case 3:
+                this.disponible();
+                break;
+        }
     }
        
     void setEstado(State estadoActual) {
