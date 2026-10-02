@@ -27,8 +27,8 @@ public class RegistroRecursos extends RegistroBitacora {
      * @param cantidadModificada unidades agregadas (+) o consumidas (-)
      * @param nivelResultante el saldo o nivel final del recurso tras la operación
      */
-    public RegistroRecursos(Date fechaRegistro, String descripcionRegistro, String tipoRecurso, int cantidadModificada, int nivelResultante) {
-        super(fechaRegistro, descripcionRegistro);
+    public RegistroRecursos(Date fechaRegistro, String tipoRecurso, int cantidadModificada, int nivelResultante) {
+        super(fechaRegistro, "Actualizacion de recursos");
         assert tipoRecurso != null && esTipoRecursoValido(tipoRecurso) : "Tipo de recurso inválido";
         assert cantidadModificada != 0 : "La cantidad modificada no puede ser cero";
         assert nivelResultante >= 0 : "El nivel resultante no puede ser negativo";
@@ -37,8 +37,8 @@ public class RegistroRecursos extends RegistroBitacora {
         this.nivelResultante = nivelResultante;
     }
 
-    public RegistroRecursos(String descripcionRegistro, String tipoRecurso, int cantidadModificada, int nivelResultante){
-        this(new Date(), descripcionRegistro, tipoRecurso, cantidadModificada, nivelResultante);
+    public RegistroRecursos(String tipoRecurso, int cantidadModificada, int nivelResultante){
+        this(new Date(), tipoRecurso, cantidadModificada, nivelResultante);
     }
 
     private static boolean esTipoRecursoValido(String tipo) {
