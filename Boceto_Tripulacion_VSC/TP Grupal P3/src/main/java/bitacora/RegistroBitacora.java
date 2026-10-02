@@ -8,8 +8,8 @@ import java.util.Date;
  * Capaz conviene usar una interfaz en vez de herencia de esta manera.
  */
 public abstract class RegistroBitacora {
-    private Date fechaRegistro;
-    private String descripcionRegistro;
+    private final Date fechaRegistro;
+    private final String descripcionRegistro;
 
     /**
      * Constructor que crea un objeto de tipo RegistroBitacora

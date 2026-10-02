@@ -28,10 +28,20 @@ public class Bitacora {
         this.registros.add(registro);
     }
 
+    /**
+     * Devuelve una copia de la lista de registros
+     * <b>Post:</b>
+     * - Se genera un nueva instancia de la lista de registros
+     */
     public List<RegistroBitacora> getRegistros() {
-        return new ArrayList<>(this.registros); // Devuelve una copia para proteger la encapsulación
+        return new ArrayList<>(this.registros);
     }
 
+    /**
+     * Muestra todos los registros de la bitacora
+     * <b>Post:</b>
+     * - Se muestran en pantalla todos los registros de la bitacora
+     */
     public void mostrarBitacora() {
         for (RegistroBitacora r : registros) {
             System.out.println(r);
