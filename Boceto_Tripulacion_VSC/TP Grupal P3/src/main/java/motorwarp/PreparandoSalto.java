@@ -5,7 +5,7 @@ public class PreparandoSalto implements State {
     
     private MotorWarp motor;
     private Date fecha = new Date();
-    private final int ID = 1;
+    private final int ID = MotorWarp.PREPARANDO_SALTO;
 
     public int getID(){
         return ID;

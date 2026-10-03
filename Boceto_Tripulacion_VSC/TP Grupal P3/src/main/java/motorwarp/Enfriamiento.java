@@ -5,9 +5,9 @@ public class Enfriamiento implements State {
     
     private MotorWarp motor;
     private Date fecha = new Date();
-    private final int ID = 3;
+    private final int ID = MotorWarp.ENFRIAMIENTO;
 
-    public int getID(){
+    public int getIdEstado(){
         return ID;
     }
 

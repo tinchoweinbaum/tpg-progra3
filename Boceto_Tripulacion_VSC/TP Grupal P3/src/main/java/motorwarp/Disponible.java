@@ -6,9 +6,9 @@ public class Disponible implements State {
 
     private MotorWarp motor;
     private Date fecha = new Date();
-    private final int ID = 0;
+    private final int ID = MotorWarp.DISPONIBLE;
 
-    public int getID(){
+    public int getIdEstado(){
         return ID;
     }
     public Disponible (MotorWarp motor){

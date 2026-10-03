@@ -1,4 +1,5 @@
 package nave;
+import exceptions.*;
 
 
 public class FactoryNaves {
@@ -7,11 +8,10 @@ public class FactoryNaves {
     *<b> post: </b> El tipo de nave fue creado
     *
     *@param tipoNave Es el tipo de la nave. tipoNave!=null,tipoNave!=""
-    *@throws tipoNaveInvalidoException si el tipoNave no es valido arroja una
+    *@throws TipoNaveInvalidoException si el tipoNave no es valido arroja una
     *                                  excepcion indicando que no se puede crear el tipo
      */
-    public static Nave getTipo(String tipoNave){// throws tipoNaveInvalidoException{
-        //try {
+    public static Nave getTipo(String tipoNave) throws TipoNaveInvalidoException{
             switch (tipoNave.toUpperCase()) {
                 case "CARGUERO":
                     return new NaveCarguero();
@@ -20,10 +20,8 @@ public class FactoryNaves {
                 case "EXPLORADOR":
                     return new NaveExploradora();
                 default:
-                    return null;
-                    //throw tipoNaveInvalidoException;
+                    throw new TipoNaveInvalidoException("Tipo de nave inválido: " + tipoNave);
             }
-        //}catch (tipoNaveInvalidoException e)
     }
 
 }

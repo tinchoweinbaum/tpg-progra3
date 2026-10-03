@@ -3,35 +3,40 @@ import bitacora.RegistroMotor;
 import java.util.Date;
 
 public class MotorWarp {
+
+    public static final int DISPONIBLE = 0;
+    public static final int PREPARANDO_SALTO = 1;
+    public static final int SALTO_WARP = 2;
+    public static final int ENFRIAMIENTO = 3;
     
     private State estadoActual;
     
     public MotorWarp () {
         this.estadoActual = new Disponible(this);
     }
-    
-    public int getEstado (){
-        return this.estadoActual.getID;
-    }
 
     public void llamaProximoEstado(int i){
         switch (i){
-            case 0:
+            case DISPONIBLE:
                 this.prepararSalto();
                 break;
-            case 1:
+            case PREPARANDO_SALTO:
                 this.saltoWarp();
                 break;
-            case 2:
+            case SALTO_WARP:
                 this.enfriamiento();
                 break;
-            case 3:
+            case ENFRIAMIENTO:
                 this.disponible();
                 break;
         }
     }
-       
-    void setEstado(State estadoActual) {
+
+    public State getEstadoActual() {
+        return estadoActual;
+    }
+
+    public void setEstado(State estadoActual) {
         this.estadoActual = estadoActual;
     }
 
@@ -40,7 +45,6 @@ public class MotorWarp {
      * @pre mensaje != null and mensaje != ""
      * @post Se envia el mensaje a la bitacora
      */
-    
     public void registrarEvento(Date fechaRegistro, String descripcionRegistro,State estado) {
         RegistroMotor registro = new RegistroMotor (fechaRegistro, descripcionRegistro, estado);
     }
