@@ -1,5 +1,7 @@
 package motorwarp;
 import bitacora.RegistroMotor;
+import exceptions.EstadoInvalidoException;
+
 import java.util.Date;
 
 public class MotorWarp {
@@ -15,20 +17,21 @@ public class MotorWarp {
         this.estadoActual = new Disponible(this);
     }
 
-    public void llamaProximoEstado(int i){
+    public void llamaEstado(int i) throws EstadoInvalidoException {
         switch (i){
             case DISPONIBLE:
-                this.prepararSalto();
-                break;
-            case PREPARANDO_SALTO:
-                this.saltoWarp();
-                break;
-            case SALTO_WARP:
-                this.enfriamiento();
-                break;
-            case ENFRIAMIENTO:
                 this.disponible();
                 break;
+            case PREPARANDO_SALTO:
+                this.prepararSalto();
+                break;
+            case SALTO_WARP:
+                this.saltoWarp();
+                break;
+            case ENFRIAMIENTO:
+                this.enfriamiento();
+                break;
+            default: throw new EstadoInvalidoException("No existe el estado nro " + i);
         }
     }
 
@@ -66,8 +69,4 @@ public class MotorWarp {
     public void enfriamiento() {
         estadoActual.enfriamiento();
     }
-
-
-    
-    
 }

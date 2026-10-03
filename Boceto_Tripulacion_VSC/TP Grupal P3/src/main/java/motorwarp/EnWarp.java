@@ -37,7 +37,10 @@ public class EnWarp implements State {
     
     //De salto a enfriamiento para la 2da parte
     @Override
-    public void enfriamiento(){}
+    public void enfriamiento(){
+        motor.registrarEvento(fecha, "Enfriando motor", this);
+        motor.setEstado(new Disponible(motor)); // Por esta entrega pasa directamente a disponible, después pasa por tiempo.
+    }
        /* motor.registrarEvento(fecha,"Enfriando motor",this);
         motor.setEstado(new Enfriamiento(motor));
     }

@@ -22,7 +22,7 @@ public class RegistroMision extends RegistroBitacora{
      */
     public RegistroMision(Date fechaRegistro, String descripcionRegistro, Mision mision) {
         super(fechaRegistro, descripcionRegistro);
-        assert mision != null: "la misión no puede ser nula";
+        assert mision != null: "La misión no puede ser nula";
         this.mision = mision;
     }
 
