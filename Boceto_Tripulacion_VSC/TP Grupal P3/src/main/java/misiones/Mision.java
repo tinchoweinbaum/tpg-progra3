@@ -6,7 +6,7 @@ public abstract class Mision {
     private String descripcion;
     private float combustibleRequerido; //No se si estos valores son nros naturales o reales ¯\_(ツ)_/¯
     private float energiaAportada; // Valor de energía que la misión SUMA a la nave.
-    private float desgasteMinimoRequerido; // Desgaste mínimo que tiene que tener la nave para aceptar la misión.
+    private float desgasteRequerido; // Desgaste mínimo que tiene que tener la nave para aceptar la misión.
 
     public Mision(String nombre, String descripcion, float combustibleRequerido, float energiaRequerida) {
         this.nombre = nombre;
@@ -30,4 +30,9 @@ public abstract class Mision {
     public float getEnergiaAportada() {
         return this.energiaAportada;
     }
+
+    public float getDesgasteRequerido() {
+        return desgasteRequerido;
+    }
+
 }

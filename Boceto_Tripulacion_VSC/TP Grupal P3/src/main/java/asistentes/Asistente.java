@@ -36,7 +36,6 @@ public class Asistente {
         this.setMisionAct(mision);
     }
 
-
     public void setMisionAct(Mision misionAct) {
         this.misionAct = misionAct;
     }
