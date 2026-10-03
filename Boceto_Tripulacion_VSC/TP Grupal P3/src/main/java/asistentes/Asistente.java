@@ -4,7 +4,6 @@ import java.util.*;
 import nave.*;
 import motorwarp.*;
 import bitacora.*;
-import nave.*;
 import exceptions.*;
 
 public class Asistente {
@@ -20,6 +19,8 @@ public class Asistente {
             this.motor = new MotorWarp();
         }
     }
+
+    //preguntar acerca de los 4 metodos para saltar manualmentme de estado o mantener lo que propusimos
 
     public void ejecutarSalto(){
         int estadoActual = this.motor.getEstado();
@@ -49,4 +50,6 @@ public class Asistente {
             this.bitacorasNave.agregarRegistro(new RegistroRecursos("ENERGIA", energiaGanada, this.nave.getEnergia()));
         }
     }
+
+
 }
