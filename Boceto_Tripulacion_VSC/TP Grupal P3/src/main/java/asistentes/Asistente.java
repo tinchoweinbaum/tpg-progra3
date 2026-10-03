@@ -4,11 +4,14 @@ import java.util.*;
 import nave.*;
 import motorwarp.*;
 import bitacora.*;
+import nave.*;
+import exceptions.*;
 
 public class Asistente {
     private Nave nave;
     private Bitacora bitacorasNave;
     private MotorWarp motor;
+    private Mision misionAct;
 
     public Asistente(String tipoNave){
         this.nave = FactoryNaves.getTipo(tipoNave);
@@ -20,28 +23,25 @@ public class Asistente {
 
     public void ejecutarSalto(){
         int estadoActual = this.motor.getEstado();
-        this.motor.llamarProximoEstado(estadoActual);
+        this.motor.llamaProximoEstado(estadoActual);
     }
 
-    public boolean aceptaMision(int gastoCombustible,int gastoDesgaste){
-        try{
-            if (nave.getCombustible - gastoCombustible >= 0) {
-                if (nave.getDesgaste + gastoDesgaste <= 100) {
-                    this.nave.setCombustible(this.nave.getCombustible() - gastoCombustible);
-                    this.nave.setDesgaste(this.nave.getDesgaste() + gastoDesgaste);
-                    return true;
-                }else {
-                    throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
-                }
-            }else {
-                throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
-            }
-        }catch(MisionImposibleException e){
-            bitacorasNave.agregarRegistro(new RegistroError("Mision cancelada",e));
-        }
+    public void aceptaMision(Mision mision) throws MisionImposibleException{
+        if (mision.getCombustibleRequerido() > nave.getCombustible())
+            throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
+
+        if (mision.getDesgasteRequerido() > nave.getDesgaste())
+            throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
+
+        this.setMisionAct(mision);
     }
 
-    public void registraMisionExito(int gastoCombustible,int gastoDesgaste,int energiaGanada,Mision mision){
+
+    public void setMisionAct(Mision misionAct) {
+        this.misionAct = misionAct;
+    }
+
+    public void registraMisionExito(int gastoCombustible, int gastoDesgaste, int energiaGanada, Mision mision){
         this.bitacorasNave.agregarRegistro(new RegistroMision("Mision lograda con exito",mision));
         this.bitacorasNave.agregarRegistro(new RegistroRecursos("COMBUSTIBLE", -gastoCombustible, this.nave.getCombustible()));
         this.bitacorasNave.agregarRegistro(new RegistroRecursos("DESGASTE", -gastoDesgaste, this.nave.getDesgaste()));
