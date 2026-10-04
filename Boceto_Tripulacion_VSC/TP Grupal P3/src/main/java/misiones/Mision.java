@@ -1,6 +1,5 @@
 package misiones;
 
-import bitacora.RegistroBitacora;
 
 // Superclase del patrón template de las misiones.
 public abstract class Mision {
@@ -38,27 +37,34 @@ public abstract class Mision {
         return desgasteRequerido;
     }
 
-    protected void preparar(){}; // Cada misión implementa estas 4 funciones como lo necesite. Patrón Template.
+    abstract protected void preparar(); // Cada misión implementa estas 4 funciones como lo necesite. Patrón Template.
 
-    protected void ejecutar(){};
+    abstract protected void ejecutar();
 
-    protected void evaluar(){};
+    abstract protected void evaluar();
 
-    protected RegistroBitacora cerrar(){
-        return null;
+    protected void cerrar(){
+        System.out.println("MISION FINALIZADA - ACTUALIZANDO RECURSOS");
     };
+
+    //metodo sobreescrito para que le pase al asistente la mision resumida y evitar la referencia bitacora mision
+    @Override
+    public String toString(){
+        return "REPORTE MISION : " + this.nombre + "\n" + this.descripcion + "\nCombustible consumido:" + this.combustibleRequerido + " litros\nLa nave sufrio un desgaste de " + this.desgasteRequerido + " unidades" + (this.energiaAportada >0 ? ("\nSe incremento la energia de la nave en " + this.energiaAportada + " unidades") : "");
+    }
+
 
     /**
      * <b>Pre: </b>
-     * <b>Post: </b>Devuelve un objeto de tipo RegistroBitacora.
+     * <b>Post: </b>
      * Método principal del template de las misiones, cada subclase implementa los pasos del algoritmo según necesite.
      */
-    public RegistroBitacora ejecutarMision(){
+    public void ejecutarMision(){
         this.preparar();
         this.ejecutar();
         this.evaluar();
-        return this.cerrar();
+        this.cerrar();
     }
-
+    //por el momento solo imprimen mensajes distintos excepto que comparten cerrar()
 
 }

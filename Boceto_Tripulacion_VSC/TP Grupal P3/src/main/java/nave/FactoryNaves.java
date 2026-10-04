@@ -4,12 +4,12 @@ import exceptions.*;
 
 public class FactoryNaves {
     /**
-    *<b> pre: </b> El tipo de nave es un tipo valido
-    *<b> post: </b> El tipo de nave fue creado
+    *<b>Pre:</b>El tipo de nave es un tipo válido
+    *<b>Post:</b>El tipo de nave fue creado
     *
     *@param tipoNave Es el tipo de la nave. tipoNave!=null,tipoNave!=""
-    *@throws TipoNaveInvalidoException si el tipoNave no es valido arroja una
-    *                                  excepcion indicando que no se puede crear el tipo
+    *@throws TipoNaveInvalidoException si el tipoNave no es válido arroja una
+    *                                  excepción indicando que no se puede crear el tipo
      */
     public static Nave getTipo(String tipoNave) throws TipoNaveInvalidoException{
             switch (tipoNave.toUpperCase()) {

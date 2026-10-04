@@ -24,15 +24,6 @@ public class Asistente {
 
     // Agregar a uso-ia.md que usamos ia para implementar los enums de los estados.
 
-
-//    public void ejecutarSalto(){
-//        int estadoActual = this.motor.getEstadoActual().getIdEstado();
-//        do{
-//            this.motor.llamaProximoEstado(estadoActual);
-//            estadoActual = this.motor.getEstadoActual().getIdEstado();
-//        } while(estadoActual == MotorWarp.DISPONIBLE);
-//    }
-
     /**
      * Cicla por los estados del motor hasta saltar, es decir, ejecuta un salto warp independientemente del estado actual del motor.
      */
@@ -55,6 +46,12 @@ public class Asistente {
         this.motor.llamaEstado(idEstado);
     }
 
+    /**
+        Si acepta la mision la ejecuta, sino tira excepcion
+     */
+    //Para cuando vean esto, cambie le tipo de retorno,ya que si la mision creaba un objeto bitacora,
+    // iba a crear una referencia. ejecutar mision se hace void. el metodo toString de mision luego se recupera cuando
+    //se printean las bitacoras . ante alguna duda comunicarse con el 223 6887474
     public void aceptaMision(Mision mision) throws MisionImposibleException{
         if (mision.getCombustibleRequerido() > nave.getCombustible())
             throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
@@ -62,19 +59,11 @@ public class Asistente {
         if (mision.getDesgasteRequerido() > nave.getDesgaste())
             throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
 
-        this.bitacorasNave.agregarRegistro(mision.ejecutarMision());
+        mision.ejecutarMision();
+        this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA",mision));
     }
 
-//    public void registraMisionExito(int gastoCombustible, int gastoDesgaste, int energiaGanada, Mision mision){
-//        this.bitacorasNave.agregarRegistro(new RegistroMision("Mision lograda con exito",mision));
-//        this.bitacorasNave.agregarRegistro(new RegistroRecursos("COMBUSTIBLE", -gastoCombustible, this.nave.getCombustible()));
-//        this.bitacorasNave.agregarRegistro(new RegistroRecursos("DESGASTE", -gastoDesgaste, this.nave.getDesgaste()));
 
-//        if (energiaGanada>0){
-//            this.nave.setEnergia(this.nave.getEnergia() + energiaGanada);
-//            this.bitacorasNave.agregarRegistro(new RegistroRecursos("ENERGIA", energiaGanada, this.nave.getEnergia()));
-//        }
-//    }
 
 
 }
