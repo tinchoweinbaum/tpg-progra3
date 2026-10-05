@@ -1,12 +1,10 @@
 package motorwarp;
 import exceptions.EstadoInvalidoException;
 
-import java.util.Date;
 
 public class PreparandoSalto implements State {
     
     private MotorWarp motor;
-    private Date fecha = new Date();
     private final int ID = MotorWarp.PREPARANDO_SALTO;
 
     public int getIdEstado(){

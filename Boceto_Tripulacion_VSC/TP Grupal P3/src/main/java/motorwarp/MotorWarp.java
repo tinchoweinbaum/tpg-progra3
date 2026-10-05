@@ -1,8 +1,6 @@
 package motorwarp;
-import bitacora.RegistroMotor;
 import exceptions.EstadoInvalidoException;
 
-import java.util.Date;
 
 public class MotorWarp {
 
@@ -43,30 +41,22 @@ public class MotorWarp {
         this.estadoActual = estadoActual;
     }
 
-    /**
-     * Se genera un nuevo registro en la bitacora a parir de los resultado de los estados del motor
-     * @pre mensaje != null and mensaje != ""
-     * @post Se envia el mensaje a la bitacora
-     */
-    public RegistroMotor registrarEvento(Date fechaRegistro, String descripcionRegistro,State estado){
-        return new RegistroMotor (fechaRegistro, descripcionRegistro, estado);
-    }
 
     // Delegaciones de comportamiento al estado actual // 
     
-    public void disponible() {
+    public void disponible() throws EstadoInvalidoException {
         estadoActual.disponible();
     }
     
-    public void prepararSalto() {
+    public void prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
     }
 
-    public void saltoWarp() {
+    public void saltoWarp() throws EstadoInvalidoException {
         estadoActual.saltoWarp();
     }
 
-    public void enfriamiento() {
+    public void enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
     }
 }
