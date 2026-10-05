@@ -45,6 +45,12 @@ public class EnWarp implements State {
         motor.setEstado(new Enfriamiento(motor));
     }
     */
+
+    //Despues lo imprime cuando se printean los registros de motor
+    @Override
+    public String toString(){
+        return "EN SALTO WARP";
+    }
      
 }
 

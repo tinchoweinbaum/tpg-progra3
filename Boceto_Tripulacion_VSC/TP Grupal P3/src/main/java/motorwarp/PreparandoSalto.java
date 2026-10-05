@@ -7,7 +7,7 @@ public class PreparandoSalto implements State {
     private Date fecha = new Date();
     private final int ID = MotorWarp.PREPARANDO_SALTO;
 
-    public int getID(){
+    public int getIdEstado(){
         return ID;
     }
     
@@ -39,6 +39,12 @@ public class PreparandoSalto implements State {
     public void enfriamiento(){
         motor.registrarEvento(fecha,"ERROR: No se puede entrar en enfriamiento",this);
         throw new IllegalStateException("El motor no está disponible");
+    }
+
+    //Despues lo imprime cuando se printean los registros de motor
+    @Override
+    public String toString(){
+        return "PREPARANDO SALTO";
     }
      
 }

@@ -38,6 +38,11 @@ public class Enfriamiento implements State {
         motor.registrarEvento(fecha,"ERROR : Ya se ha enfriado el motor",this);
         throw new IllegalStateException("Ya se ha enfriado el motor");
     }
-     
+
+    //Despues lo imprime cuando se printean los registros de motor
+    @Override
+    public String toString(){
+        return "ENFRIAMIENTO";
+    }
 }
 

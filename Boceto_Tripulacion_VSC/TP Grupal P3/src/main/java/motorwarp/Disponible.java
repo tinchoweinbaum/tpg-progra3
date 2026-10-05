@@ -40,5 +40,9 @@ public class Disponible implements State {
         throw new IllegalStateException("El motor no está disponible");
     }
 
-
+    //Despues lo imprime cuando se printean los registros de motor
+    @Override
+    public String toString(){
+        return "DISPONIBLE";
+    }
 }
