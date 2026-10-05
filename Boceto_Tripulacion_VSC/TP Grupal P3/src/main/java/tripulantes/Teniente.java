@@ -8,6 +8,6 @@ public class Teniente extends DecoradorCargo{
     
     @Override 
     public void setSueldo(){
-        this.sueldo = (getTripulante().getSueldo()+ 400)*antiguedad*0.03; 
+        this.sueldo = (getTripulante().getSueldo()+ 400)*antiguedad*1.03;
     }
 }

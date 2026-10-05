@@ -8,6 +8,6 @@ public class Capitan extends DecoradorCargo{
     
     @Override 
     public void setSueldo(){
-        this.sueldo = (getTripulante().getSueldo()+ 1000)*antiguedad*0.2; 
+        this.sueldo = (getTripulante().getSueldo()+ 1000)*antiguedad*1.2;
     }
 }

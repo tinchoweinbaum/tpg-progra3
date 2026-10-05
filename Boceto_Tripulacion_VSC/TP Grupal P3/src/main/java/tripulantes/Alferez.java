@@ -8,6 +8,6 @@ public class Alferez extends DecoradorCargo{
     
     @Override 
     public void setSueldo(){
-        this.sueldo = (getTripulante().getSueldo()+ 200)*antiguedad*0.005; 
+        this.sueldo = (getTripulante().getSueldo()+ 200)*antiguedad*1.005;
     }
 }

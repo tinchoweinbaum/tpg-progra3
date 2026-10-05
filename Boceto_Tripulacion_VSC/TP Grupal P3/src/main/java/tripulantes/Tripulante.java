@@ -19,6 +19,10 @@ public abstract class Tripulante {
     public int getAntiguedad(){
         return this.antiguedad;
     }
+
+    public void aumentaAntiguedad(){
+        this.antiguedad += 1;
+    }
     
     public double getSueldo(){
         return this.sueldo;
