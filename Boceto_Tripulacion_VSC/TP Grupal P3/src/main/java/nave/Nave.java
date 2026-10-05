@@ -36,6 +36,14 @@ abstract public class Nave{
         this.desgaste = desgaste;
     }
 
+    /**
+     * Agrega un nuevo integrante a la tripulacion
+     * <b>Pre:</b>
+     * -tripulantes != null
+     * <b>Post:</b>
+     * -Se añade tripulantes a la lista de tripulantes
+     * @param tripulantes el tripulante que se desea agregar
+     */
     public void agregaTripulante(Tripulante tripulantes){
         this.tripulantes.add(tripulantes);
     }

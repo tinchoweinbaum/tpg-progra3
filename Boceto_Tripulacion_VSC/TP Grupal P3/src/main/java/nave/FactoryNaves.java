@@ -4,6 +4,7 @@ import exceptions.*;
 
 public class FactoryNaves {
     /**
+     * Crea una nave del tipo indicado por el usuario
     *<b>Pre:</b>El tipo de nave es un tipo válido
     *<b>Post:</b>El tipo de nave fue creado
     *
