@@ -1,6 +1,5 @@
 package exceptions;
 
-
 /**
  * Exception que se arroja cuando el tipo de creacion de la nave es invalido.
  */
