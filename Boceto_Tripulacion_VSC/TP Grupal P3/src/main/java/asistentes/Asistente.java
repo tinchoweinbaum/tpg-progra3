@@ -11,8 +11,8 @@ public class Asistente {
     private MotorWarp motor;
 
     /**
-     * <b> Pre:</b>Se asume que la nave existe y se creó exitosamente, también se asume qué no hay otro asistente que referencie a esta misma nave. (preguntar)
-     * <b> Post:</b>Se asocia el asistente con la nave.
+     * <b> Pre:</b>Se asume que la nave existe y se creó exitosamente, también se asume qué no hay otro asistente que referencie a esta misma nave. (preguntar) <br>
+     * <b> Post:</b>Se asocia el asistente con la nave. <br>
      * @param nave: referencia a un objeto nave válido.
      */
     public Asistente(Nave nave){
@@ -20,8 +20,6 @@ public class Asistente {
         this.bitacorasNave = new Bitacora();
         this.motor = new MotorWarp();
     }
-
-    // Agregar a uso-ia.md que usamos ia para implementar los enums de los estados.
 
     /**
      * Cicla por los estados del motor hasta saltar, es decir, ejecuta un salto warp independientemente del estado actual del motor.
@@ -50,12 +48,28 @@ public class Asistente {
         }
     }
 
-    /**
-        Si acepta la mision la ejecuta, sino tira excepcion
+    /** Contrato mejorado con llm de navegador.<br>
+     * Acepta una misión para la nave, validando los recursos necesarios y el estado actual.
+     *
+     * <p><b>Pre:</b></p>
+     * <ul>
+     *   <li>Se asume que la misión existe y es válida (no es nula y sus datos son consistentes).</li>
+     *   <li>La nave del asistente se encuentra inicializada con un estado válido.</li>
+     * </ul>
+     *
+     * <p><b>Post:</b></p>
+     * <ul>
+     *   <li>Se ejecuta la misión.</li>
+     *   <li>Se agrega un {@code RegistroMision} a la bitácora de la nave.</li>
+     *   <li>Si se ejecuta correctamente, los recursos de la nave se actualizan acorde al resultado.</li>
+     * </ul>
+     *
+     * @param mision La misión que se desea aceptar y ejecutar.
+     * @throws CombustibleInsuficienteException si el combustible requerido supera al disponible en la nave.
+     * @throws ExcesoDesgasteException si el desgaste actual más el requerido supera el máximo permitido (100).
+     * @throws ExcesoEnergiaException si la energía actual más el aporte de la misión supera el máximo permitido (100).
+     * @throws MisionImposibleException si ocurre cualquier otro error general que impida realizar la misión.
      */
-    //Para cuando vean esto, cambie le tipo de retorno,ya que si la mision creaba un objeto bitacora,
-    // iba a crear una referencia. ejecutar mision se hace void. el metodo toString de mision luego se recupera cuando
-    //se printean las bitacoras . ante alguna duda comunicarse con el 223 6887474
     public void aceptaMision(Mision mision) throws MisionImposibleException{
         if (mision.getCombustibleRequerido() > nave.getCombustible())
             throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
@@ -69,26 +83,45 @@ public class Asistente {
             throw new ExcesoEnergiaException("Se supera la cantidad maxima de energia soportada por la nave");
 
         //Ejecuto mision y guardo bitacora
-        mision.ejecutarMision();
-        this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA",mision));
-
-        //Actualizo recursos de la nave
-        this.actualizaRecursosMision(mision.getCombustibleRequerido(),mision.getDesgasteRequerido(),mision.getEnergiaAportada());
+        this.ejecutaRegistraMision(mision);
     }
 
     /**
-     * Metodo que actualiza los recursos de la nave segun requerimientos de la mision
-     * @param combustible
-     * @param desgaste
-     * @param energia
+     * <b>Pre:</b>
+     * <ul>
+     *     <li>
+     *         El asistente ya checkeó que cuenta con los recursos necesarios para ejecutar la misión.
+     *     </li>
+     * </ul>
+     * <b>Post: </b>
+     * <ul>
+     *     <li>
+     *         Se actualizan los recursos de la nave según indica la misión.
+     *     </li>
+     *     <li>
+     *         Se agrega un elemento a la bitácora de la nave.
+     *     </li>
+     * </ul>
+     * @param mision misión a ejecutar y registrar.
      */
-    private void actualizaRecursosMision(float combustible,float desgaste,float energia){
-        this.nave.setCombustible(this.nave.getCombustible()-combustible);
-        this.nave.setDesgaste(this.nave.getDesgaste()+desgaste);
-        if (energia>0){
-            this.nave.setEnergia(this.nave.getEnergia()+energia);
+    private void ejecutaRegistraMision(Mision mision){
+        this.bitacorasNave.agregarRegistro(mision.ejecutarMision());
+        this.actualizaRecursosMision(mision);
+    }
+
+    // Escribir contrato de esta misión y revisar como funciona RegistroBitacora, no tiene sentido que me pida hacer la cuenta del nivel resultante.
+    private void actualizaRecursosMision(Mision mision){
+        this.nave.setCombustible(this.nave.getCombustible() - mision.getCombustibleRequerido());
+        this.bitacorasNave.agregarRegistro(new RegistroRecursos());
+
+        this.nave.setDesgaste(this.nave.getDesgaste()+ mision.getDesgasteRequerido());
+        this.bitacorasNave.agregarRegistro(new RegistroRecursos( ));
+
+        float energia = mision.getEnergiaAportada();
+        if (energia > 0){
+            this.nave.setEnergia(this.nave.getEnergia() + energia);
+            this.bitacorasNave.agregarRegistro(new RegistroRecursos());
         }
-        //No se crea un registro de recursos porque lo creo la mision cuando se guardo la bitacora de mision
     }
 
     /**
@@ -119,10 +152,11 @@ public class Asistente {
             }else{
                 throw new DesgasteInsuficienteException("Desgaste insuficiente para la operacion");
             }
-        }catch(DesgasteInsuficienteException e){
+        }
+        // Este catch NO va a ir acá en la 2da parte, tiene que propagar la excepción.
+        catch(DesgasteInsuficienteException e){
             this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse el mantenimiento",e));
         }
-
     }
 
     /**

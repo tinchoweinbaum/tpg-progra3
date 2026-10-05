@@ -36,15 +36,29 @@ abstract public class Nave{
         this.desgaste = desgaste;
     }
 
-    /**
-     * Agrega un nuevo integrante a la tripulacion
+    /** contrato mejorado con gemini <br>
+     * Agrega una lista completa de tripulantes iterando sobre ellos.
      * <b>Pre:</b>
-     * -tripulantes != null
+     * - tripulantes != null
      * <b>Post:</b>
-     * -Se añade tripulantes a la lista de tripulantes
-     * @param tripulantes el tripulante que se desea agregar
+     * - Se añade cada tripulante de la lista a la tripulación.
+     * @param tripulantes La lista de tripulantes que se desea agregar.
      */
-    public void agregaTripulante(Tripulante tripulantes){
-        this.tripulantes.add(tripulantes);
+    public void agregaTripulante(ArrayList<Tripulante> tripulantes) {
+        for (Tripulante t : tripulantes) {
+            this.agregaTripulante(t);
+        }
+    }
+
+    /**
+     * Agrega un nuevo integrante a la tripulación.
+     * <b>Pre:</b>
+     * - tripulante != null
+     * <b>Post:</b>
+     * - Se añade el tripulante a la lista de tripulantes.
+     * @param tripulante El tripulante que se desea agregar.
+     */
+    public void agregaTripulante(Tripulante tripulante) {
+        this.tripulantes.add(tripulante);
     }
 }

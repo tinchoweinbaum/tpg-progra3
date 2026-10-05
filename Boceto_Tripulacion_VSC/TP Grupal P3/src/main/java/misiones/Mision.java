@@ -1,5 +1,6 @@
 package misiones;
 
+import bitacora.RegistroMision;
 
 // Superclase del patrón template de las misiones.
 public abstract class Mision {
@@ -45,7 +46,7 @@ public abstract class Mision {
 
     protected void cerrar(){
         System.out.println("MISION FINALIZADA - ACTUALIZANDO RECURSOS");
-    };
+    }
 
     //metodo sobreescrito para que le pase al asistente la mision resumida y evitar la referencia bitacora mision
     @Override
@@ -54,17 +55,21 @@ public abstract class Mision {
     }
 
 
-    /**
-     * <b>Pre: </b>
-     * <b>Post: </b>
-     * Método principal del template de las misiones, cada subclase implementa los pasos del algoritmo según necesite.
+    /** Contrato mejorado con gemini.
+     * Ejecuta las etapas correspondientes de la misión y genera su registro.
+     *
+     * <p><b>Pre:</b> La nave que va a ejecutar esta misión ya checkeó si tiene los recursos necesarios para hacerla.</p>
+     * <p><b>Post:</b> Se ejecutan las 4 etapas de la misión y se crea un {@code RegistroMision}.</p>
+     *
+     * @return Un objeto de tipo {@code RegistroMision} compatible con la bitácora de cualquier nave.
      */
-    public void ejecutarMision(){
+    public RegistroMision ejecutarMision(){
         this.preparar();
         this.ejecutar();
         this.evaluar();
         this.cerrar();
+
+        return new RegistroMision("MISION REALIZADA", this);
     }
     //por el momento solo imprimen mensajes distintos excepto que comparten cerrar()
-
 }
