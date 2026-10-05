@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class RegistroRecursos extends RegistroBitacora {
     private String tipoRecurso;
-    private int cantidadModificada;
-    private int nivelResultante;
+    private float cantidadModificada;
+    private float nivelResultante;
 
     /**
      * Constructor que crea un registro de bitácora asociado a operaciones sobre recursos
@@ -22,12 +22,11 @@ public class RegistroRecursos extends RegistroBitacora {
      * - getCantidadModificada() == cantidadModificada
      * - getNivelResultante() == nivelResultante
      * @param fechaRegistro la fecha en la que se guarda la información
-     * @param descripcionRegistro la informacion que guarda el registro al crearse
      * @param tipoRecurso la categoría del recurso ("COMBUSTIBLE", "ENERGIA", "DESGASTE")
      * @param cantidadModificada unidades agregadas (+) o consumidas (-)
      * @param nivelResultante el saldo o nivel final del recurso tras la operación
      */
-    public RegistroRecursos(Date fechaRegistro, String tipoRecurso, int cantidadModificada, int nivelResultante) {
+    public RegistroRecursos(Date fechaRegistro, String tipoRecurso, float cantidadModificada, float nivelResultante) {
         super(fechaRegistro, "Actualizacion de recursos");
         assert tipoRecurso != null && esTipoRecursoValido(tipoRecurso) : "Tipo de recurso inválido";
         assert cantidadModificada != 0 : "La cantidad modificada no puede ser cero";
@@ -37,7 +36,7 @@ public class RegistroRecursos extends RegistroBitacora {
         this.nivelResultante = nivelResultante;
     }
 
-    public RegistroRecursos(String tipoRecurso, int cantidadModificada, int nivelResultante){
+    public RegistroRecursos(String tipoRecurso, float cantidadModificada, float nivelResultante){
         this(new Date(), tipoRecurso, cantidadModificada, nivelResultante);
     }
 
@@ -51,11 +50,11 @@ public class RegistroRecursos extends RegistroBitacora {
         return tipoRecurso;
     }
 
-    public int getCantidadModificada() {
+    public float getCantidadModificada() {
         return cantidadModificada;
     }
 
-    public int getNivelResultante() {
+    public float getNivelResultante() {
         return nivelResultante;
     }
 

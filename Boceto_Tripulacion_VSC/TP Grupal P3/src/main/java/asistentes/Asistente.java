@@ -1,6 +1,5 @@
 package asistentes;
 import misiones.*;
-import java.util.*;
 import nave.*;
 import motorwarp.*;
 import bitacora.*;
@@ -56,14 +55,86 @@ public class Asistente {
         if (mision.getCombustibleRequerido() > nave.getCombustible())
             throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
 
-        if (mision.getDesgasteRequerido() > nave.getDesgaste())
+        //Desgaste maximo = 100
+        if (mision.getDesgasteRequerido()+nave.getDesgaste() > 100)
             throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
 
+        //Energia maxima = 100
+        if (mision.getEnergiaAportada()>0 && nave.getEnergia()+mision.getEnergiaAportada() > 100)
+            throw new ExcesoEnergiaException("Se supera la cantidad maxima de energia soportada por la nave");
+
+        //Ejecuto mision y guardo bitacora
         mision.ejecutarMision();
         this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA",mision));
+
+        //Actualizo recursos de la nave
+        this.actualizaRecursosMision(mision.getCombustibleRequerido(),mision.getDesgasteRequerido(),mision.getEnergiaAportada());
     }
 
+    /**
+     * Metodo que actualiza los recursos de la nave segun requerimientos de la mision
+     * @param combustible
+     * @param desgaste
+     * @param energia
+     */
+    private void actualizaRecursosMision(float combustible,float desgaste,float energia){
+        this.nave.setCombustible(this.nave.getCombustible()-combustible);
+        this.nave.setDesgaste(this.nave.getDesgaste()+desgaste);
+        if (energia>0){
+            this.nave.setEnergia(this.nave.getEnergia()+energia);
+        }
+        //No se crea un registro de recursos porque lo creo la mision cuando se guardo la bitacora de mision
+    }
 
+    /**
+     * Metodo para cargar cierta cantidad de combustible, si supera 100,tira excepcion
+     * @param carga
+     */
+    public void cargaCombustibleNave(float carga){
+        try{
+            if (this.nave.getCombustible() + carga <= 100){
+                this.nave.setCombustible(this.nave.getCombustible() + carga);
+                this.bitacorasNave.agregarRegistro(new RegistroRecursos("COMBUSTIBLE",carga,this.nave.getCombustible()));
+            }else{
+                throw new CargaInvalidaCombustibleException("La carga supera el limite del deposito de combustible");
+            }
+        } catch (CargaInvalidaCombustibleException e) {
+            this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse carga de combustible",e));
+        }
+    }
 
+    /**
+     * Metodo para realizar mantenimiento de nave
+     */
+    public void mantenimientoNave(){
+        try{
+            if (this.nave.getDesgaste()>=80){
+                this.bitacorasNave.agregarRegistro(new RegistroRecursos("DESGASTE",-this.nave.getDesgaste(),0));
+                this.nave.setDesgaste(0);
+            }else{
+                throw new DesgasteInsuficienteException("Desgaste insuficiente para la operacion");
+            }
+        }catch(DesgasteInsuficienteException e){
+            this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse el mantenimiento",e));
+        }
+
+    }
+
+    /**
+     * Metodo para cargar cierta cantidad de energia, si supera 100,tira excepcion
+     * @param carga
+     */
+    public void cargaEnergiaNave(float carga){
+        try{
+            if (this.nave.getEnergia() + carga <= 100){
+                this.nave.setEnergia(this.nave.getEnergia() + carga);
+                this.bitacorasNave.agregarRegistro(new RegistroRecursos("ENERGIA",carga,this.nave.getEnergia()));
+            }else{
+                throw new ExcesoEnergiaException("La carga supera el limite de energia");
+            }
+        } catch (ExcesoEnergiaException e) {
+            this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse carga de energia",e));
+        }
+    }
 
 }
