@@ -42,7 +42,12 @@ public class Asistente {
      * @param idEstado Estado deseado del motor
      */
     public void setEstadoMotor(int idEstado){
-        this.motor.llamaEstado(idEstado);
+        try {
+            this.motor.llamaEstado(idEstado);
+            this.bitacorasNave.agregarRegistro(new RegistroMotor("CAMBIO DE ESTADO EXITOSO", motor.getEstadoActual()));
+        } catch (EstadoInvalidoException e){
+            this.bitacorasNave.agregarRegistro(new RegistroError("CAMBIO DE ESTADO INVALIDO", e));
+        }
     }
 
     /**

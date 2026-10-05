@@ -1,4 +1,6 @@
 package motorwarp;
+import exceptions.EstadoInvalidoException;
+
 import java.util.Date;
 
 public class EnWarp implements State {
@@ -18,33 +20,25 @@ public class EnWarp implements State {
     }
     
     @Override
-    public void disponible(){
-        motor.registrarEvento(fecha,"El motor ya esta disponible",this);
-        motor.setEstado(new Disponible(motor));
+    public void disponible() throws EstadoInvalidoException {
+        throw new EstadoInvalidoException("El motor ya esta usandose");
     }
     
     @Override
-    public void preparaSalto(){        
-        motor.registrarEvento(fecha,"ERROR: El motor ya esta preparando el salto warp",this);
-        throw new IllegalStateException("El motor ya esta preparando el salto warp");        
+    public void preparaSalto() throws EstadoInvalidoException{
+        throw new EstadoInvalidoException("El motor ya preparo el salto warp");
     }
     
     @Override
-    public void saltoWarp(){
-        motor.registrarEvento(fecha,"ERROR : Ya se ha realizado el salto warp",this);
-        throw new IllegalStateException("Ya se ha realizado el salto warp");
+    public void saltoWarp() throws EstadoInvalidoException{
+        throw new EstadoInvalidoException("Ya se ha realizado el salto warp");
     }
     
     //De salto a enfriamiento para la 2da parte
     @Override
     public void enfriamiento(){
-        motor.registrarEvento(fecha, "Enfriando motor", this);
-        motor.setEstado(new Disponible(motor)); // Por esta entrega pasa directamente a disponible, después pasa por tiempo.
-    }
-       /* motor.registrarEvento(fecha,"Enfriando motor",this);
         motor.setEstado(new Enfriamiento(motor));
     }
-    */
 
     //Despues lo imprime cuando se printean los registros de motor
     @Override

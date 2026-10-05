@@ -48,8 +48,8 @@ public class MotorWarp {
      * @pre mensaje != null and mensaje != ""
      * @post Se envia el mensaje a la bitacora
      */
-    public void registrarEvento(Date fechaRegistro, String descripcionRegistro,State estado) {
-        RegistroMotor registro = new RegistroMotor (fechaRegistro, descripcionRegistro, estado);
+    public RegistroMotor registrarEvento(Date fechaRegistro, String descripcionRegistro,State estado){
+        return new RegistroMotor (fechaRegistro, descripcionRegistro, estado);
     }
 
     // Delegaciones de comportamiento al estado actual // 
