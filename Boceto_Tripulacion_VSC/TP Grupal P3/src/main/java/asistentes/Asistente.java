@@ -111,16 +111,14 @@ public class Asistente {
 
     // Escribir contrato de esta misión y revisar como funciona RegistroBitacora, no tiene sentido que me pida hacer la cuenta del nivel resultante.
     private void actualizaRecursosMision(Mision mision){
-        this.nave.setCombustible(this.nave.getCombustible() - mision.getCombustibleRequerido());
-        this.bitacorasNave.agregarRegistro(new RegistroRecursos());
 
-        this.nave.setDesgaste(this.nave.getDesgaste()+ mision.getDesgasteRequerido());
-        this.bitacorasNave.agregarRegistro(new RegistroRecursos());
+        this.bitacorasNave.agregarRegistro(this.nave.setCombustible(this.nave.getCombustible() - mision.getCombustibleRequerido()));
+
+        this.bitacorasNave.agregarRegistro(this.nave.setDesgaste(this.nave.getDesgaste()+ mision.getDesgasteRequerido()));
 
         float energia = mision.getEnergiaAportada();
         if (energia > 0){
-            this.nave.setEnergia(this.nave.getEnergia() + energia);
-            this.bitacorasNave.agregarRegistro(new RegistroRecursos());
+            this.bitacorasNave.agregarRegistro(this.nave.setEnergia(this.nave.getEnergia() + energia));
         }
     }
 
@@ -131,8 +129,7 @@ public class Asistente {
     public void cargaCombustibleNave(float carga){
         try{
             if (this.nave.getCombustible() + carga <= 100){
-                this.nave.setCombustible(this.nave.getCombustible() + carga);
-                this.bitacorasNave.agregarRegistro(new RegistroRecursos("COMBUSTIBLE",carga,this.nave.getCombustible()));
+                this.bitacorasNave.agregarRegistro(this.nave.setCombustible(this.nave.getCombustible() + carga));
             }else{
                 throw new CargaInvalidaCombustibleException("La carga supera el limite del deposito de combustible");
             }
@@ -147,8 +144,7 @@ public class Asistente {
     public void mantenimientoNave(){
         try{
             if (this.nave.getDesgaste()>=80){
-                this.bitacorasNave.agregarRegistro(new RegistroRecursos("DESGASTE",-this.nave.getDesgaste(),0));
-                this.nave.setDesgaste(0);
+                this.bitacorasNave.agregarRegistro(this.nave.setDesgaste(0));
             }else{
                 throw new DesgasteInsuficienteException("Desgaste insuficiente para la operacion");
             }
@@ -166,8 +162,7 @@ public class Asistente {
     public void cargaEnergiaNave(float carga){
         try{
             if (this.nave.getEnergia() + carga <= 100){
-                this.nave.setEnergia(this.nave.getEnergia() + carga);
-                this.bitacorasNave.agregarRegistro(new RegistroRecursos("ENERGIA",carga,this.nave.getEnergia()));
+                this.bitacorasNave.agregarRegistro(this.nave.setEnergia(this.nave.getEnergia() + carga));
             }else{
                 throw new ExcesoEnergiaException("La carga supera el limite de energia");
             }

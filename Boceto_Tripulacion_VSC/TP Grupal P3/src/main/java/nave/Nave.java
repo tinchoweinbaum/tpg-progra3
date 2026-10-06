@@ -1,6 +1,8 @@
 
 package nave;
 import java.util.ArrayList;
+
+import bitacora.RegistroRecursos;
 import tripulantes.*;
 
 abstract public class Nave{
@@ -16,24 +18,28 @@ abstract public class Nave{
         return combustible;
     }
 
-    public void setCombustible(float combustible) {
-        this.combustible = combustible;
+    public RegistroRecursos setCombustible(float carga){
+        this.combustible = carga;
+        return new RegistroRecursos("COMBUSTIBLE",carga,this.getCombustible());
     }
 
     public float getEnergia() {
         return energia;
     }
 
-    public void setEnergia(float energia) {
-        this.energia = energia;
+    public RegistroRecursos setEnergia(float carga) {
+        this.energia = carga;
+        return new RegistroRecursos("ENERGIA",carga,this.getEnergia());
     }
 
     public float getDesgaste() {
         return desgaste;
     }
 
-    public void setDesgaste(float desgaste) {
+    public RegistroRecursos setDesgaste(float desgaste) {
+        float estadoPrevio = this.getDesgaste();
         this.desgaste = desgaste;
+        return new RegistroRecursos("DESGASTE",-estadoPrevio,0);
     }
 
     /** contrato mejorado con gemini <br>

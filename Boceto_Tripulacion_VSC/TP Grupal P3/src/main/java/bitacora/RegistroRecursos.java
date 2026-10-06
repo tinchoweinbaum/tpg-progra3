@@ -8,13 +8,13 @@ public class RegistroRecursos extends RegistroBitacora {
     private float nivelResultante;
 
     /**
-     * Constructor que crea un registro de bitácora asociado a operaciones sobre recursos
+     * Constructor que crea un registro de bitácora asociado a operaciones sobre recursos<br>
      * <b>Pre:</b>
      * - fechaRegistro != null
      * - descripcionRegistro != null && descripcionRegistro no vacia
      * - tipoRecurso != null && esTipoRecursoValido(tipoRecurso)
      * - cantidadModificada != 0
-     * - nivelResultante >= 0
+     * - nivelResultante >= 0<br>
      * <b>Post:</b>
      * - getFechaRegistro() == fechaRegistro
      * - getDescripcionRegistro() == descripcionRegistro
