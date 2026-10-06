@@ -13,7 +13,7 @@ public class Mision1 extends Mision{
     }
 
     public void ejecutar(){
-        System.out.println("LLEGANDO AL OBJETIVO PARA REALIZAR ASISTENCIA");
+        System.out.println("VIAJANDO AL OBJETIVO PARA REALIZAR ASISTENCIA");
     }
 
     public void evaluar(){

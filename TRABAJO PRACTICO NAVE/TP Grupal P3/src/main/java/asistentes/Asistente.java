@@ -11,7 +11,7 @@ public class Asistente {
     private MotorWarp motor;
 
     /**
-     * <b> Pre:</b>Se asume que la nave existe y se creó exitosamente, también se asume qué no hay otro asistente que referencie a esta misma nave. (preguntar) <br>
+     * <b> Pre:</b>Se asume que la nave existe y se creó exitosamente <br>
      * <b> Post:</b>Se asocia el asistente con la nave. <br>
      * @param nave: referencia a un objeto nave válido.
      */
@@ -21,18 +21,19 @@ public class Asistente {
         this.motor = new MotorWarp();
     }
 
-    /**
-     * Cicla por los estados del motor hasta saltar, es decir, ejecuta un salto warp independientemente del estado actual del motor.
-     */
-    public void ejecutarSalto(){
-        int estadoActual = this.motor.getEstadoActual().getIdEstado();
-        while(estadoActual != MotorWarp.PREPARANDO_SALTO){
-            this.motor.llamaEstado((estadoActual + 1) % 4); // % 4 para que de 3 pase de nuevo a 0.
-            estadoActual = this.motor.getEstadoActual().getIdEstado();
-        }
-        this.motor.llamaEstado(MotorWarp.SALTO_WARP);
-        this.motor.llamaEstado(MotorWarp.ENFRIAMIENTO);
-    }
+//    /**
+//     * Cicla por los estados del motor hasta saltar, es decir, ejecuta un salto warp independientemente del estado actual del motor.
+//     */
+//    public void ejecutarSalto(){
+//        int estadoActual = this.motor.getEstadoActual().getIdEstado();
+//        while(estadoActual != MotorWarp.PREPARANDO_SALTO){
+//            this.motor.llamaEstado((estadoActual + 1) % 4); // % 4 para que de 3 pase de nuevo a 0.
+//            estadoActual = this.motor.getEstadoActual().getIdEstado();
+//        }
+//        this.motor.llamaEstado(MotorWarp.SALTO_WARP);
+//        this.motor.llamaEstado(MotorWarp.ENFRIAMIENTO);
+//    }
+    //VAMOS A COMENTARLA PARA NO UTILIZAR EL SWITCH-CASE EN EL AVANZE; SOLO USAMOS LLAMA ESTADO PARA PASAR MANUAL Y PROBAR EL ESCENARIO DE CAMINO ERRONEO
 
     /**
      * <b> Pre:</b> Número válido de estado del motor, de 0 a 3.
@@ -47,6 +48,27 @@ public class Asistente {
             this.bitacorasNave.agregarRegistro(new RegistroError("CAMBIO DE ESTADO INVALIDO", e));
         }
     }
+    //ESTA LA DEJAMOS ASI PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
+
+
+    public void ejecucionMision(Mision mision){
+        try{
+            mision.preparar();
+            RegistroMision registroMisionAct = null;
+            registroMisionAct = this.aceptaMision(mision);
+            this.bitacorasNave.agregarRegistro(registroMisionAct);
+            mision.ejecutar();
+            this.motor.prepararSalto();
+            mision.evaluar();
+            mision.cerrar();
+            this.actualizaRecursosMision(mision);
+            this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA", mision));
+        }catch(MisionImposibleException e){
+            this.bitacorasNave.agregarRegistro(new RegistroError("NO PUDO REALIZARSE LA MISION",e));
+        }
+    }
+
+
 
     /** Contrato mejorado con llm de navegador.<br>
      * Acepta una misión para la nave, validando los recursos necesarios y el estado actual.
@@ -70,7 +92,7 @@ public class Asistente {
      * @throws ExcesoEnergiaException si la energía actual más el aporte de la misión supera el máximo permitido (100).
      * @throws MisionImposibleException si ocurre cualquier otro error general que impida realizar la misión.
      */
-    public void aceptaMision(Mision mision) throws MisionImposibleException{
+    private RegistroMision aceptaMision(Mision mision) throws MisionImposibleException{
         if (mision.getCombustibleRequerido() > nave.getCombustible())
             throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
 
@@ -82,32 +104,13 @@ public class Asistente {
         if (mision.getEnergiaAportada()>0 && nave.getEnergia()+mision.getEnergiaAportada() > 100)
             throw new ExcesoEnergiaException("Se supera la cantidad maxima de energia soportada por la nave");
 
-        //Ejecuto mision y guardo bitacora
-        this.ejecutaRegistraMision(mision);
+        //Verifico que se pueda usar el motor
+        if (this.motor.getEstadoActual().getIdEstado() != MotorWarp.DISPONIBLE)
+            throw new MotorNoDisponibleException("El motor no se encuentra disponible");
+
+        return new RegistroMision("MISION PREPARADA: SE CHEQUEARON LOS RECURSOS",mision);
     }
 
-    /**
-     * <b>Pre:</b>
-     * <ul>
-     *     <li>
-     *         El asistente ya checkeó que cuenta con los recursos necesarios para ejecutar la misión.
-     *     </li>
-     * </ul>
-     * <b>Post: </b>
-     * <ul>
-     *     <li>
-     *         Se actualizan los recursos de la nave según indica la misión.
-     *     </li>
-     *     <li>
-     *         Se agrega un elemento a la bitácora de la nave.
-     *     </li>
-     * </ul>
-     * @param mision misión a ejecutar y registrar.
-     */
-    private void ejecutaRegistraMision(Mision mision){
-        this.bitacorasNave.agregarRegistro(mision.ejecutarMision());
-        this.actualizaRecursosMision(mision);
-    }
 
     // Escribir contrato de esta misión y revisar como funciona RegistroBitacora, no tiene sentido que me pida hacer la cuenta del nivel resultante.
     private void actualizaRecursosMision(Mision mision){
@@ -139,7 +142,7 @@ public class Asistente {
     }
 
     /**
-     * Metodo para realizar mantenimiento de nave
+     * Metodo para realizar mantenimiento de nave y llevar desgaste a cero
      */
     public void mantenimientoNave(){
         try{

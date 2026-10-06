@@ -1,4 +1,1 @@
 -> Checkeo de tripulación válida (1 Capitán y 4 tripulantes).
--> Preguntar la función con el ciclo para saltar en vez de la función manual para
-cambiar de estado desde el asistente.
--> Función blindada a falla de naves para crear el asistente, constructor privado.

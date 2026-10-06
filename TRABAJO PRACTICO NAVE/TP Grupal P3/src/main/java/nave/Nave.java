@@ -9,6 +9,7 @@ abstract public class Nave{
 
     protected float combustible,energia,desgaste = 0;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
+    protected Tripulante capitan = null;
 
     public Nave(){
         super();
@@ -67,4 +68,22 @@ abstract public class Nave{
     public void agregaTripulante(Tripulante tripulante) {
         this.tripulantes.add(tripulante);
     }
+
+    public void eliminaTripulante(Tripulante tripulante) {
+        this.tripulantes.remove(tripulante);
+    }
+
+    @Override
+    public boolean equals(Object tripulante){
+        if (!(tripulante instanceof Tripulante)){
+            return false;
+        }
+
+        if (!(tripulante instanceof Capitan)){
+
+        }
+        return false;
+    }
+    //CHEQUEO SI ESTAN DECORADOS POR EL MISMO DECORATOR.DE ESTA MANERA BUSCARIAMOS SI YA TENEMOS UN CAPITAN.uwu
+
 }

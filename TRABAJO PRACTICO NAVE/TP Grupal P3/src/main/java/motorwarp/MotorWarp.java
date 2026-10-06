@@ -8,7 +8,6 @@ public class MotorWarp {
     public static final int PREPARANDO_SALTO = 1;
     public static final int SALTO_WARP = 2;
     public static final int ENFRIAMIENTO = 3;
-    
     private State estadoActual;
     
     public MotorWarp () {
@@ -43,20 +42,23 @@ public class MotorWarp {
 
 
     // Delegaciones de comportamiento al estado actual // 
-    
+    //Como no estan definidas las caracteristicas del viaje warp cada estado pasa automaticamente al siguitente
     public void disponible() throws EstadoInvalidoException {
         estadoActual.disponible();
     }
     
     public void prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
+        this.saltoWarp();
     }
 
     public void saltoWarp() throws EstadoInvalidoException {
         estadoActual.saltoWarp();
+        this.enfriamiento();
     }
 
     public void enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
+        this.disponible();
     }
 }
