@@ -2,14 +2,16 @@ package tripulantes;
 
 abstract class DecoradorCargo extends Tripulante{
     
-    protected Tripulante tripulante;
+    private Tripulante tripulante;
 
     public DecoradorCargo(Tripulante tripulante){
         super(tripulante.getNombre(),tripulante.getAntiguedad());
         this.tripulante = tripulante;
     }
 
-    abstract public void setSueldo();
+
+    @Override
+    abstract public double getSueldo();
 
     public Tripulante getTripulante(){
         return this.tripulante;

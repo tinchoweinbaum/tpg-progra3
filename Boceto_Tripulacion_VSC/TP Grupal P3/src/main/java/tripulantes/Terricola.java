@@ -4,7 +4,7 @@ public class Terricola extends Tripulante{
     
     public Terricola(String nom,int ant){
         super(nom, ant);
-        this.sueldo = 20;
+        this.setSueldo(20);
     }
 
 

@@ -115,7 +115,7 @@ public class Asistente {
         this.bitacorasNave.agregarRegistro(new RegistroRecursos());
 
         this.nave.setDesgaste(this.nave.getDesgaste()+ mision.getDesgasteRequerido());
-        this.bitacorasNave.agregarRegistro(new RegistroRecursos( ));
+        this.bitacorasNave.agregarRegistro(new RegistroRecursos());
 
         float energia = mision.getEnergiaAportada();
         if (energia > 0){

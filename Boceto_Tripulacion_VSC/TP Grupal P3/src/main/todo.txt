@@ -2,3 +2,4 @@
 -> Preguntar la función con el ciclo para saltar en vez de la función manual para cambiar de estado desde el asistente.
 -> Función blindada a falla de naves para crear el asistente, constructor privado.
 -> Clase con registros heredados de RegistroRecursos para cada tipo de recurso??
+-> Preguntar si puede agregarse metodo propio a consejero y que mantenga patron decorator - O uso de interfaz

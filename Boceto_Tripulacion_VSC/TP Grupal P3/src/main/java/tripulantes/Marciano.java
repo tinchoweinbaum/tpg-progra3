@@ -4,7 +4,7 @@ public class Marciano extends Tripulante{
     
     public Marciano(String nom,int ant){
         super(nom, ant);
-        this.sueldo = 18;
+        this.setSueldo(18);
     }
 
     public String getOrigen(){

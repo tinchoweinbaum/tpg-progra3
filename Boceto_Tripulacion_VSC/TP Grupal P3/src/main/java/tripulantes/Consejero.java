@@ -17,7 +17,7 @@ public class Consejero extends DecoradorCargo{
     }
     
     @Override 
-    public void setSueldo(){
-        this.sueldo = (getTripulante().getSueldo()+ 600)*antiguedad*1.05 + this.consejosDados*2;
+    public double getSueldo(){
+        return  (getTripulante().getSueldo()+ 600)*antiguedad*1.05 + this.consejosDados*2;
     }
 }

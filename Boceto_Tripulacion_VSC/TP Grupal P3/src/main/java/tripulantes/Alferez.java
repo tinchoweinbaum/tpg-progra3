@@ -7,7 +7,7 @@ public class Alferez extends DecoradorCargo{
     }
     
     @Override 
-    public void setSueldo(){
-        this.sueldo = (getTripulante().getSueldo()+ 200)*antiguedad*1.005;
+    public double getSueldo(){
+        return  (getTripulante().getSueldo()+ 200)*antiguedad*1.005;
     }
 }
