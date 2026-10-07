@@ -88,7 +88,6 @@ public abstract class Mision {
     public void ejecutarMision(Asistente ac){
         try {
             this.preparar(ac);
-            this.saltar(ac);
             this.ejecutar();
             this.evaluar();
             this.cerrar(ac);

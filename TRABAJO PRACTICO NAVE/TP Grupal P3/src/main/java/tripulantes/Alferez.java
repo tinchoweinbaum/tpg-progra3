@@ -1,13 +1,20 @@
 package tripulantes;
 
-public class Alferez extends DecoradorCargo{
+public class Alferez extends Tripulante{
+    private static final int SUELDO_BASE_ALFEREZ = 200;
+    private static final double BONO_ANTIGUEDAD_ALFEREZ = 0.005;
 
-    public Alferez(Tripulante tripulante){
-        super(tripulante);
+    public Alferez(String nombre, int antiguedad){
+        super(nombre, antiguedad, SUELDO_BASE_ALFEREZ, BONO_ANTIGUEDAD_ALFEREZ);
     }
-    
-    @Override 
+
+    @Override
     public double getSueldo(){
-        return  (getTripulante().getSueldo()+ 200)*antiguedad*1.005;
+        return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad());
+    }
+
+    @Override
+    public boolean esCapitan(){
+        return false;
     }
 }

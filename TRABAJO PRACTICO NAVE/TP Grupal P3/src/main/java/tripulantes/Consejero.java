@@ -1,23 +1,31 @@
 package tripulantes;
 
-public class Consejero extends DecoradorCargo{
+public class Consejero extends Tripulante{
+    private static final double SUELDO_BASE_CONSEJERO = 600;
+    private static final double BONO_ANTIGUEDAD_CONSEJERO = 0.05;
+    private static final double BONO_CONSEJO = 2;
 
     private int consejosDados = 0;
 
-    public Consejero(Tripulante tripulante){
-        super(tripulante);
+    public Consejero(String nombre, int antiguedad){
+        super(nombre, antiguedad, SUELDO_BASE_CONSEJERO, BONO_ANTIGUEDAD_CONSEJERO);
     }
 
     public int getConsejos(){
         return this.consejosDados;
     }
 
-    public void dioConsejo(){
-        this.consejosDados+=1;
+    public void darConsejo(){
+        this.consejosDados += 1;
     }
     
     @Override 
     public double getSueldo(){
-        return  (getTripulante().getSueldo()+ 600)*antiguedad*1.05 + this.consejosDados*2;
+        return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad()) + this.consejosDados * BONO_CONSEJO;
+    }
+
+    @Override
+    public boolean esCapitan(){
+        return false;
     }
 }
