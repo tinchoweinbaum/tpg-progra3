@@ -50,7 +50,6 @@ public class Asistente {
     }
     //ESTA LA DEJAMOS ASI PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
 
-
     public void ejecucionMision(Mision mision){
         try{
             mision.preparar();
@@ -68,7 +67,9 @@ public class Asistente {
         }
     }
 
-
+    public Bitacora getBitacorasNave() {
+        return bitacorasNave;
+    }
 
     /** Contrato mejorado con llm de navegador.<br>
      * Acepta una misión para la nave, validando los recursos necesarios y el estado actual.
@@ -174,4 +175,11 @@ public class Asistente {
         }
     }
 
+    public Nave getNave() {
+        return nave;
+    }
+
+    public MotorWarp getMotor() {
+        return motor;
+    }
 }

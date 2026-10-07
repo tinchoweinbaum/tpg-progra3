@@ -1,6 +1,12 @@
 package misiones;
 
+import asistentes.Asistente;
+import bitacora.Bitacora;
+import bitacora.RegistroError;
 import bitacora.RegistroMision;
+import exceptions.*;
+import motorwarp.MotorWarp;
+import nave.Nave;
 
 // Superclase del patrón template de las misiones.
 public abstract class Mision {
@@ -38,14 +44,60 @@ public abstract class Mision {
         return desgasteRequerido;
     }
 
-    abstract public void preparar(); // Cada misión implementa estas 4 funciones como lo necesite. Patrón Template.
+    protected void preparar(Asistente ac) throws MisionImposibleException{
+        Nave nave = ac.getNave();
 
-    abstract public void ejecutar();
+        if (this.getCombustibleRequerido() > nave.getCombustible())
+            throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
 
-    abstract public void evaluar();
+        //Desgaste maximo = 100
+        if (this.getDesgasteRequerido() + nave.getDesgaste() > 100)
+            throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
 
-    public void cerrar(){
+        //Energia maxima = 100
+        if (this.getEnergiaAportada()>0 && nave.getEnergia() + this.getEnergiaAportada() > 100)
+            throw new ExcesoEnergiaException("Se supera la cantidad maxima de energia soportada por la nave");
+
+        //Verifico que se pueda usar el motor
+        if (ac.getMotor().getEstadoActual().getIdEstado() != MotorWarp.DISPONIBLE)
+            throw new MotorNoDisponibleException("El motor no se encuentra disponible");
+    }
+
+    protected void saltar(Asistente ac){
+
+    }
+
+    abstract protected void ejecutar();
+
+    abstract protected void evaluar();
+
+    protected void cerrar(Asistente ac){
         System.out.println("MISION FINALIZADA - ACTUALIZANDO RECURSOS");
+
+        Nave nave = ac.getNave();
+        Bitacora bitacora = ac.getBitacorasNave();
+
+        // Actualiza los recursos de la nave y escribe en la bitacora que lo hizo.
+        bitacora.agregarRegistro(nave.setCombustible(nave.getCombustible() - this.combustibleRequerido));
+        bitacora.agregarRegistro(nave.setDesgaste(nave.getDesgaste() + this.desgasteRequerido));
+        bitacora.agregarRegistro(nave.setEnergia(nave.getEnergia() + this.energiaAportada));
+
+        bitacora.agregarRegistro(new RegistroMision("Mision completa.",this));
+    }
+
+    public void ejecutarMision(Asistente ac){
+        try {
+            this.preparar(ac);
+            this.saltar(ac);
+            this.ejecutar();
+            this.evaluar();
+            this.cerrar(ac);
+        }
+        catch (MisionImposibleException e){
+            System.out.println("No se pudo aceptar la mision " + this.getNombre() + ": " + e.getMessage());
+            Bitacora bitacora = ac.getBitacorasNave();
+            bitacora.agregarRegistro(new RegistroError("No se pudo aceptar la mision", e));
+        }
     }
 
     @Override

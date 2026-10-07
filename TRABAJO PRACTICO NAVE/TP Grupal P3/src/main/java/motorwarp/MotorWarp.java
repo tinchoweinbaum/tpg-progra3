@@ -1,4 +1,5 @@
 package motorwarp;
+import bitacora.RegistroMotor;
 import exceptions.EstadoInvalidoException;
 
 
@@ -43,21 +44,21 @@ public class MotorWarp {
 
     // Delegaciones de comportamiento al estado actual // 
     //Como no estan definidas las caracteristicas del viaje warp cada estado pasa automaticamente al siguitente
-    public void disponible() throws EstadoInvalidoException {
+    public RegistroMotor disponible() throws EstadoInvalidoException {
         estadoActual.disponible();
     }
     
-    public void prepararSalto() throws EstadoInvalidoException {
+    public RegistroMotor prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
         this.saltoWarp();
     }
 
-    public void saltoWarp() throws EstadoInvalidoException {
+    public RegistroMotor saltoWarp() throws EstadoInvalidoException {
         estadoActual.saltoWarp();
         this.enfriamiento();
     }
 
-    public void enfriamiento() throws EstadoInvalidoException {
+    public RegistroMotor enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
         this.disponible();
     }
