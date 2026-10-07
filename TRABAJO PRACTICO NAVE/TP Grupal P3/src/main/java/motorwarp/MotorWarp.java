@@ -47,7 +47,7 @@ public class MotorWarp {
     public RegistroMotor disponible() throws EstadoInvalidoException {
         estadoActual.disponible();
     }
-    
+    //por que registro motor??
     public RegistroMotor prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
         this.saltoWarp();
