@@ -83,6 +83,7 @@ public abstract class Mision {
         bitacora.agregarRegistro(nave.setEnergia(nave.getEnergia() + this.energiaAportada));
 
         bitacora.agregarRegistro(new RegistroMision("Mision completa.",this));
+        //esto no es una referencia nave bitacora????
     }
 
     public void ejecutarMision(Asistente ac){

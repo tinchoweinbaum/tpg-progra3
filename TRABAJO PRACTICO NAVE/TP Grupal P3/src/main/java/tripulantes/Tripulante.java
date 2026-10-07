@@ -4,7 +4,6 @@ public abstract class Tripulante {
 
     protected final String nombre;
     protected int antiguedad;
-
     protected final double sueldoBase;
     protected final double bonoAntiguedad;
 

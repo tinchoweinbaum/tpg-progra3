@@ -50,22 +50,22 @@ public class Asistente {
     }
     //ESTA LA DEJAMOS ASI PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
 
-    public void ejecucionMision(Mision mision){
-        try{
-            mision.preparar();
-            RegistroMision registroMisionAct = null;
-            registroMisionAct = this.aceptaMision(mision);
-            this.bitacorasNave.agregarRegistro(registroMisionAct);
-            mision.ejecutar();
-            this.motor.prepararSalto();
-            mision.evaluar();
-            mision.cerrar();
-            this.actualizaRecursosMision(mision);
-            this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA", mision));
-        }catch(MisionImposibleException e){
-            this.bitacorasNave.agregarRegistro(new RegistroError("NO PUDO REALIZARSE LA MISION",e));
-        }
-    }
+//    public void ejecucionMision(Mision mision){
+//        try{
+//            mision.preparar();
+//            RegistroMision registroMisionAct = null;
+//            registroMisionAct = this.aceptaMision(mision);
+//            this.bitacorasNave.agregarRegistro(registroMisionAct);
+//            mision.ejecutar();
+//            this.motor.prepararSalto();
+//            mision.evaluar();
+//            mision.cerrar();
+//            this.actualizaRecursosMision(mision);
+//            this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA", mision));
+//        }catch(MisionImposibleException e){
+//            this.bitacorasNave.agregarRegistro(new RegistroError("NO PUDO REALIZARSE LA MISION",e));
+//        }
+//    }
 
     public Bitacora getBitacorasNave() {
         return bitacorasNave;

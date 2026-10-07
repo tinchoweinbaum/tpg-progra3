@@ -23,6 +23,7 @@ public abstract class EspecieDecorator extends Tripulante{
 
     abstract public String getOrigen();
 
+    //estos metodos ya los va a tener. para que los sobreescribis?
     // --- Métodos del tripulante decorado ---
     @Override
     public String getNombre() {
