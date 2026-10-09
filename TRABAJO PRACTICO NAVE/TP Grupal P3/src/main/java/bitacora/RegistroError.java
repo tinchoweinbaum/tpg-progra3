@@ -29,6 +29,11 @@ public class RegistroError extends RegistroBitacora {
         this(new Date(), descripcionRegistro, error);
     }
 
+    @Override
+    public boolean esRegistroError() {
+        return true;
+    }
+
     public Exception getError() {
         return error;
     }

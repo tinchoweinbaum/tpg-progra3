@@ -21,6 +21,7 @@ public class Bitacora {
         this.registros = new ArrayList<>();
     }
 
+
     /**
      * Agrega de manera ordenada por fecha un nuevo evento a la bitácora
      * <b>Pre:</b>
@@ -59,8 +60,80 @@ public class Bitacora {
      * - Se muestran en pantalla todos los registros de la bitacora
      */
     public void mostrarBitacora() {
-        for (RegistroBitacora r : registros) {
+        for (RegistroBitacora r : this.registros) {
             System.out.println(r);
+        }
+    }
+
+    /**
+     * Muestra los ultimos n regitros de la bitacora en orden cronologico
+     * <b>Pre:</b>
+     * - n > 0 && n <= this.registros.size
+     * <b>Post:</b>
+     * - Se muestran en pantalla los ultimos n registros de forma cronologica
+     * @param n la cantidad de registros a mostrar
+     */
+    public void mostrarNRegistros(int n){
+        int tamanio = this.registros.size();
+        assert n > 0: "La cantidad de registros a mostrar debe ser positiva";
+        assert n <= tamanio: "La cantidad de registros a mostrar debe ser menor o igual a la cantidad de registros almacenados";
+        int i;
+
+        // Empieza N posiciones antes del final y avanza hacia adelante
+        for (i = tamanio-n; i < tamanio; i += 1){
+            System.out.println(this.registros.get(i));
+        }
+    }
+
+    /**
+     * Muestra todos los registros de tipo motor de la bitacora
+     * <b>Post:</b>
+     * - Se muestran en pantalla todos los registros de tipo motor de la bitacora
+     */
+    public void mostrarRegistrosMotor(){
+        for (RegistroBitacora r : this.registros){
+            if (r.esRegistroMotor()){
+                System.out.println(r);
+            }
+        }
+    }
+
+    /**
+     * Muestra todos los registros de tipo error de la bitacora
+     * <b>Post:</b>
+     * - Se muestran en pantalla todos los registros de tipo error de la bitacora
+     */
+    public void mostrarRegistrosError(){
+        for (RegistroBitacora r : this.registros){
+            if (r.esRegistroError()){
+                System.out.println(r);
+            }
+        }
+    }
+
+    /**
+     * Muestra todos los registros de tipo mision de la bitacora
+     * <b>Post:</b>
+     * - Se muestran en pantalla todos los registros de tipo mision de la bitacora
+     */
+    public void mostrarRegistrosMision(){
+        for (RegistroBitacora r : this.registros){
+            if (r.esRegistroMision()){
+                System.out.println(r);
+            }
+        }
+    }
+
+    /**
+     * Muestra todos los registros de tipo recursos de la bitacora
+     * <b>Post:</b>
+     * - Se muestran en pantalla todos los registros de tipo recursos de la bitacora
+     */
+    public void mostrarRegistrosRecursos(){
+        for (RegistroBitacora r : this.registros){
+            if (r.esRegistroRecursos()){
+                System.out.println(r);
+            }
         }
     }
 }

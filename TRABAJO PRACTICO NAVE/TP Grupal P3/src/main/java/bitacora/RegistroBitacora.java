@@ -29,6 +29,23 @@ public abstract class RegistroBitacora implements Comparable<RegistroBitacora>{
         this.descripcionRegistro = descripcionRegistro;
     }
 
+    // Métodos de consulta con respuesta por defecto "false"
+    public boolean esRegistroMotor() {
+        return false;
+    }
+
+    public boolean esRegistroMision() {
+        return false;
+    }
+
+    public boolean esRegistroRecursos() {
+        return false;
+    }
+
+    public boolean esRegistroError(){
+        return false;
+    }
+
     public RegistroBitacora(String descripcionRegistro) {
         this(new Date(), descripcionRegistro); // Llama al constructor principal asignando la fecha actual
     }
