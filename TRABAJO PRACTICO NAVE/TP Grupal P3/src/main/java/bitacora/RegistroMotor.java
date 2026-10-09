@@ -30,6 +30,11 @@ public class RegistroMotor extends  RegistroBitacora{
         this(new Date(), descripcionRegistro, estado);
     }
 
+    @Override
+    public boolean esRegistroMotor() {
+        return true;
+    }
+
     public State getEstado() {
         return estado;
     }

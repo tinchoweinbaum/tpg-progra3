@@ -30,6 +30,11 @@ public class RegistroMision extends RegistroBitacora{
         this(new Date(), descripcionRegistro, mision);
     }
 
+    @Override
+    public boolean esRegistroMision() {
+        return true;
+    }
+
     public Mision getMision() {
         return mision;
     }

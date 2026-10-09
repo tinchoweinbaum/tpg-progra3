@@ -40,6 +40,11 @@ public class RegistroRecursos extends RegistroBitacora {
         this(new Date(), tipoRecurso, cantidadModificada, nivelResultante);
     }
 
+    @Override
+    public boolean esRegistroRecursos() {
+        return true;
+    }
+
     private static boolean esTipoRecursoValido(String tipo) {
         return tipo.equalsIgnoreCase("COMBUSTIBLE") ||
                 tipo.equalsIgnoreCase("ENERGIA") ||

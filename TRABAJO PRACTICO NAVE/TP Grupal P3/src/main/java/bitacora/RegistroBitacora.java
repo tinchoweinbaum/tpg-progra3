@@ -7,7 +7,7 @@ import java.util.Date;
  * La bitácora va a ser entonces un ArrayList de variables de tipo RegistroBitácora.
  * Capaz conviene usar una interfaz en vez de herencia de esta manera.
  */
-public abstract class RegistroBitacora{
+public abstract class RegistroBitacora implements Comparable<RegistroBitacora>{
     private final Date fechaRegistro;
     private final String descripcionRegistro;
 
@@ -29,6 +29,23 @@ public abstract class RegistroBitacora{
         this.descripcionRegistro = descripcionRegistro;
     }
 
+    // Métodos de consulta con respuesta por defecto "false"
+    public boolean esRegistroMotor() {
+        return false;
+    }
+
+    public boolean esRegistroMision() {
+        return false;
+    }
+
+    public boolean esRegistroRecursos() {
+        return false;
+    }
+
+    public boolean esRegistroError(){
+        return false;
+    }
+
     public RegistroBitacora(String descripcionRegistro) {
         this(new Date(), descripcionRegistro); // Llama al constructor principal asignando la fecha actual
     }
@@ -48,4 +65,8 @@ public abstract class RegistroBitacora{
         return "[" + fechaRegistro + "] " + descripcionRegistro;
     }
 
+    @Override
+    public int compareTo(RegistroBitacora o) {
+        return this.getFechaRegistro().compareTo(o.getFechaRegistro());
+    }
 }
