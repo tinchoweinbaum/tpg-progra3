@@ -8,10 +8,6 @@ public class Mision1 extends Mision{
         super(nombre, descripcion, combustibleRequerido, energiaAportada, desgasteRequerido);
     }
 
-    public void preparar(){
-        System.out.println("COMENZANDO INTERCEPCION Y ASISTENCIA");
-    }
-
     public void ejecutar(){
         System.out.println("VIAJANDO AL OBJETIVO PARA REALIZAR ASISTENCIA");
     }

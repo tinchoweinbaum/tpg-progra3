@@ -21,20 +21,6 @@ public class Asistente {
         this.motor = new MotorWarp();
     }
 
-//    /**
-//     * Cicla por los estados del motor hasta saltar, es decir, ejecuta un salto warp independientemente del estado actual del motor.
-//     */
-//    public void ejecutarSalto(){
-//        int estadoActual = this.motor.getEstadoActual().getIdEstado();
-//        while(estadoActual != MotorWarp.PREPARANDO_SALTO){
-//            this.motor.llamaEstado((estadoActual + 1) % 4); // % 4 para que de 3 pase de nuevo a 0.
-//            estadoActual = this.motor.getEstadoActual().getIdEstado();
-//        }
-//        this.motor.llamaEstado(MotorWarp.SALTO_WARP);
-//        this.motor.llamaEstado(MotorWarp.ENFRIAMIENTO);
-//    }
-    //VAMOS A COMENTARLA PARA NO UTILIZAR EL SWITCH-CASE EN EL AVANZE; SOLO USAMOS LLAMA ESTADO PARA PASAR MANUAL Y PROBAR EL ESCENARIO DE CAMINO ERRONEO
-
     /**
      * <b> Pre:</b> Número válido de estado del motor, de 0 a 3.
      * Función para el escenario de llamar estado ilegal. Preguntar implementación con ciclo automático.
@@ -44,28 +30,15 @@ public class Asistente {
         try {
             this.motor.llamaEstado(idEstado);
             this.bitacorasNave.agregarRegistro(new RegistroMotor("CAMBIO DE ESTADO EXITOSO", motor.getEstadoActual()));
-        } catch (EstadoInvalidoException e){
+        }
+        catch (EstadoInvalidoException e){
             this.bitacorasNave.agregarRegistro(new RegistroError("CAMBIO DE ESTADO INVALIDO", e));
+        }
+        finally {
+            //
         }
     }
     //ESTA LA DEJAMOS ASI PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
-
-//    public void ejecucionMision(Mision mision){
-//        try{
-//            mision.preparar();
-//            RegistroMision registroMisionAct = null;
-//            registroMisionAct = this.aceptaMision(mision);
-//            this.bitacorasNave.agregarRegistro(registroMisionAct);
-//            mision.ejecutar();
-//            this.motor.prepararSalto();
-//            mision.evaluar();
-//            mision.cerrar();
-//            this.actualizaRecursosMision(mision);
-//            this.bitacorasNave.agregarRegistro(new RegistroMision("MISION REALIZADA", mision));
-//        }catch(MisionImposibleException e){
-//            this.bitacorasNave.agregarRegistro(new RegistroError("NO PUDO REALIZARSE LA MISION",e));
-//        }
-//    }
 
     public Bitacora getBitacorasNave() {
         return bitacorasNave;
@@ -93,38 +66,6 @@ public class Asistente {
      * @throws ExcesoEnergiaException si la energía actual más el aporte de la misión supera el máximo permitido (100).
      * @throws MisionImposibleException si ocurre cualquier otro error general que impida realizar la misión.
      */
-    private RegistroMision aceptaMision(Mision mision) throws MisionImposibleException{
-        if (mision.getCombustibleRequerido() > nave.getCombustible())
-            throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
-
-        //Desgaste maximo = 100
-        if (mision.getDesgasteRequerido()+nave.getDesgaste() > 100)
-            throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
-
-        //Energia maxima = 100
-        if (mision.getEnergiaAportada()>0 && nave.getEnergia()+mision.getEnergiaAportada() > 100)
-            throw new ExcesoEnergiaException("Se supera la cantidad maxima de energia soportada por la nave");
-
-        //Verifico que se pueda usar el motor
-        if (this.motor.getEstadoActual().getIdEstado() != MotorWarp.DISPONIBLE)
-            throw new MotorNoDisponibleException("El motor no se encuentra disponible");
-
-        return new RegistroMision("MISION PREPARADA: SE CHEQUEARON LOS RECURSOS",mision);
-    }
-
-
-    // Escribir contrato de esta misión y revisar como funciona RegistroBitacora, no tiene sentido que me pida hacer la cuenta del nivel resultante.
-    private void actualizaRecursosMision(Mision mision){
-
-        this.bitacorasNave.agregarRegistro(this.nave.setCombustible(this.nave.getCombustible() - mision.getCombustibleRequerido()));
-
-        this.bitacorasNave.agregarRegistro(this.nave.setDesgaste(this.nave.getDesgaste()+ mision.getDesgasteRequerido()));
-
-        float energia = mision.getEnergiaAportada();
-        if (energia > 0){
-            this.bitacorasNave.agregarRegistro(this.nave.setEnergia(this.nave.getEnergia() + energia));
-        }
-    }
 
     /**
      * Metodo para cargar cierta cantidad de combustible, si supera 100,tira excepcion

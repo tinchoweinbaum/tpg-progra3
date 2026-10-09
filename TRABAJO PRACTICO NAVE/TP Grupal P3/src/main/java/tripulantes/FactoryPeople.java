@@ -43,5 +43,4 @@ public class FactoryPeople {
                 throw new OrigenInvalidoException("El origen '" + cargo + "' no existe");
         }
     }
-
 }

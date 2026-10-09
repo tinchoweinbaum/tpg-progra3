@@ -2,6 +2,8 @@ package motorwarp;
 import bitacora.RegistroMotor;
 import exceptions.EstadoInvalidoException;
 
+import java.util.ArrayList;
+
 
 public class MotorWarp {
 
@@ -41,24 +43,23 @@ public class MotorWarp {
         this.estadoActual = estadoActual;
     }
 
-
-    // Delegaciones de comportamiento al estado actual // 
-    //Como no estan definidas las caracteristicas del viaje warp cada estado pasa automaticamente al siguitente
-    public RegistroMotor disponible() throws EstadoInvalidoException {
+    // Delegaciones de comportamiento al estado actual
+    // Como no estan definidas las caracteristicas del viaje warp cada estado pasa automaticamente al siguitente
+    public void disponible() throws EstadoInvalidoException {
         estadoActual.disponible();
     }
-    //por que registro motor??
-    public RegistroMotor prepararSalto() throws EstadoInvalidoException {
+
+    public void prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
         this.saltoWarp();
     }
 
-    public RegistroMotor saltoWarp() throws EstadoInvalidoException {
+    public void saltoWarp() throws EstadoInvalidoException {
         estadoActual.saltoWarp();
         this.enfriamiento();
     }
 
-    public RegistroMotor enfriamiento() throws EstadoInvalidoException {
+    public void enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
         this.disponible();
     }

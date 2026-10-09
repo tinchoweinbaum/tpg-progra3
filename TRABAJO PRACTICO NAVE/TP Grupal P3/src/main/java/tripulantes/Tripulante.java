@@ -38,5 +38,7 @@ public abstract class Tripulante {
     public abstract double getSueldo();
 
     // Función booleana para evitar usar instance of al agregar capitán a la nave.
-    public abstract boolean esCapitan();
+    public boolean esCapitan(){
+        return  false;
+    }
 }

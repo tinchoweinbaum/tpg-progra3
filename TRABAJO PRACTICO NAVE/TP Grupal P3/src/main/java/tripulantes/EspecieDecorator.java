@@ -1,7 +1,6 @@
 package tripulantes;
 
 public abstract class EspecieDecorator extends Tripulante{
-    
     private Tripulante tripulante;
 
     public EspecieDecorator(Tripulante tripulante) {
@@ -16,37 +15,31 @@ public abstract class EspecieDecorator extends Tripulante{
         return this.tripulante;
     }
 
-    @Override
-    public boolean esCapitan(){
-        return this.tripulante.esCapitan(); // Delega a su tripulante decorado esCapitan()
-    }
-
     abstract public String getOrigen();
 
     //estos metodos ya los va a tener. para que los sobreescribis?
     // --- Métodos del tripulante decorado ---
-    @Override
-    public String getNombre() {
-        return this.tripulante.getNombre();
-    }
-
-    @Override
-    public int getAntiguedad() {
-        return this.tripulante.getAntiguedad();
-    }
-
-    @Override
-    public void aumentaAntiguedad() {
-        this.tripulante.aumentaAntiguedad();
-    }
-
-    @Override
-    public double getSueldoBase() {
-        return this.tripulante.getSueldoBase();
-    }
-
-    @Override
-    public double getBonoAntiguedad() {
-        return this.tripulante.getBonoAntiguedad();
-    }
+//    @Override
+//    public String getNombre() {
+//        return this.tripulante.getNombre();
+//    }
+//    @Override
+//    public int getAntiguedad() {
+//        return this.tripulante.getAntiguedad();
+//    }
+//
+//    @Override
+//    public void aumentaAntiguedad() {
+//        this.tripulante.aumentaAntiguedad();
+//    }
+//
+//    @Override
+//    public double getSueldoBase() {
+//        return this.tripulante.getSueldoBase();
+//    }
+//
+//    @Override
+//    public double getBonoAntiguedad() {
+//        return this.tripulante.getBonoAntiguedad();
+//    }
 }

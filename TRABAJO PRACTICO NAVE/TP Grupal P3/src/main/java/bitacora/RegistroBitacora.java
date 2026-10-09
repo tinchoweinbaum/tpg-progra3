@@ -7,7 +7,7 @@ import java.util.Date;
  * La bitácora va a ser entonces un ArrayList de variables de tipo RegistroBitácora.
  * Capaz conviene usar una interfaz en vez de herencia de esta manera.
  */
-public abstract class RegistroBitacora {
+public abstract class RegistroBitacora{
     private final Date fechaRegistro;
     private final String descripcionRegistro;
 

@@ -6,10 +6,6 @@ public class Mision2 extends Mision{
         super(nombre, descripcion, combustibleRequerido, energiaAportada, desgasteRequerido);
     }
 
-    public void preparar(){
-        System.out.println("COMENZANDO RECOLECCION");
-    }
-
     public void ejecutar(){
         System.out.println("LLEGANDO AL PUNTO SIMULADO PARA OBTENER DATOS Y EXTRAER LA MUESTRA");
     }

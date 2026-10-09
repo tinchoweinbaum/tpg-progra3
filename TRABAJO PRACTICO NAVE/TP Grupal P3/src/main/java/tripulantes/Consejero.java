@@ -23,9 +23,4 @@ public class Consejero extends Tripulante{
     public double getSueldo(){
         return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad()) + this.consejosDados * BONO_CONSEJO;
     }
-
-    @Override
-    public boolean esCapitan(){
-        return false;
-    }
 }

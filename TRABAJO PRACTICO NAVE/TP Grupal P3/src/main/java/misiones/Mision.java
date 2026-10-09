@@ -9,7 +9,7 @@ import motorwarp.MotorWarp;
 import nave.Nave;
 
 // Superclase del patrón template de las misiones.
-public abstract class Mision {
+public abstract class Mision{
     private final String nombre;
     private final String descripcion;
     private final float combustibleRequerido;
@@ -44,6 +44,28 @@ public abstract class Mision {
         return desgasteRequerido;
     }
 
+    /** Contrato mejorado con llm de navegador.<br>
+     * Acepta una misión para la nave, validando los recursos necesarios y el estado actual.
+     *
+     * <p><b>Pre:</b></p>
+     * <ul>
+     *   <li>Se asume que el asistente existe y es válido (no es nulo y sus datos son consistentes).</li>
+     *   <li>La nave del asistente se encuentra inicializada con un estado válido.</li>
+     * </ul>
+     *
+     * <p><b>Post:</b></p>
+     * <ul>
+     *   <li>Se ejecuta la misión.</li>
+     *   <li>Se agrega un {@code RegistroMision} a la bitácora de la nave.</li>
+     *   <li>Si se ejecuta correctamente, los recursos de la nave se actualizan acorde al resultado.</li>
+     * </ul>
+     *
+     * @param ac El asistente que va a ejecutar la misión
+     * @throws CombustibleInsuficienteException si el combustible requerido supera al disponible en la nave.
+     * @throws ExcesoDesgasteException si el desgaste actual más el requerido supera el máximo permitido (100).
+     * @throws ExcesoEnergiaException si la energía actual más el aporte de la misión supera el máximo permitido (100).
+     * @throws MisionImposibleException si ocurre cualquier otro error general que impida realizar la misión.
+     */
     protected void preparar(Asistente ac) throws MisionImposibleException{
         Nave nave = ac.getNave();
 
@@ -61,10 +83,12 @@ public abstract class Mision {
         //Verifico que se pueda usar el motor
         if (ac.getMotor().getEstadoActual().getIdEstado() != MotorWarp.DISPONIBLE)
             throw new MotorNoDisponibleException("El motor no se encuentra disponible");
+
+        System.out.println("Mision " + this.getNombre() + " aceptada por asistente");
     }
 
     protected void saltar(Asistente ac){
-
+        ac.getMotor().prepararSalto();
     }
 
     abstract protected void ejecutar();
@@ -83,13 +107,13 @@ public abstract class Mision {
         bitacora.agregarRegistro(nave.setEnergia(nave.getEnergia() + this.energiaAportada));
 
         bitacora.agregarRegistro(new RegistroMision("Mision completa.",this));
-        //esto no es una referencia nave bitacora????
     }
 
     public void ejecutarMision(Asistente ac){
         try {
             this.preparar(ac);
             this.ejecutar();
+            this.saltar(ac);
             this.evaluar();
             this.cerrar(ac);
         }

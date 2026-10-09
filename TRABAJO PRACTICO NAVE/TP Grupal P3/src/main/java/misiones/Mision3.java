@@ -6,10 +6,6 @@ public class Mision3 extends Mision{
         super(nombre, descripcion, combustibleRequerido, energiaAportada, desgasteRequerido);
     }
 
-    public void preparar(){
-        System.out.println("COMENZANDO RETORNO SEGURO");
-    }
-
     public void ejecutar(){
         System.out.println("COMPLETANDO EL REGRESO SIMULADO");
     }

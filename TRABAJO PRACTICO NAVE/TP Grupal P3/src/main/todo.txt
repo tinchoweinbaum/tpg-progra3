@@ -1,1 +1,3 @@
 -> Checkeo de tripulación válida (1 Capitán y 4 tripulantes).
+-> RegistroMotor se comunica con Asistente por medio de un ArrayList de registros, que luego de saltar se parsea y agrega a la bitácora
+-> Clase RegistroBitacora implementa Comparable para insertar ordenado en bitácora.

@@ -1,8 +1,6 @@
 package motorwarp;
 import exceptions.EstadoInvalidoException;
 
-
-
 public class Disponible implements State {
 
     private MotorWarp motor;
@@ -11,6 +9,7 @@ public class Disponible implements State {
     public int getIdEstado(){
         return ID;
     }
+
     public Disponible (MotorWarp motor){
         this.motor = motor;
     }
@@ -24,7 +23,6 @@ public class Disponible implements State {
     public void preparaSalto(){
         motor.setEstado(new PreparandoSalto(motor));
     }
-
 
     @Override
     public void saltoWarp() throws EstadoInvalidoException{

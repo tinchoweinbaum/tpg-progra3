@@ -12,9 +12,4 @@ public class Alferez extends Tripulante{
     public double getSueldo(){
         return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad());
     }
-
-    @Override
-    public boolean esCapitan(){
-        return false;
-    }
 }
