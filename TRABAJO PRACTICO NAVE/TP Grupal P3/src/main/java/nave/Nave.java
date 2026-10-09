@@ -74,11 +74,11 @@ abstract public class Nave{
         this.tripulantes.remove(tripulante);
     }
 
-    public void agregaCapitan(Tripulante tripulante)throws ErrorTripulacionException {
+    public void agregaCapitan(Tripulante tripulante)throws ErrorAgregarTripulacionException {
         if (!(tripulante.esCapitan()))
             throw new TripulanteInvalidoException("No tiene el cargo de Capitan para asignarlo");
         if (this.capitan != null)
-            throw new CapitanExistenteException("Ya existe un Capitan en la nave");
+            throw new CapitanExistenteExceptionAgregar("Ya existe un Capitan en la nave");
         this.capitan = tripulante;
     }
 
