@@ -3,6 +3,7 @@ package nave;
 import java.util.ArrayList;
 
 import bitacora.RegistroRecursos;
+import exceptions.*;
 import tripulantes.*;
 
 abstract public class Nave{
@@ -73,16 +74,19 @@ abstract public class Nave{
         this.tripulantes.remove(tripulante);
     }
 
-    @Override
-    public boolean equals(Object tripulante){
-        if (!(tripulante instanceof Tripulante)){
-            return false;
-        }
-
-        if (!(tripulante instanceof Capitan)){
-
-        }
-        return false;
+    public void agregaCapitan(Tripulante tripulante)throws ErrorTripulacionException {
+        if (!(tripulante.esCapitan()))
+            throw new TripulanteInvalidoException("No tiene el cargo de Capitan para asignarlo");
+        if (this.capitan != null)
+            throw new CapitanExistenteException("Ya existe un Capitan en la nave");
+        this.capitan = tripulante;
     }
-    //CHEQUEO SI ESTAN DECORADOS POR EL MISMO DECORATOR.DE ESTA MANERA BUSCARIAMOS SI YA TENEMOS UN CAPITAN
+
+    public int getTripulantes() {
+        return tripulantes.size();
+    }
+
+    public Tripulante getCapitan() {
+        return capitan;
+    }
 }

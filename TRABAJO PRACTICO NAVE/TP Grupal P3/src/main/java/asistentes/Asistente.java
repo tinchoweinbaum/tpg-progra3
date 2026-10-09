@@ -29,16 +29,21 @@ public class Asistente {
     public void setEstadoMotor(int idEstado){
         try {
             this.motor.llamaEstado(idEstado);
-            this.bitacorasNave.agregarRegistro(new RegistroMotor("CAMBIO DE ESTADO EXITOSO", motor.getEstadoActual()));
         }
         catch (EstadoInvalidoException e){
             this.bitacorasNave.agregarRegistro(new RegistroError("CAMBIO DE ESTADO INVALIDO", e));
         }
         finally {
-            //
+            this.actualizaBitacoraMotor();
         }
     }
     //ESTA LA DEJAMOS ASI PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
+
+    public void actualizaBitacoraMotor(){
+        for (RegistroMotor r : this.motor.actualizaRegistrosMotor()){
+            this.bitacorasNave.agregarRegistro(r);
+        }
+    }
 
     public Bitacora getBitacorasNave() {
         return bitacorasNave;

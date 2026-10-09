@@ -4,6 +4,7 @@ import asistentes.Asistente;
 import bitacora.Bitacora;
 import bitacora.RegistroError;
 import bitacora.RegistroMision;
+import bitacora.RegistroMotor;
 import exceptions.*;
 import motorwarp.MotorWarp;
 import nave.Nave;
@@ -69,6 +70,9 @@ public abstract class Mision{
     protected void preparar(Asistente ac) throws MisionImposibleException{
         Nave nave = ac.getNave();
 
+        if ((nave.getCapitan()==null ) || (nave.getTripulantes()<4))
+            throw new ErrorTripulantesException("La tripulacion no cumple los minimos requisitos para realizar la mision");
+
         if (this.getCombustibleRequerido() > nave.getCombustible())
             throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
 
@@ -107,6 +111,8 @@ public abstract class Mision{
         bitacora.agregarRegistro(nave.setEnergia(nave.getEnergia() + this.energiaAportada));
 
         bitacora.agregarRegistro(new RegistroMision("Mision completa.",this));
+
+        ac.actualizaBitacoraMotor();
     }
 
     public void ejecutarMision(Asistente ac){
