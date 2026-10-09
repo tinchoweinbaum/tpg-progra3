@@ -4,9 +4,8 @@ public class NaveCarguero extends Nave{
 
     /**
      * Contructor de la nave carguero
-     * <b>Post:</b>
-     * -Combustible == 100
-     * -Energia == 60
+     * <b>Post:</b> Combustible = 100 y energia == 60
+     * 
      */
     public NaveCarguero(){
         super();

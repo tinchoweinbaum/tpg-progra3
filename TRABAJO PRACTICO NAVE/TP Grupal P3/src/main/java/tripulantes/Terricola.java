@@ -7,6 +7,12 @@ public class Terricola extends EspecieDecorator{
         super(tripulante);
     }
 
+    /**
+     * Metodo sobreescrito que agrega el subsidio al tripulante
+     * 
+     * @return sueldo original mas subsidio
+     */
+    
     @Override
     public double getSueldo(){
         return BONO_TERRICOLA + this.getTripulante().getSueldo();

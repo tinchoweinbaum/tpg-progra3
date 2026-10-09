@@ -1,7 +1,5 @@
 package misiones;
 
-import bitacora.RegistroBitacora;
-
 public class Mision1 extends Mision{
 
     public Mision1(String nombre, String descripcion, float combustibleRequerido, float energiaAportada, float desgasteRequerido){

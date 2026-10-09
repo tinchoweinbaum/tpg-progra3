@@ -19,6 +19,11 @@ public class Consejero extends Tripulante{
         this.consejosDados += 1;
     }
     
+    /**
+    * <b>pre:</b> antiguedad tiene que ser un entero positivo
+    * @return Devuelve el sueldo de un consejero en base a su antiguedad 
+    */
+    
     @Override 
     public double getSueldo(){
         return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad()) + this.consejosDados * BONO_CONSEJO;

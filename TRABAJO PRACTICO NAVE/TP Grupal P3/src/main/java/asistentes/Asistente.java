@@ -11,10 +11,14 @@ public class Asistente {
     private MotorWarp motor;
 
     /**
-     * <b> Pre:</b>Se asume que la nave existe y se creó exitosamente <br>
-     * <b> Post:</b>Se asocia el asistente con la nave. <br>
-     * @param nave: referencia a un objeto nave válido.
+     * Constructor que instancia y asigna referencias de tipo Bitacora y MotorWarp.<br>
+     * 
+     * <b> Pre:</b>Se asume que la nave existe y se creó exitosamente. <br>
+     * <b> Post:</b>Se asocia el asistente con la nave y se inicializa una Bitacora y MotorWarp. <br>
+     * 
+     * @param nave: referencia a un objeto nave valido, nave != NULL.
      */
+    
     public Asistente(Nave nave){
         this.nave = nave;
         this.bitacorasNave = new Bitacora();
@@ -22,8 +26,10 @@ public class Asistente {
     }
 
     /**
-     * <b> Pre:</b> Número válido de estado del motor, de 0 a 3.
      * Función para el escenario de llamar estado ilegal. Preguntar implementación con ciclo automático.
+     * 
+     * <b> Pre:</b> Número válido de estado del motor, de 0 a 3.
+     * 
      * @param idEstado Estado deseado del motor
      */
     public void setEstadoMotor(int idEstado){
@@ -94,7 +100,7 @@ public class Asistente {
     public void mantenimientoNave(){
         try{
             if (this.nave.getDesgaste()>=80){
-                this.bitacorasNave.agregarRegistro(this.nave.setDesgaste(0));
+                this.bitacorasNave.agregarRegistro(this.nave.setDesgaste(-this.nave.getDesgaste()));
             }else{
                 throw new DesgasteInsuficienteException("Desgaste insuficiente para la operacion");
             }

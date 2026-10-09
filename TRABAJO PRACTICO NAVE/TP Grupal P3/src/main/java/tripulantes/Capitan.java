@@ -1,18 +1,29 @@
 package tripulantes;
 
 public class Capitan extends Tripulante{
-    private final static double SUELDO_BASE_CAPITAN = 1000;
-    private final static double BONO_ANTIGUEDAD_CAPITAN = 0.2F;
+    private static final double SUELDO_BASE_CAPITAN = 1000;
+    private static final double BONO_ANTIGUEDAD_CAPITAN = 0.2;
 
     public Capitan(String nombre, int antiguedad){
         super(nombre, antiguedad, SUELDO_BASE_CAPITAN, BONO_ANTIGUEDAD_CAPITAN);
     }
     
+    /** 
+    * <b>pre:</b> antiguedad tiene que ser un entero positivo
+    * @return Devuelve el sueldo de un capitan en base a su antiguedad 
+    */
+    
     @Override 
     public double getSueldo(){
-        return SUELDO_BASE_CAPITAN * (1 + BONO_ANTIGUEDAD_CAPITAN * this.antiguedad);
+        return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad());
     }
 
+    /**
+    * Funcion booleana para determinar si un tripulante es capitan, 
+    * se usa para saber si la tripulacion tiene al menos un capitan en la flota 
+   * 
+    * @return Devuelve true ya que el tripulante es un capitan  
+    */
     @Override
     public boolean esCapitan(){
         return true;

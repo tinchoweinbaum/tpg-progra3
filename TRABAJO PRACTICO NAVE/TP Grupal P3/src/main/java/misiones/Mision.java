@@ -98,6 +98,13 @@ public abstract class Mision{
     abstract protected void ejecutar();
 
     abstract protected void evaluar();
+    
+    /**
+     * Metodo que finaliza la mision, se contacta con el asistente de la nave, 
+     * actualiza los registros de la nave y los recursos de la misma
+     * 
+     * @param ac Asistente de la nave, validado y != NULL
+     */
 
     protected void cerrar(Asistente ac){
         System.out.println("MISION FINALIZADA - ACTUALIZANDO RECURSOS");
