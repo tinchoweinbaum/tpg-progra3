@@ -37,9 +37,7 @@ public class Asistente {
 
     /**
      * Función para el escenario de llamar estado ilegal. Preguntar implementación con ciclo automático.
-     * 
      * <b> Pre:</b> Número válido de estado del motor, de 0 a 3.
-     * 
      * @param idEstado Estado deseado del motor
      */
     public void setEstadoMotor(int idEstado){
@@ -182,5 +180,21 @@ public class Asistente {
 
     public boolean eliminaTripulante(Tripulante t){
         return this.nave.eliminaTripulante(t);
+    }
+
+    /**
+     * toString de Asistente que printea todos los datos relevantes. Método hecho con Gemini.
+     */
+    @Override
+    public String toString() {
+        String string = "--- Estado del Asistente y la Nave ---\n" +
+                "-> Tipo de la nave: " + this.nave.getClass().getSimpleName() + "\n" +
+                "-> Tripulación: " + this.nave.getTripulacion() + "\n" +
+                "-> Cantidad de recursos:\n" +
+                "   - Combustible: " + this.nave.getCombustible() + " / " + Nave.MAX_COMBUSTIBLE + "\n" +
+                "   - Energía: " + this.nave.getEnergia() + " / " + Nave.MAX_ENERGIA + "\n" +
+                "   - Desgaste: " + this.nave.getDesgaste() + " / " + Nave.MAX_DESGASTE;
+
+        return string;
     }
 }

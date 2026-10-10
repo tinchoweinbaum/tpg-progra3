@@ -1,4 +1,3 @@
 --> Cambiar energia aportada a energia que saca xdd
 --> Exception y funcion polimorfica a mostrar bitacora
---> carga y consume combustible, desgaste, energia - setter privado, y las primeras devuelven registro, no setter
---> verificar la no doble agregacion de tripulantes
+--> Revisar los contratos y asserts de todas las funciones.

@@ -30,14 +30,19 @@ public class Sistema {
     }
     
     /**
-    * Metodo que instancia una nave y un asistente
+    * Metodo que instancia una nave y un asistente<br>
     * 
-    * <b>pre:</b> El nombre del tipo de nave es valido, tipoNave != NULL o tipoNave != " ".
-    * <b>post:</b> (try) Se le asigna al sistema un tipo de nave y un asistente.
-    *              (catch) No se le asigna nave ni asistente al sistema y se lanza una excepcion. 
+    * <b>pre:</b> El nombre del tipo de nave es valido, tipoNave != NULL && tipoNave != " ".<br>
+    * <b>post:</b> (try) Se le asigna al sistema un tipo de nave y un asistente.<br>
+    *              (catch) No se le asigna nave ni asistente al sistema y se lanza una excepcion.<br>
     * 
     * 
-    * @param tipoNave Es el identificador de tipo de la nave a crear.
+    * @param tipoNave Es el identificador de tipo de la nave a crear. Valores válidos (no es case sensitive):
+     *                 <ul>
+     *                  <li>CARGUERO</li>
+     *                  <li>COMBATE</li>
+     *                  <li>EXPLORADOR</li>
+     *                 </ul>
     * @return Retorna un asistente null si el tipo de nave es invalido o el asistente con su nave referenciada.
     */
 

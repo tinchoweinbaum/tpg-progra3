@@ -13,7 +13,6 @@ public abstract class Nave{
     protected float combustible, energia, desgaste = 0;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
     protected Tripulante capitan = null;
-    float estadoPrevio;
 
     public Nave(){
         super();
@@ -24,16 +23,14 @@ public abstract class Nave{
     }
 
     /**
-     * Metodo para establecer una cantidad de combustible a la nave, realmente este método no se va a usar nunca.
-     * 
+     * Metodo para establecer una cantidad de combustible a la nave, usado únicamente en los constructores de las subclases concretas de nave.<br>
      * <b>pre:</b> valorNuevo >= 0 && valorNuevo <= 100
      * <b>post:</b> Se establece la cantidad de combustible y se registra en la bitacora.
      * 
      * @param valorNuevo Es la cantidad de combustible que voy a agregar
-     * @return Registra en bitacora la cantidad de combustible agregada y la cantidad final
      */
     protected void setCombustible(float valorNuevo){
-        assert valorNuevo >= 0 && valorNuevo <= MAX_COMBUSTIBLE: "Cantidad de combustible inválida.";
+        assert valorNuevo >= 0 && valorNuevo <= MAX_COMBUSTIBLE: "Cantidad de combustible inválida para setCombustible.";
         this.combustible = valorNuevo;
     }
 
@@ -44,7 +41,6 @@ public abstract class Nave{
      *
      * @param cantCarga Cantidad de combustible a cargar.
      * @return Objeto de tipo {@code RegistroRecursos} para la bitácora del asistente.
-     * @throws CantCombustibleInvalidaException
      */
     public RegistroRecursos cargaCombustible(float cantCarga) throws CantCombustibleInvalidaException{
         assert cantCarga > 0: "Se debe cargar un número positivo de combustible";
@@ -59,9 +55,9 @@ public abstract class Nave{
     /**
      * Depende de quien llame a esta función en la 2da entrega la excepción no tiene senitdo, se checkearía antes si hay combustible o no.
      * Método para consumir combustible de la nave.
-     * @param cantConsumida
-     * @return
-     * @throws CantCombustibleInvalidaException
+     * @param cantConsumida Cantidad de combustible a consumir
+     * @return Objeto de tipo {@code RegistroRecursos} para agregar a la bitácora de la nave.
+     * @throws CantCombustibleInvalidaException cuando se intenta consumir una cantidad de combustible mayor a la que se tiene.
      */
     public RegistroRecursos consumeCombustible(float cantConsumida) throws CantCombustibleInvalidaException{
         assert cantConsumida > 0: "Se debe consumir un número positivo de combustible";
@@ -78,15 +74,13 @@ public abstract class Nave{
     }
 
     /**
-     * Metodo para establecer una cantidad de energia(carga) a la nave
-     *
-     * <b>pre:</b> energia es un numero positivo
-     * <b>post:</b> Se establece la cantidad de energia y se registra en la bitacora
-     *
-     * @param valorNuevo Es la cantidad de carga que voy a agregar
-     * @return Registra en bitacora la cantidad de energia agregada y la cantidad final
+     * Metodo para establecer una cantidad de energia a la nave, usado únicamente en los constructores de las subclases concretas de nave<br>
+     * <b>Pre:</b> valorNuevo >= 0 && valorNuevo <= 10<br>
+     * <b>Post:</b> Se establece la cantidad de energia y se registra en la bitacora<br>
+     * @param valorNuevo Valor de energía a establecer
      */
     protected void setEnergia(float valorNuevo) {
+        assert valorNuevo >= 0 && valorNuevo <= MAX_ENERGIA: "Valor inválido de energía para setEnergía";
         this.energia = valorNuevo;
     }
 
@@ -111,16 +105,14 @@ public abstract class Nave{
     }
 
     /**
-     * Metodo para establecer una cantidad de desgaste a la nave
-     *
-     * <b>pre:</b> desgaste es un numero positivo
-     * <b>post:</b> Se establece la cantidad de desgaste y se registra en la bitacora
-     *
-     * @param desgaste Es la cantidad de desgaste que voy a agregar
-     * @return Registra en bitacora la cantidad de energia agregada y la cantidad final
+     * Metodo para establecer una cantidad de desgaste a la nave, usado únicamente en los constructores de las subclases concretas de nave<br>
+     * <b>pre:</b> valorNuevo >= 0 && valorNuevo <= 100 <br>
+     * <b>post:</b> Se establece la cantidad de desgaste y se registra en la bitacora<br>
+     * @param valorNuevo Cantidad de desgaste a establecer.
      */
-    protected void setDesgaste(float desgaste) {
-        this.desgaste = desgaste;
+    protected void setDesgaste(float valorNuevo) {
+        assert valorNuevo >= 0 && valorNuevo <= MAX_DESGASTE: "Valor inválido para setDesgaste.";
+        this.desgaste = valorNuevo;
     }
 
     public RegistroRecursos aumentaDesgaste(float cantAumentada) throws CantDesgasteInvalidaException{
@@ -185,7 +177,7 @@ public abstract class Nave{
     /**
      * Devuelve true si se pudo eliminar el tripulante, false si no.<br>
      * <b>Post: </b>Se elimina el tripulante de la tripulación si este existe, si es el capitán se deja en null la referencia al capitán de la nave.
-     * @param tripulante
+     * @param tripulante Referencia al objeto tripulante a eliminar.
      */
     public boolean eliminaTripulante(Tripulante tripulante) {
         boolean eliminado = this.tripulantes.remove(tripulante);
@@ -204,6 +196,6 @@ public abstract class Nave{
     }
 
     public Tripulante getCapitan() {
-        return capitan;
+        return this.capitan;
     }
 }

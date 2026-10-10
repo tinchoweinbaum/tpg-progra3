@@ -9,54 +9,24 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
-        Sistema system = Sistema.getInstance();
+        Sistema sistema = Sistema.getInstance();
+        Asistente ac1 = sistema.inicio("Carguero");
+        Mision m3 = sistema.creaMision(3);
+        ArrayList<Tripulante> tripulantes = new ArrayList<>();
+        Tripulante t1 = sistema.creaTripulante("CAPITAN","Vulcano","palermo",5);
+        Tripulante t2 = sistema.creaTripulante("Alferez","Marciano","riquelme",10);
+        Tripulante t3 = sistema.creaTripulante("Consejero","Marciano","bianchi",35);
+        Tripulante t4 = sistema.creaTripulante("Teniente","Marciano","dua lipa",10);
+        tripulantes.add(t1);
+        tripulantes.add(t2);
+        tripulantes.add(t3);
+        tripulantes.add(t4);
 
-        Asistente asist1 = system.inicio("COMBATE");
+        ac1.agregaTripulante(tripulantes);
+        m3.ejecutarMision(ac1);
+        ac1.muestraBitacora();
 
-        asist1.cargaCombustibleNave(-90);
-
-        //asist1.muestraBitacora();
-
-        Mision m1 = system.creaMision(1);
-        System.out.println(m1.getDescripcion());
-
-        Mision m2 = system.creaMision(4);
-
-        Tripulante trip1 = system.creaTripulante("CAPITAN","TERRICOLA","MARTIN",24);
-        Tripulante trip2 = system.creaTripulante("Alferez","TERRICOLA","Gonzalo",24);
-        Tripulante trip3 = system.creaTripulante("Teniente","TERRICOLA","LISANDRO",21);
-        Tripulante trip4 = system.creaTripulante("Consejero","TERRICOLA","Juampi",25);
-
-        Tripulante trip5 = system.creaTripulante("CAPiTAN","VULcANO","LEONEL",67);
-
-        ArrayList<Tripulante> tripu = new ArrayList<>();
-        tripu.add(trip1);
-        tripu.add(trip2);
-        tripu.add(trip3);
-        tripu.add(trip4);
-        tripu.add(trip5);
-
-//        for (Tripulante t : tripu){
-//            System.out.println(t);
-//        }
-
-        asist1.getNave().agregaTripulante(tripu);
-
-//        for (Tripulante t : asist1.getNave().getTripulacion()){
-//            System.out.println(t);
-//        }
-
-        Mision m3 = system.creaMision(3);
-
-        //m3.ejecutarMision(asist1);
-
-        //asist1.muestraBitacora();
-
-        asist1.setEstadoMotor(3);
-
-        asist1.muestraNBitacoras(1);
-
-
+        System.out.println(ac1);
     }
 }
 
