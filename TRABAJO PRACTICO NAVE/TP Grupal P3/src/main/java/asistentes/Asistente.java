@@ -54,6 +54,16 @@ public class Asistente {
     //ESTA LA DEJAMOS. ASÍ PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
 
     /**
+     * Metodo para probar el ciclo de salto y que quede registrado
+     * <b>Post:</b>
+     * -Se ejecuta el salto y se guarda cada cambio de estado en bitacora
+     */
+    public void saltar(){
+        this.motor.prepararSalto();
+        actualizaBitacoraMotor();
+    }
+
+    /**
      * Método que actualiza la bitácora con los cambios de estado del motor luego de saltar.
      */
     public void actualizaBitacoraMotor(){
