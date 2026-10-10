@@ -4,6 +4,9 @@ import nave.*;
 import motorwarp.*;
 import bitacora.*;
 import exceptions.*;
+import tripulantes.Tripulante;
+
+import java.util.ArrayList;
 
 public class Asistente {
     private Nave nave;
@@ -18,11 +21,18 @@ public class Asistente {
      * 
      * @param nave: referencia a un objeto nave valido, nave != NULL.
      */
-    
     public Asistente(Nave nave){
         this.nave = nave;
         this.bitacorasNave = new Bitacora();
         this.motor = new MotorWarp();
+    }
+
+    public Nave getNave() {
+        return nave;
+    }
+
+    public MotorWarp getMotor() {
+        return motor;
     }
 
     /**
@@ -43,8 +53,11 @@ public class Asistente {
             this.actualizaBitacoraMotor();
         }
     }
-    //ESTA LA DEJAMOS ASI PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
+    //ESTA LA DEJAMOS. ASÍ PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
 
+    /**
+     * Método que actualiza la bitácora con los cambios de estado del motor luego de saltar.
+     */
     public void actualizaBitacoraMotor(){
         for (RegistroMotor r : this.motor.actualizaRegistrosMotor()){
             this.bitacorasNave.agregarRegistro(r);
@@ -55,84 +68,94 @@ public class Asistente {
         return bitacorasNave;
     }
 
-    /** Contrato mejorado con llm de navegador.<br>
-     * Acepta una misión para la nave, validando los recursos necesarios y el estado actual.
-     *
-     * <p><b>Pre:</b></p>
-     * <ul>
-     *   <li>Se asume que la misión existe y es válida (no es nula y sus datos son consistentes).</li>
-     *   <li>La nave del asistente se encuentra inicializada con un estado válido.</li>
-     * </ul>
-     *
-     * <p><b>Post:</b></p>
-     * <ul>
-     *   <li>Se ejecuta la misión.</li>
-     *   <li>Se agrega un {@code RegistroMision} a la bitácora de la nave.</li>
-     *   <li>Si se ejecuta correctamente, los recursos de la nave se actualizan acorde al resultado.</li>
-     * </ul>
-     *
-     * @param mision La misión que se desea aceptar y ejecutar.
-     * @throws CombustibleInsuficienteException si el combustible requerido supera al disponible en la nave.
-     * @throws ExcesoDesgasteException si el desgaste actual más el requerido supera el máximo permitido (100).
-     * @throws ExcesoEnergiaException si la energía actual más el aporte de la misión supera el máximo permitido (100).
-     * @throws MisionImposibleException si ocurre cualquier otro error general que impida realizar la misión.
-     */
-
     /**
-     * Metodo para cargar cierta cantidad de combustible, si supera 100,tira excepcion
-     * @param carga
+     * <b>Pre: </b>cantCarga > 0<br>
+     * <b>Post: </b>Se carga el combustible de la nave en la cantidad especificada.
+     * @param cantCarga cantidad de combustible a cargar.
      */
-    public void cargaCombustibleNave(float carga){
+    public void cargaCombustibleNave(float cantCarga){
         try{
-            if (this.nave.getCombustible() + carga <= 100 && this.nave.getCombustible() + carga >=0){
-                this.bitacorasNave.agregarRegistro(this.nave.setCombustible(this.nave.getCombustible() + carga));
-            }else{
-                throw new CargaInvalidaCombustibleException("La carga supera el limite del deposito de combustible");
-            }
-        } catch (CargaInvalidaCombustibleException e) {
-            this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse carga de combustible",e));
+            this.bitacorasNave.agregarRegistro(this.nave.cargaCombustible(cantCarga));
+        } catch (CantCombustibleInvalidaException e){
+            System.out.println(e.getMessage()); // Se debería registrar una carga fallida de combustible en un finally?
         }
     }
 
     /**
-     * Metodo para realizar mantenimiento de nave y llevar desgaste a cero
+     * <b>Pre: </b>cantConsumida > 0<br>
+     * <b>Post: </b>Se consume la cantidad de combustible especificada.
+     * @param cantConsumida cantidad de combustible consumida.
      */
-    public void mantenimientoNave(){
+    public void consumeCombustibleNave(float cantConsumida){
         try{
-            if (this.nave.getDesgaste()>=80){
-                this.bitacorasNave.agregarRegistro(this.nave.setDesgaste(-this.nave.getDesgaste()));
-            }else{
-                throw new DesgasteInsuficienteException("Desgaste insuficiente para la operacion");
-            }
+            this.bitacorasNave.agregarRegistro(this.nave.consumeCombustible(cantConsumida));
+        } catch (CantCombustibleInvalidaException e) {
+            System.out.println(e.getMessage());
         }
-        // Este catch NO va a ir acá en la 2da parte, tiene que propagar la excepción.
-        catch(DesgasteInsuficienteException e){
-            this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse el mantenimiento",e));
+    }
+
+    public void cargaComustibleNaveFull(){
+        this.cargaCombustibleNave(Nave.MAX_COMBUSTIBLE - this.nave.getCombustible());
+    }
+
+    /**
+     * <b>Pre: </b>cantDesgaste > 0<br>
+     * <b>Post: </b>Se aumenta el desgaste de la nave en la cantidad especificada.
+     * @param cantDesgaste cantidad de desgaste a agregar.
+     */
+    public void aumentaDesgasteNave(float cantDesgaste){
+        try{
+            this.bitacorasNave.agregarRegistro(this.nave.aumentaDesgaste(cantDesgaste));
+        } catch (CantDesgasteInvalidaException e){
+            System.out.println(e.getMessage());
         }
     }
 
     /**
-     * Metodo para cargar cierta cantidad de energia, si supera 100,tira excepcion
-     * @param carga
+     * <b>Pre: </b>cantReparada > 0<br>
+     * <b>Post: </b>Se reduce el desgaste de la nave según la cantidad reparada.
+     * @param cantReparada cantidad de desgaste que se reduce (reparación).
      */
-    public void cargaEnergiaNave(float carga){
+    public void reparaDesgasteNave(float cantReparada){
         try{
-            if (this.nave.getEnergia() + carga <= 100){
-                this.bitacorasNave.agregarRegistro(this.nave.setEnergia(this.nave.getEnergia() + carga));
-            }else{
-                throw new ExcesoEnergiaException("La carga supera el limite de energia");
-            }
-        } catch (ExcesoEnergiaException e) {
-            this.bitacorasNave.agregarRegistro(new RegistroError("No pudo realizarse carga de energia",e));
+            this.bitacorasNave.agregarRegistro(this.nave.reparaDesgaste(cantReparada));
+        } catch (CantDesgasteInvalidaException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public Nave getNave() {
-        return nave;
+    public void reparaDesgasteNaveFull(){
+        this.reparaDesgasteNave(this.nave.getDesgaste());
     }
 
-    public MotorWarp getMotor() {
-        return motor;
+    /**
+     * <b>Pre: </b>cantEnergia > 0<br>
+     * <b>Post: </b>Se aumenta la energía de la nave según la cantidad indicada.
+     * @param cantEnergia cantidad de energía a cargar.
+     */
+    public void cargaEnergiaNave(float cantEnergia){
+        try{
+            this.bitacorasNave.agregarRegistro(this.nave.cargaEnergia(cantEnergia));
+        } catch (CantEnergiaInvalidaException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * <b>Pre: </b>cantConsumida > 0<br>
+     * <b>Post: </b>Se consume la cantidad de energía especificada de la nave.
+     * @param cantConsumida cantidad de energía consumida.
+     */
+    public void consumeEnergiaNave(float cantConsumida){
+        try{
+            this.bitacorasNave.agregarRegistro(this.nave.consumeEnergia(cantConsumida));
+        } catch (CantEnergiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void cargaEnergiaNaveFull(){
+        this.cargaEnergiaNave(Nave.MAX_ENERGIA - this.nave.getEnergia());
     }
 
     public void muestraBitacora(){
@@ -141,5 +164,23 @@ public class Asistente {
 
     public void muestraNBitacoras(int N){
         this.bitacorasNave.mostrarNRegistros(N);
+    }
+
+    public void agregaTripulante(Tripulante tripulante){
+        try{
+            this.nave.agregaTripulante(tripulante);
+        } catch(ErrorAgregarTripulacionException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void agregaTripulante(ArrayList<Tripulante> tripulantes) {
+        for (Tripulante t : tripulantes) {
+            this.agregaTripulante(t);
+        }
+    }
+
+    public boolean eliminaTripulante(Tripulante t){
+        return this.nave.eliminaTripulante(t);
     }
 }

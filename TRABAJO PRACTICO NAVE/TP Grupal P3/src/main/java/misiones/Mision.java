@@ -104,21 +104,13 @@ public abstract class Mision{
      * 
      * @param ac Asistente de la nave, validado y != NULL
      */
-
     protected void cerrar(Asistente ac){
         System.out.println("MISION FINALIZADA - ACTUALIZANDO RECURSOS");
 
-        Nave nave = ac.getNave();
-        Bitacora bitacora = ac.getBitacorasNave();
+        ac.consumeCombustibleNave(this.combustibleRequerido);
+        ac.aumentaDesgasteNave(this.desgasteRequerido);
+        ac.consumeEnergiaNave(1); // ACTUALIZAR CUANDO SEPAMOS COMO SE MANEJA LA ENERGIA
 
-        // Actualiza los recursos de la nave y escribe en la bitacora que lo hizo.
-        bitacora.agregarRegistro(nave.setCombustible(nave.getCombustible() - this.combustibleRequerido));
-        bitacora.agregarRegistro(nave.setDesgaste(nave.getDesgaste() + this.desgasteRequerido));
-        bitacora.agregarRegistro(nave.setEnergia(nave.getEnergia() + this.energiaAportada));
-
-        bitacora.agregarRegistro(new RegistroMision("Mision completa.",this));
-
-        //Escribe en bitacora los cambios de estado correctos del motor
         ac.actualizaBitacoraMotor();
     }
 
