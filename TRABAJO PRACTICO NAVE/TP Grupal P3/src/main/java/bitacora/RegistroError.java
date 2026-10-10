@@ -40,6 +40,6 @@ public class RegistroError extends RegistroBitacora {
 
     @Override
     public String toString() {
-        return super.toString() + " | Excepción: " + error.getMessage();
+        return super.toString() + " | " + error.getMessage();
     }
 }

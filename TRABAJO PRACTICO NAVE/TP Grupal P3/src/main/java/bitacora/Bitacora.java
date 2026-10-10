@@ -57,9 +57,9 @@ public class Bitacora {
     }
 
     /**
-     * Muestra los ultimos n regitros de la bitacora en orden cronologico
+     * Muestra los ultimos n regitros de la bitacora en orden cronologico, si se piden mas que lo que se tienen se muestran todas.
      * <b>Pre:</b>
-     * - n > 0 && n <= this.registros.size
+     * - n > 0
      * <b>Post:</b>
      * - Se muestran en pantalla los ultimos n registros de forma cronologica
      * @param n la cantidad de registros a mostrar
@@ -67,10 +67,11 @@ public class Bitacora {
     public void mostrarNRegistros(int n){
         int tamanio = this.registros.size();
         assert n > 0: "La cantidad de registros a mostrar debe ser positiva";
-        assert n <= tamanio: "La cantidad de registros a mostrar debe ser menor o igual a la cantidad de registros almacenados";
         int i;
 
-        // Empieza N posiciones antes del final y avanza hacia adelante
+        // Empieza N posiciones antes del final y avanza hacia adelante.
+        if (n > tamanio)
+            n = tamanio;
         for (i = tamanio-n; i < tamanio; i += 1){
             System.out.println(this.registros.get(i));
         }

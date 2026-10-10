@@ -3,7 +3,6 @@ package misiones;
 import asistentes.Asistente;
 import bitacora.Bitacora;
 import bitacora.RegistroError;
-import bitacora.RegistroMision;
 import exceptions.*;
 import motorwarp.MotorWarp;
 import nave.Nave;
@@ -79,10 +78,6 @@ public abstract class Mision{
         if (this.getDesgasteRequerido() + nave.getDesgaste() > 100)
             throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
 
-        //Energia maxima = 100
-        if (this.getEnergiaAportada()>0 && nave.getEnergia() + this.getEnergiaAportada() > 100)
-            throw new ExcesoEnergiaException("Se supera la cantidad maxima de energia soportada por la nave");
-
         //Verifico que se pueda usar el motor
         if (ac.getMotor().getEstadoActual().getIdEstado() != MotorWarp.DISPONIBLE)
             throw new MotorNoDisponibleException("El motor no se encuentra disponible");
@@ -109,7 +104,8 @@ public abstract class Mision{
 
         ac.consumeCombustibleNave(this.combustibleRequerido);
         ac.aumentaDesgasteNave(this.desgasteRequerido);
-        ac.consumeEnergiaNave(1); // ACTUALIZAR CUANDO SEPAMOS COMO SE MANEJA LA ENERGIA
+        if (this.energiaAportada > 0)
+            ac.cargaEnergiaNave(this.energiaAportada);
 
         ac.actualizaBitacoraMotor();
     }

@@ -1,3 +1,3 @@
---> Cambiar energia aportada a energia que saca xdd
---> Exception y funcion polimorfica a mostrar bitacora
 --> Revisar los contratos y asserts de todas las funciones.
+--> Completar escenarios 2 a 4
+--> readme.md

@@ -1,6 +1,8 @@
 package motorwarp;
 import bitacora.RegistroMotor;
 import exceptions.EstadoInvalidoException;
+import sistema.Sistema;
+
 import java.util.ArrayList;
 
 
@@ -82,6 +84,7 @@ public class MotorWarp {
     public void prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: PREPARANDO SALTO",this.estadoActual));
+        Sistema.esperar(500);
         this.saltoWarp();
     }
     
@@ -100,6 +103,7 @@ public class MotorWarp {
     public void saltoWarp() throws EstadoInvalidoException {
         estadoActual.saltoWarp();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO WARP",this.estadoActual));
+        Sistema.esperar(500); // Espera medio segundo para que no haya race condition al agregar elementos a la bitácora.
         this.enfriamiento();
     }
     
@@ -118,6 +122,7 @@ public class MotorWarp {
     public void enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: ENFRIAMIENTO",this.estadoActual));
+        Sistema.esperar(500);
         this.disponible();
     }
 }

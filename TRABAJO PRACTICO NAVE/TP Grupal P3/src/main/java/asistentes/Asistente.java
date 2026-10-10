@@ -75,7 +75,8 @@ public class Asistente {
         try{
             this.bitacorasNave.agregarRegistro(this.nave.cargaCombustible(cantCarga));
         } catch (CantCombustibleInvalidaException e){
-            System.out.println(e.getMessage()); // Se debería registrar una carga fallida de combustible en un finally?
+            this.bitacorasNave.agregarRegistro(new RegistroError("Error al cargar combustible", e));
+            System.out.println(e.getMessage());
         }
     }
 
@@ -88,6 +89,7 @@ public class Asistente {
         try{
             this.bitacorasNave.agregarRegistro(this.nave.consumeCombustible(cantConsumida));
         } catch (CantCombustibleInvalidaException e) {
+            this.bitacorasNave.agregarRegistro(new RegistroError("Error al consumir combustible" , e));
             System.out.println(e.getMessage());
         }
     }
@@ -105,6 +107,7 @@ public class Asistente {
         try{
             this.bitacorasNave.agregarRegistro(this.nave.aumentaDesgaste(cantDesgaste));
         } catch (CantDesgasteInvalidaException e){
+            this.bitacorasNave.agregarRegistro(new RegistroError("Error al aumentar el desgaste de la nave", e));
             System.out.println(e.getMessage());
         }
     }
@@ -118,6 +121,7 @@ public class Asistente {
         try{
             this.bitacorasNave.agregarRegistro(this.nave.reparaDesgaste(cantReparada));
         } catch (CantDesgasteInvalidaException e) {
+            this.bitacorasNave.agregarRegistro(new RegistroError("Error al reparar la nave", e));
             System.out.println(e.getMessage());
         }
     }
@@ -135,6 +139,7 @@ public class Asistente {
         try{
             this.bitacorasNave.agregarRegistro(this.nave.cargaEnergia(cantEnergia));
         } catch (CantEnergiaInvalidaException e){
+            this.bitacorasNave.agregarRegistro(new RegistroError("Error al cargar energía", e));
             System.out.println(e.getMessage());
         }
     }
@@ -148,6 +153,7 @@ public class Asistente {
         try{
             this.bitacorasNave.agregarRegistro(this.nave.consumeEnergia(cantConsumida));
         } catch (CantEnergiaInvalidaException e) {
+            this.bitacorasNave.agregarRegistro(new RegistroError("Error al consumir energía", e));
             System.out.println(e.getMessage());
         }
     }
@@ -156,6 +162,9 @@ public class Asistente {
         this.cargaEnergiaNave(Nave.MAX_ENERGIA - this.nave.getEnergia());
     }
 
+    /**
+     * Método
+     */
     public void muestraBitacora(){
         this.bitacorasNave.mostrarBitacora();
     }

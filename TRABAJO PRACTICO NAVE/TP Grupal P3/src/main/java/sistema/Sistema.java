@@ -93,4 +93,16 @@ public class Sistema {
         return misionNueva;
     }
 
+    /** Método asistido con Inteligencia artificial.
+     * Función encapsulada para detener un hilo de ejecución, si recibe un valor negativo crashea el programa.
+     * @param milisegundos tiempo en milisegundos.
+     */
+    public static void esperar(int milisegundos) {
+        try {
+            Thread.sleep(milisegundos);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
 }

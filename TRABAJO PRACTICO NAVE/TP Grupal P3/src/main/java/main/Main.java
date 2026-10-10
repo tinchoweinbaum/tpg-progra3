@@ -9,9 +9,15 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
+        escenario1();
+    }
+
+    public static void escenario1(){
         Sistema sistema = Sistema.getInstance();
         Asistente ac1 = sistema.inicio("Carguero");
-        Mision m3 = sistema.creaMision(3);
+        Asistente ac2 = sistema.inicio("Combate");
+        Asistente ac3 = sistema.inicio("Explorador");
+
         ArrayList<Tripulante> tripulantes = new ArrayList<>();
         Tripulante t1 = sistema.creaTripulante("CAPITAN","Vulcano","palermo",5);
         Tripulante t2 = sistema.creaTripulante("Alferez","Marciano","riquelme",10);
@@ -21,12 +27,36 @@ public class Main {
         tripulantes.add(t2);
         tripulantes.add(t3);
         tripulantes.add(t4);
-
         ac1.agregaTripulante(tripulantes);
-        m3.ejecutarMision(ac1);
+
+        Mision m1 = sistema.creaMision(1);
+        m1.ejecutarMision(ac1);
         ac1.muestraBitacora();
+        System.out.println("");
+
+        Mision m2 = sistema.creaMision(2);
+        m2.ejecutarMision(ac1);
+        ac1.muestraNBitacoras(7);
+        System.out.println("");
+
+        Mision m3 = sistema.creaMision(3);
+        m3.ejecutarMision(ac1);
+        ac1.muestraNBitacoras(6);
+        System.out.println("");
 
         System.out.println(ac1);
+    }
+
+    public static void escenario2(){
+
+    }
+
+    public static void escenario3(){
+
+    }
+
+    public static void escenario4(){
+
     }
 }
 

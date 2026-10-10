@@ -65,7 +65,7 @@ public class RegistroRecursos extends RegistroBitacora {
 
     @Override
     public String toString() {
-        String signo = cantidadModificada >= 0 ? "+" : "-";
+        String signo = cantidadModificada >= 0 ? "+" : "";
         return super.toString() + " | Recurso: " + tipoRecurso +
                 " | Variación: " + signo + cantidadModificada +
                 " | Nivel actual: " + nivelResultante;

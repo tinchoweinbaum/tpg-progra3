@@ -10,9 +10,7 @@ public class PreparandoSalto implements State {
     public int getIdEstado(){
         return ID;
     }
-    
-    
-    
+
     public PreparandoSalto (MotorWarp motor){
         this.motor = motor;
     }
