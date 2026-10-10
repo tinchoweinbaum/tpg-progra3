@@ -17,4 +17,20 @@ public class Teniente extends Tripulante{
     public double getSueldo(){
         return this.sueldoBase * (1 + this.bonoAntiguedad * this.getAntiguedad());
     }
+
+    @Override
+    public String toString(){
+        return super.toString() + " es Teniente";
+    }
+
+    /**
+     * Funcion booleana para determinar si un tripulante es capitan,
+     * se usa para saber si la tripulacion tiene al menos un capitan en la flota
+     *
+     * @return Devuelve false ya que el tripulante no es un capitan
+     */
+    @Override
+    public boolean esCapitan(){
+        return false;
+    }
 }

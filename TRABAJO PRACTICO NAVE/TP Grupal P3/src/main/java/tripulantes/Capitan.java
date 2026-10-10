@@ -28,4 +28,9 @@ public class Capitan extends Tripulante{
     public boolean esCapitan(){
         return true;
     }
+
+    @Override
+    public String toString(){
+        return super.toString() + " es Capitan";
+    }
 }

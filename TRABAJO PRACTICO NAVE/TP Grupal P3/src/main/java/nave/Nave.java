@@ -26,13 +26,15 @@ public abstract class Nave{
      * <b>pre:</b> carga es un numero positivo
      * <b>post:</b> Se establece la cantidad de combustible y se registra en la bitacora
      * 
-     * @param carga Es la cantidad de combustible que voy a agregar
+     * @param valorNuevo Es la cantidad de combustible que voy a agregar
      * @return Registra en bitacora la cantidad de combustible agregada y la cantidad final
      */
     
-    public RegistroRecursos setCombustible(float carga){
-        this.combustible = carga;
-        return new RegistroRecursos("COMBUSTIBLE",carga,this.getCombustible());
+    public RegistroRecursos setCombustible(float valorNuevo){
+        assert valorNuevo > 0: "TE AMO MARTIN";
+        float estadoPrevio = this.getCombustible();
+        this.combustible = valorNuevo;
+        return new RegistroRecursos("COMBUSTIBLE",valorNuevo-estadoPrevio,this.getCombustible());
     }
 
     public float getEnergia() {
@@ -45,13 +47,14 @@ public abstract class Nave{
      * <b>pre:</b> energia es un numero positivo
      * <b>post:</b> Se establece la cantidad de energia y se registra en la bitacora
      * 
-     * @param carga Es la cantidad de carga que voy a agregar
+     * @param valorNuevo Es la cantidad de carga que voy a agregar
      * @return Registra en bitacora la cantidad de energia agregada y la cantidad final
      */
     
-    public RegistroRecursos setEnergia(float carga) {
-        this.energia = carga;
-        return new RegistroRecursos("ENERGIA",carga,this.getEnergia());
+    public RegistroRecursos setEnergia(float valorNuevo) {
+        float estadoPrevio = this.getEnergia();
+        this.energia = valorNuevo;
+        return new RegistroRecursos("ENERGIA",valorNuevo - estadoPrevio,this.getEnergia());
     }
 
     public float getDesgaste() {
@@ -70,7 +73,7 @@ public abstract class Nave{
      */
     
     public RegistroRecursos setDesgaste(float desgaste) {
-        this.desgaste = desgaste;
+        this.desgaste += desgaste;
         return new RegistroRecursos("DESGASTE",desgaste,this.getDesgaste());
     }
 
@@ -84,8 +87,12 @@ public abstract class Nave{
      * @param tripulantes La lista de tripulantes que se desea agregar.
      */
     public void agregaTripulante(ArrayList<Tripulante> tripulantes) {
-        for (Tripulante t : tripulantes) {
-            this.agregaTripulante(t);
+        try {
+            for (Tripulante t : tripulantes) {
+                this.agregaTripulante(t);
+            }
+        }catch(ErrorAgregarTripulacionException e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -97,7 +104,13 @@ public abstract class Nave{
      * - Se añade el tripulante a la lista de tripulantes.
      * @param tripulante El tripulante que se desea agregar.
      */
-    public void agregaTripulante(Tripulante tripulante) {
+    public void agregaTripulante(Tripulante tripulante)throws ErrorAgregarTripulacionException {
+        if (tripulante==null)
+            throw new TripulanteInvalidoException("Tripulante nulo");
+        if (this.capitan!=null && tripulante.esCapitan())
+            throw new CapitanExistenteExceptionAgregar("No puede agregarse a " + tripulante.getNombre() + ". Ya existe un Capitan en la nave");
+        if (tripulante.esCapitan())
+            this.capitan = tripulante;
         this.tripulantes.add(tripulante);
     }
 
@@ -105,15 +118,12 @@ public abstract class Nave{
         this.tripulantes.remove(tripulante);
     }
 
-    public void agregaCapitan(Tripulante tripulante)throws ErrorAgregarTripulacionException {
-        if (!(tripulante.esCapitan()))
-            throw new TripulanteInvalidoException("No tiene el cargo de Capitan para asignarlo");
-        if (this.capitan != null)
-            throw new CapitanExistenteExceptionAgregar("Ya existe un Capitan en la nave");
-        this.capitan = tripulante;
+
+    public ArrayList<Tripulante> getTripulacion(){
+        return this.tripulantes;
     }
 
-    public int getTripulantes() {
+    public int getCantTripulantes() {
         return tripulantes.size();
     }
 

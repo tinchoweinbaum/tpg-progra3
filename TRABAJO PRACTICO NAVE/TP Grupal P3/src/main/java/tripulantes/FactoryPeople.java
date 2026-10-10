@@ -13,7 +13,7 @@ public class FactoryPeople {
      *@param antiguedad Es la cantidad de anos en el cargo. antiguedad>=0,antiguedad!=null
      *@throws CargoInvalidoException es arrojada si no puede crearse el personaje
      */
-    public static EspecieDecorator creaPersonaje(String cargo,String origen,String nombre,int antiguedad) throws ErrorCreacionPersonajeException{
+    public static Tripulante creaPersonaje(String cargo,String origen,String nombre,int antiguedad) throws ErrorCreacionPersonajeException{
         Tripulante aux = null;
         switch (cargo.toUpperCase()) {
             case "CAPITAN":
@@ -37,10 +37,10 @@ public class FactoryPeople {
                 return new Terricola(aux);
             case "MARCIANO":
                 return new Marciano(aux);
-            case "Vulcano":
+            case "VULCANO":
                 return new Vulcano(aux);
             default:
-                throw new OrigenInvalidoException("El origen '" + cargo + "' no existe");
+                throw new OrigenInvalidoException("El origen '" + origen + "' no existe");
         }
     }
 }

@@ -19,7 +19,7 @@ public class Terricola extends EspecieDecorator{
     }
 
     @Override
-    public String getOrigen(){
-        return "Terricola";
+    public String toString(){
+        return this.getTripulante().toString() + "\nEs de origen Terricola";
     }
 }

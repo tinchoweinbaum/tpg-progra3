@@ -31,18 +31,17 @@ public abstract class Tripulante {
         return bonoAntiguedad;
     }
 
+    @Override
+    public String toString(){
+        return this.getNombre();
+    }
+
     public void aumentaAntiguedad() {
         this.antiguedad += 1;
     }
 
     public abstract double getSueldo();
 
-    /**
-    * Funcion booleana para evitar usar instanceof al agregar capitan a la nave.
-    * 
-    * @return Devuelve false ya que por defecto los tripulantes no son capitanes
-    */
-    public boolean esCapitan(){
-        return false;
-    }
+
+    abstract public boolean esCapitan();
 }

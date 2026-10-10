@@ -84,7 +84,7 @@ public class Asistente {
      */
     public void cargaCombustibleNave(float carga){
         try{
-            if (this.nave.getCombustible() + carga <= 100){
+            if (this.nave.getCombustible() + carga <= 100 && this.nave.getCombustible() + carga >=0){
                 this.bitacorasNave.agregarRegistro(this.nave.setCombustible(this.nave.getCombustible() + carga));
             }else{
                 throw new CargaInvalidaCombustibleException("La carga supera el limite del deposito de combustible");
@@ -133,5 +133,13 @@ public class Asistente {
 
     public MotorWarp getMotor() {
         return motor;
+    }
+
+    public void muestraBitacora(){
+        this.bitacorasNave.mostrarBitacora();
+    }
+
+    public void muestraNBitacoras(int N){
+        this.bitacorasNave.mostrarNRegistros(N);
     }
 }

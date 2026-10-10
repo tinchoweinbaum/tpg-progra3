@@ -4,7 +4,6 @@ import asistentes.Asistente;
 import bitacora.Bitacora;
 import bitacora.RegistroError;
 import bitacora.RegistroMision;
-import bitacora.RegistroMotor;
 import exceptions.*;
 import motorwarp.MotorWarp;
 import nave.Nave;
@@ -70,7 +69,7 @@ public abstract class Mision{
     protected void preparar(Asistente ac) throws MisionImposibleException{
         Nave nave = ac.getNave();
 
-        if ((nave.getCapitan()==null ) || (nave.getTripulantes()<4))
+        if ((nave.getCapitan()==null ) || (nave.getCantTripulantes()<4))
             throw new ErrorTripulantesException("La tripulacion no cumple los minimos requisitos para realizar la mision");
 
         if (this.getCombustibleRequerido() > nave.getCombustible())
@@ -119,6 +118,7 @@ public abstract class Mision{
 
         bitacora.agregarRegistro(new RegistroMision("Mision completa.",this));
 
+        //Escribe en bitacora los cambios de estado correctos del motor
         ac.actualizaBitacoraMotor();
     }
 
@@ -139,7 +139,7 @@ public abstract class Mision{
 
     @Override
     public String toString(){
-        return "REPORTE MISION : " + this.getNombre() + "\n" + this.getDescripcion() + "\nCombustible consumido:" + this.combustibleRequerido + " litros\nLa nave sufrio un desgaste de " + this.desgasteRequerido + " unidades" + (this.energiaAportada >0 ? ("\nSe incremento la energia de la nave en " + this.energiaAportada + " unidades") : "");
+        return "REPORTE MISION : " + this.getNombre() + "\t" + this.getDescripcion() + "\tCombustible consumido:" + this.combustibleRequerido + " litros\tLa nave sufrio un desgaste de " + this.desgasteRequerido + " unidades" + (this.energiaAportada >0 ? ("\tSe incremento la energia de la nave en " + this.energiaAportada + " unidades") : "");
     }
 
 }

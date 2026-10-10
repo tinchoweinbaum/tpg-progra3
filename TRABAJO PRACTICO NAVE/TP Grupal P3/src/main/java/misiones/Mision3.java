@@ -2,8 +2,8 @@ package misiones;
 
 public class Mision3 extends Mision{
 
-    public Mision3(String nombre, String descripcion, float combustibleRequerido, float energiaAportada, float desgasteRequerido){
-        super(nombre, descripcion, combustibleRequerido, energiaAportada, desgasteRequerido);
+    public Mision3(float combustibleRequerido,float desgasteRequerido){
+        super("M-03", "Retorno seguro", combustibleRequerido, 0, desgasteRequerido);
     }
 
     public void ejecutar(){

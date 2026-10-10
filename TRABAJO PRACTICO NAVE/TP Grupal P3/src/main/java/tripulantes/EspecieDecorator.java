@@ -15,31 +15,14 @@ public abstract class EspecieDecorator extends Tripulante{
         return this.tripulante;
     }
 
-    abstract public String getOrigen();
-
-    //estos metodos ya los va a tener. para que los sobreescribis?
-    // --- Métodos del tripulante decorado ---
-//    @Override
-//    public String getNombre() {
-//        return this.tripulante.getNombre();
-//    }
-//    @Override
-//    public int getAntiguedad() {
-//        return this.tripulante.getAntiguedad();
-//    }
-//
-//    @Override
-//    public void aumentaAntiguedad() {
-//        this.tripulante.aumentaAntiguedad();
-//    }
-//
-//    @Override
-//    public double getSueldoBase() {
-//        return this.tripulante.getSueldoBase();
-//    }
-//
-//    @Override
-//    public double getBonoAntiguedad() {
-//        return this.tripulante.getBonoAntiguedad();
-//    }
+    /**
+     * Funcion booleana para determinar si un tripulante es capitan,
+     * se usa para saber si la tripulacion tiene al menos un capitan en la flota
+     *
+     * @return Devuelve false ya que el tripulante no es un capitan
+     */
+    @Override
+    public boolean esCapitan(){
+        return this.tripulante.esCapitan();
+    }
 }

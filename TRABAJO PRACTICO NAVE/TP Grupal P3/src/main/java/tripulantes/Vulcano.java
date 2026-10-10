@@ -20,7 +20,7 @@ public class Vulcano extends EspecieDecorator {
     }
 
     @Override
-    public String getOrigen(){
-        return "Vulcano";
+    public String toString(){
+        return this.getTripulante().toString() + "\nEs de origen Vulcano";
     }
 }

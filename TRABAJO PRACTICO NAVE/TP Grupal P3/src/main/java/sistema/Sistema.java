@@ -1,8 +1,10 @@
 package sistema;
 
 import asistentes.Asistente;
-import exceptions.TipoNaveInvalidoException;
+import exceptions.*;
+import misiones.*;
 import nave.*;
+import tripulantes.*;
 
 
 public class Sistema {
@@ -40,23 +42,50 @@ public class Sistema {
     */
 
     public Asistente inicio(String tipoNave){
-        
         Asistente asistente = null;
-        Nave nave = null;
-           
         try{
-            nave = FactoryNaves.getTipo(tipoNave);
+            Nave nave = FactoryNaves.getTipo(tipoNave);
             asistente = new Asistente(nave);
-            
         }catch(TipoNaveInvalidoException e){
             System.out.println(e.getMessage()); 
         }
-
-        
-        
         return asistente;
-            
-        
+    }
+
+    /**
+     * Metodo que crea un nuevo Tripulante en el Sistema
+     * <b>pre:</b>
+     * @param cargo "Capitan - Alferez - Consejero - Teniente", cargo!=null cargo!=""
+     * @param origen "Terricola - Vulcano - Marciano", origen!=null origen!=""
+     * @param nombre nombre!=null nombre!=""
+     * @param antiguedad antiguedad!=null antiguedad>0
+     * @return Un nuevo tripulante decorado
+     */
+
+    public Tripulante creaTripulante(String cargo, String origen, String nombre, int antiguedad){
+        Tripulante personaje = null;
+        try{
+            personaje = FactoryPeople.creaPersonaje(cargo, origen, nombre, antiguedad);
+        }catch(ErrorCreacionPersonajeException e){
+            System.out.println(e.getMessage());
+        }
+        return personaje;
+    }
+
+    /**
+     * Metodo que crea un nuevo tipo de mision valido
+     * @param tipoMision {1 - 2 - 3}
+     * @return Un nuevo objeto mision que luego le podra ser asignado un asistente
+     */
+
+    public Mision creaMision(int tipoMision){
+        Mision misionNueva = null;
+        try{
+            misionNueva = FactoryMision.getTipo(tipoMision);
+        }catch(TipoMisionInvalidoException e){
+            System.out.println(e.getMessage());
+        }
+        return misionNueva;
     }
 
 }

@@ -23,7 +23,6 @@ public class MotorWarp {
         return auxiliar;
     }
 
-
     public void llamaEstado(int i) throws EstadoInvalidoException {
         switch (i){
             case DISPONIBLE:
@@ -63,8 +62,6 @@ public class MotorWarp {
     * 
     * @throws EstadoInvalidoException No se puede pasar del estado actual(disponible, preparaSalto o saltoWarp) -/-> disponible.
     */
-    
-     
     public void disponible() throws EstadoInvalidoException {
         estadoActual.disponible();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: DISPONIBLE",this.estadoActual));
@@ -82,7 +79,6 @@ public class MotorWarp {
     * 
     * @throws EstadoInvalidoException No se puede pasar del estado actual(preparaSalto, saltoWarp o enfriamiento) -/-> prepararSalto.
     */
-    
     public void prepararSalto() throws EstadoInvalidoException {
         estadoActual.preparaSalto();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: PREPARANDO SALTO",this.estadoActual));
@@ -101,7 +97,6 @@ public class MotorWarp {
     * 
     * @throws EstadoInvalidoException No se puede pasar del estado actual(disponible, saltoWarp o enfriamiento) -/-> saltoWarp.
     */
-
     public void saltoWarp() throws EstadoInvalidoException {
         estadoActual.saltoWarp();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO WARP",this.estadoActual));
@@ -120,7 +115,6 @@ public class MotorWarp {
     * 
     * @throws EstadoInvalidoException No se puede pasar del estado actual(disponible, preparaSalto o enfriamiento) -/-> enfriamiento.
     */
-
     public void enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: ENFRIAMIENTO",this.estadoActual));

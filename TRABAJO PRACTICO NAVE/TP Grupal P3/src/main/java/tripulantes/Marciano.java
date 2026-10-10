@@ -19,7 +19,7 @@ public class Marciano extends EspecieDecorator{
     }
 
     @Override
-    public String getOrigen(){
-        return "Marciano";
+    public String toString(){
+        return this.getTripulante().toString() + "\nEs de origen Marciano";
     }
 }
