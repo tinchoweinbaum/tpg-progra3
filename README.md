@@ -1,7 +1,7 @@
 
 # Proyecto Nave Asistida
 
-Realizado por *Martin Weinbaum , Juan Pablo Gueli , Lisandro Mazzucco , y Gonzalo Bounzerio*
+Realizado por *Martin Weinbaum , Juan Pablo Gueli , Lisandro Mazzucco , y Gonzalo Bounzerio* <br>
 Proyecto final de la materia **Programacion C** de la Universidad Nacional de Mar del Plata, dictada por el profesor *Leonel Guccione*.
 
 
@@ -13,7 +13,7 @@ El **Asistente de Navegación y Comando** es un software embarcado diseñado par
 
 >Para esta primer entrega se ejecutaran comandos desde el main.java
 
-Se debe crear una primer instancia del **Sistema** donde se desarrollara el programa, implementando el siguiente comando:
+Se debe crear una instancia del **Sistema** donde se desarrollara el programa, implementando el siguiente comando:
 ```java
 	Sistema system = Sistema.getInstance();
 ```

@@ -63,6 +63,10 @@ public class RegistroRecursos extends RegistroBitacora {
         return nivelResultante;
     }
 
+    /**
+     * Metodo asistido por IA
+     * @return String del registro
+     */
     @Override
     public String toString() {
         String signo = cantidadModificada >= 0 ? "+" : "";

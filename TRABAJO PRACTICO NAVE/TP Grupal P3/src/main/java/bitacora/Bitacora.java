@@ -45,6 +45,7 @@ public class Bitacora {
 
     /**
      * Agrega de manera ordenada por fecha un nuevo evento a la bitacora
+     * Metodo asistido por IA
      * 
      * <b>pre:</b> registro != null
      * <b>post:</b> Se incrementa la cantidad de registros guardados y se mantiene ordenada por fecha
