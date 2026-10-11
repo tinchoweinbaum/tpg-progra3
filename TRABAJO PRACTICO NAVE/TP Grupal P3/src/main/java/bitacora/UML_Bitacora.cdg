@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="main.java.bitacora">
+  <ClassDiagramComponents>
+    <Class name="Bitacora" package="bitacora" visibility="public" xPosition="84.0" yPosition="39.0">
+      <Fields>
+        <Field name="registros" type="List&lt;RegistroBitacora&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="invariant" returnType="boolean" visibility="private"/>
+        <Method name="agregarRegistro" returnType="void" visibility="public">
+          <Argument type="RegistroBitacora" name="registro"/>
+        </Method>
+        <Method name="mostrarBitacora" returnType="void" visibility="public"/>
+        <Method name="mostrarNRegistros" returnType="void" visibility="public">
+          <Argument type="int" name="n"/>
+        </Method>
+        <Method name="mostrarRegistrosMotor" returnType="void" visibility="public"/>
+        <Method name="mostrarRegistrosError" returnType="void" visibility="public"/>
+        <Method name="mostrarRegistrosMision" returnType="void" visibility="public"/>
+        <Method name="mostrarRegistrosRecursos" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="RegistroBitacora" package="bitacora" visibility="public" isAbstract="true" xPosition="896.0" yPosition="39.0">
+      <Fields>
+        <Field name="fechaRegistro" type="Date" visibility="private" isFinal="true"/>
+        <Field name="descripcionRegistro" type="String" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Date" name="fechaRegistro"/>
+          <Argument type="String" name="descripcionRegistro"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="descripcionRegistro"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="invarianteRegistro" returnType="boolean" visibility="private"/>
+        <Method name="esRegistroMotor" returnType="boolean" visibility="public"/>
+        <Method name="esRegistroMision" returnType="boolean" visibility="public"/>
+        <Method name="esRegistroRecursos" returnType="boolean" visibility="public"/>
+        <Method name="esRegistroError" returnType="boolean" visibility="public"/>
+        <Method name="getFechaRegistro" returnType="Date" visibility="public"/>
+        <Method name="getDescripcionRegistro" returnType="String" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="compareTo" returnType="int" visibility="public">
+          <Argument type="RegistroBitacora" name="o"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="RegistroError" package="bitacora" visibility="public" xPosition="114.0" yPosition="481.0">
+      <Fields>
+        <Field name="error" type="Exception" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Date" name="fechaRegistro"/>
+          <Argument type="String" name="descripcionRegistro"/>
+          <Argument type="Exception" name="error"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="descripcionRegistro"/>
+          <Argument type="Exception" name="error"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="esRegistroError" returnType="boolean" visibility="public"/>
+        <Method name="getError" returnType="Exception" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="RegistroMision" package="bitacora" visibility="public" xPosition="1145.0" yPosition="678.0">
+      <Fields>
+        <Field name="mision" type="Mision" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Date" name="fechaRegistro"/>
+          <Argument type="String" name="descripcionRegistro"/>
+          <Argument type="Mision" name="mision"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="descripcionRegistro"/>
+          <Argument type="Mision" name="mision"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="esRegistroMision" returnType="boolean" visibility="public"/>
+        <Method name="getMision" returnType="Mision" visibility="public"/>
+        <Method name="setMision" returnType="void" visibility="public">
+          <Argument type="Mision" name="mision"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="RegistroMotor" package="bitacora" visibility="public" xPosition="613.0" yPosition="678.0">
+      <Fields>
+        <Field name="estado" type="State" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Date" name="fechaRegistro"/>
+          <Argument type="String" name="descripcionRegistro"/>
+          <Argument type="State" name="estado"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="descripcionRegistro"/>
+          <Argument type="State" name="estado"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="esRegistroMotor" returnType="boolean" visibility="public"/>
+        <Method name="getEstado" returnType="State" visibility="public"/>
+        <Method name="setEstado" returnType="void" visibility="public">
+          <Argument type="State" name="estado"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="RegistroRecursos" package="bitacora" visibility="public" xPosition="1685.0" yPosition="386.0">
+      <Fields>
+        <Field name="tipoRecurso" type="String" visibility="private"/>
+        <Field name="cantidadModificada" type="float" visibility="private"/>
+        <Field name="nivelResultante" type="float" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Date" name="fechaRegistro"/>
+          <Argument type="String" name="tipoRecurso"/>
+          <Argument type="float" name="cantidadModificada"/>
+          <Argument type="float" name="nivelResultante"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="tipoRecurso"/>
+          <Argument type="float" name="cantidadModificada"/>
+          <Argument type="float" name="nivelResultante"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="esRegistroRecursos" returnType="boolean" visibility="public"/>
+        <Method name="esTipoRecursoValido" returnType="boolean" visibility="private" isStatic="true">
+          <Argument type="String" name="tipo"/>
+        </Method>
+        <Method name="getTipoRecurso" returnType="String" visibility="public"/>
+        <Method name="getCantidadModificada" returnType="float" visibility="public"/>
+        <Method name="getNivelResultante" returnType="float" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <IsRelation name="is" source="bitacora.RegistroMotor" target="bitacora.RegistroBitacora"/>
+    <IsRelation name="is" source="bitacora.RegistroMision" target="bitacora.RegistroBitacora"/>
+    <UseRelation source="bitacora.Bitacora" target="bitacora.RegistroBitacora" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="bitacora.RegistroError" target="bitacora.RegistroBitacora"/>
+    <HasRelation name="registros" source="bitacora.Bitacora" target="bitacora.RegistroBitacora" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;RegistroBitacora&gt;"/>
+    <IsRelation name="is" source="bitacora.RegistroRecursos" target="bitacora.RegistroBitacora"/>
+    <UseRelation source="bitacora.RegistroBitacora" target="bitacora.RegistroBitacora" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

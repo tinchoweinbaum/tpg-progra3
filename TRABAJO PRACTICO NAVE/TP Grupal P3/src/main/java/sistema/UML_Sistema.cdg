@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="main.java.sistema">
+  <ClassDiagramComponents>
+    <Class name="Sistema" package="sistema" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="_instance" type="Sistema" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="private"/>
+      </Constructors>
+      <Methods>
+        <Method name="getInstance" returnType="Sistema" visibility="public" isStatic="true"/>
+        <Method name="inicio" returnType="Asistente" visibility="public">
+          <Argument type="String" name="tipoNave"/>
+        </Method>
+        <Method name="creaTripulante" returnType="Tripulante" visibility="public">
+          <Argument type="String" name="cargo"/>
+          <Argument type="String" name="origen"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="int" name="antiguedad"/>
+        </Method>
+        <Method name="creaMision" returnType="Mision" visibility="public">
+          <Argument type="int" name="tipoMision"/>
+        </Method>
+        <Method name="esperar" returnType="void" visibility="public" isStatic="true">
+          <Argument type="int" name="milisegundos"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="sistema.Sistema" target="sistema.Sistema" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="_instance" source="sistema.Sistema" target="sistema.Sistema" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

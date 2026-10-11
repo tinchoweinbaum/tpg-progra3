@@ -20,7 +20,9 @@ public class Sistema {
     * 
     * <b>post:</b>  Se crea un sistema o se pasa su referencia si ya existia uno.
     * 
+    * @return Devuelve la referencia del sistema
     */
+
     
     public static Sistema getInstance(){
         if(_instance == null)

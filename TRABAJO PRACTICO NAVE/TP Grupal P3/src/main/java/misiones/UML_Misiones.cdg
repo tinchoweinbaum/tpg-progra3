@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="main.java.misiones">
+  <ClassDiagramComponents>
+    <Class name="FactoryMision" package="misiones" visibility="public" xPosition="71.0" yPosition="206.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="getTipo" returnType="Mision" visibility="public" isStatic="true">
+          <Argument type="int" name="tipoMision"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Mision" package="misiones" visibility="public" isAbstract="true" xPosition="517.0" yPosition="36.0">
+      <Fields>
+        <Field name="nombre" type="String" visibility="private" isFinal="true"/>
+        <Field name="descripcion" type="String" visibility="private" isFinal="true"/>
+        <Field name="combustibleRequerido" type="float" visibility="private" isFinal="true"/>
+        <Field name="energiaAportada" type="float" visibility="private" isFinal="true"/>
+        <Field name="desgasteRequerido" type="float" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="descripcion"/>
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="energiaAportada"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getDescripcion" returnType="String" visibility="public"/>
+        <Method name="getCombustibleRequerido" returnType="float" visibility="public"/>
+        <Method name="getEnergiaAportada" returnType="float" visibility="public"/>
+        <Method name="getDesgasteRequerido" returnType="float" visibility="public"/>
+        <Method name="preparar" returnType="void" visibility="protected">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="saltar" returnType="void" visibility="protected">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="ejecutar" returnType="void" visibility="protected" isAbstract="true"/>
+        <Method name="evaluar" returnType="void" visibility="protected" isAbstract="true"/>
+        <Method name="cerrar" returnType="void" visibility="protected">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="ejecutarMision" returnType="void" visibility="public">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Mision1" package="misiones" visibility="public" xPosition="15.0" yPosition="639.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="energiaAportada"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ejecutar" returnType="void" visibility="public"/>
+        <Method name="evaluar" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Mision2" package="misiones" visibility="public" xPosition="608.0" yPosition="779.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="energiaAportada"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ejecutar" returnType="void" visibility="public"/>
+        <Method name="evaluar" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Mision3" package="misiones" visibility="public" xPosition="1201.0" yPosition="639.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ejecutar" returnType="void" visibility="public"/>
+        <Method name="evaluar" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <IsRelation name="is" source="misiones.Mision1" target="misiones.Mision"/>
+    <IsRelation name="is" source="misiones.Mision3" target="misiones.Mision"/>
+    <UseRelation source="misiones.FactoryMision" target="misiones.Mision" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="misiones.Mision2" target="misiones.Mision"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

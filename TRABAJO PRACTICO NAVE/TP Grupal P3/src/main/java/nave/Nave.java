@@ -41,6 +41,7 @@ public abstract class Nave{
      *
      * @param cantCarga Cantidad de combustible a cargar.
      * @return Objeto de tipo {@code RegistroRecursos} para la bitácora del asistente.
+     * @throws exceptions.CantCombustibleInvalidaException excepcion que se lanza al querer cargar mas combustible del permitido
      */
     public RegistroRecursos cargaCombustible(float cantCarga) throws CantCombustibleInvalidaException{
         assert cantCarga > 0: "Se debe cargar un número positivo de combustible";
@@ -136,7 +137,7 @@ public abstract class Nave{
     }
 
     public float getDesgaste() {
-        return desgaste;
+        return this.desgaste;
     }
 
     /**
@@ -146,6 +147,7 @@ public abstract class Nave{
      * <b>Post:</b> Se añade cada tripulante de la lista a la tripulación.
      * 
      * @param tripulantes La lista de tripulantes que se desea agregar.
+     * @throws exceptions.ErrorAgregarTripulacionException devuelve una excepcion debido a que no se puedo agregar un tripulante
      */
     public void agregaTripulante(ArrayList<Tripulante> tripulantes) throws ErrorAgregarTripulacionException{
         for (Tripulante t : tripulantes) {
@@ -160,7 +162,9 @@ public abstract class Nave{
      * <b>Post:</b>
      * - Se añade el tripulante a la lista de tripulantes.
      * @param tripulante El tripulante que se desea agregar.
+     * @throws exceptions.ErrorAgregarTripulacionException devuelve una excepcion debido a que no se puedo agregar un tripulante
      */
+    
     public void agregaTripulante(Tripulante tripulante)throws ErrorAgregarTripulacionException {
         if (tripulante == null)
             throw new TripulanteInvalidoException("Tripulante nulo.");
@@ -178,7 +182,9 @@ public abstract class Nave{
      * Devuelve true si se pudo eliminar el tripulante, false si no.<br>
      * <b>Post: </b>Se elimina el tripulante de la tripulación si este existe, si es el capitán se deja en null la referencia al capitán de la nave.
      * @param tripulante Referencia al objeto tripulante a eliminar.
+     * @return Devuelve si el tripulante se puedo elimiar o no
      */
+    
     public boolean eliminaTripulante(Tripulante tripulante) {
         boolean eliminado = this.tripulantes.remove(tripulante);
         if (eliminado && tripulante.equals(this.capitan)) {

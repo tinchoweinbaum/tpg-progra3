@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Asistente">
+  <ClassDiagramComponents>
+    <Class name="Asistente" package="asistentes" visibility="public" xPosition="35.0" yPosition="11.0">
+      <Fields>
+        <Field name="nave" type="Nave" visibility="private"/>
+        <Field name="bitacorasNave" type="Bitacora" visibility="private"/>
+        <Field name="motor" type="MotorWarp" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Nave" name="nave"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="invariant" returnType="boolean" visibility="private"/>
+        <Method name="getNave" returnType="Nave" visibility="public"/>
+        <Method name="getMotor" returnType="MotorWarp" visibility="public"/>
+        <Method name="setEstadoMotor" returnType="void" visibility="public">
+          <Argument type="int" name="idEstado"/>
+        </Method>
+        <Method name="saltar" returnType="void" visibility="public"/>
+        <Method name="actualizaBitacoraMotor" returnType="void" visibility="public"/>
+        <Method name="getBitacorasNave" returnType="Bitacora" visibility="public"/>
+        <Method name="cargaCombustibleNave" returnType="void" visibility="public">
+          <Argument type="float" name="cantCarga"/>
+        </Method>
+        <Method name="consumeCombustibleNave" returnType="void" visibility="public">
+          <Argument type="float" name="cantConsumida"/>
+        </Method>
+        <Method name="cargaComustibleNaveFull" returnType="void" visibility="public"/>
+        <Method name="aumentaDesgasteNave" returnType="void" visibility="public">
+          <Argument type="float" name="cantDesgaste"/>
+        </Method>
+        <Method name="reparaDesgasteNave" returnType="void" visibility="public">
+          <Argument type="float" name="cantReparada"/>
+        </Method>
+        <Method name="reparaDesgasteNaveFull" returnType="void" visibility="public"/>
+        <Method name="cargaEnergiaNave" returnType="void" visibility="public">
+          <Argument type="float" name="cantEnergia"/>
+        </Method>
+        <Method name="consumeEnergiaNave" returnType="void" visibility="public">
+          <Argument type="float" name="cantConsumida"/>
+        </Method>
+        <Method name="cargaEnergiaNaveFull" returnType="void" visibility="public"/>
+        <Method name="muestraBitacora" returnType="void" visibility="public"/>
+        <Method name="muestraNBitacoras" returnType="void" visibility="public">
+          <Argument type="int" name="N"/>
+        </Method>
+        <Method name="agregaTripulante" returnType="void" visibility="public">
+          <Argument type="Tripulante" name="tripulante"/>
+        </Method>
+        <Method name="agregaTripulante" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;Tripulante&gt;" name="tripulantes"/>
+        </Method>
+        <Method name="eliminaTripulante" returnType="boolean" visibility="public">
+          <Argument type="Tripulante" name="t"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

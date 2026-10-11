@@ -8,25 +8,28 @@ public class RegistroMision extends RegistroBitacora{
 
     /**
      * Constructor que crea un registro asociado a una misión
-     * <b>Pre:</b>
-     * - fechaRegistro != null
-     * - descripcionRegistro != null && descripcionRegistro no esta vacia
-     * - mision != null
-     * <b>Post:</b>
-     * - getFechaRegistro() == fechaRegistro
-     * - getDescripcionRegistro() == descripcionRegistro
-     * - getMision() == mision
+     * <b>pre:</b> fechaRegistro != null, descripcionRegistro != null && descripcionRegistro no esta vacia y mision != null
+     * <b>post:</b> getFechaRegistro() == fechaRegistro, getDescripcionRegistro() == descripcionRegistro y getMision() == mision
+     * 
      * @param fechaRegistro la fecha en la que se guarda la información
      * @param descripcionRegistro la informacion que guarda el registro al crearse
      * @param mision la mision a la que se asocia el registros
      */
+    
     public RegistroMision(Date fechaRegistro, String descripcionRegistro, Mision mision) {
         super(fechaRegistro, descripcionRegistro);
         assert mision != null: "La misión no puede ser nula";
         this.mision = mision;
     }
 
-    public  RegistroMision(String descripcionRegistro, Mision mision){
+    /**
+    * Contructor que llama al contructor padre pasandole la fecha actual, una descripcion y un error
+    * 
+    * @param descripcionRegistro string que contiene a descripcion completa del 
+    * @param mision mision la mision a la que se asocia el registros
+    */
+    
+    public RegistroMision(String descripcionRegistro, Mision mision){
         this(new Date(), descripcionRegistro, mision);
     }
 

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="main.java.tripulantes">
+  <ClassDiagramComponents>
+    <Class name="Alferez" package="tripulantes" visibility="public" xPosition="660.0" yPosition="1169.0">
+      <Fields>
+        <Field name="SUELDO_BASE_ALFEREZ" type="double" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="BONO_ANTIGUEDAD_ALFEREZ" type="double" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="int" name="antiguedad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="esCapitan" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Capitan" package="tripulantes" visibility="public" xPosition="1859.0" yPosition="998.0">
+      <Fields>
+        <Field name="SUELDO_BASE_CAPITAN" type="double" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="BONO_ANTIGUEDAD_CAPITAN" type="double" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="int" name="antiguedad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="esCapitan" returnType="boolean" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Consejero" package="tripulantes" visibility="public" xPosition="1417.0" yPosition="1117.0">
+      <Fields>
+        <Field name="SUELDO_BASE_CONSEJERO" type="double" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="BONO_ANTIGUEDAD_CONSEJERO" type="double" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="BONO_CONSEJO" type="double" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="consejosDados" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="int" name="antiguedad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getConsejos" returnType="int" visibility="public"/>
+        <Method name="darConsejo" returnType="void" visibility="public"/>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="esCapitan" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EspecieDecorator" package="tripulantes" visibility="public" isAbstract="true" xPosition="168.0" yPosition="224.0">
+      <Fields>
+        <Field name="tripulante" type="Tripulante" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tripulante" name="tripulante"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSueldo" returnType="// Sobreescribe getSueldo haciéndolo abstracto para poder usar las implementaciones de las clases hijas de esta. double" visibility="public" isAbstract="true"/>
+        <Method name="getTripulante" returnType="Tripulante" visibility="public"/>
+        <Method name="esCapitan" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="FactoryPeople" package="tripulantes" visibility="public" xPosition="1872.0" yPosition="270.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="creaPersonaje" returnType="Tripulante" visibility="public" isStatic="true">
+          <Argument type="String" name="cargo"/>
+          <Argument type="String" name="origen"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="int" name="antiguedad"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Marciano" package="tripulantes" visibility="public" xPosition="736.0" yPosition="652.0">
+      <Fields>
+        <Field name="BONO_MARCIANO" type="double" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tripulante" name="tripulante"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Teniente" package="tripulantes" visibility="public" xPosition="1059.0" yPosition="998.0">
+      <Fields>
+        <Field name="SUELDO_BASE_TENIENTE" type="double" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="BONO_ANITGUEDAD_TENIENTE" type="double" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="int" name="antiguedad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="esCapitan" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Terricola" package="tripulantes" visibility="public" xPosition="449.0" yPosition="652.0">
+      <Fields>
+        <Field name="BONO_TERRICOLA" type="double" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tripulante" name="tripulante"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Tripulante" package="tripulantes" visibility="public" isAbstract="true" xPosition="1178.0" yPosition="148.0">
+      <Fields>
+        <Field name="nombre" type="String" visibility="protected" isFinal="true"/>
+        <Field name="antiguedad" type="int" visibility="protected"/>
+        <Field name="sueldoBase" type="double" visibility="protected" isFinal="true"/>
+        <Field name="bonoAntiguedad" type="double" visibility="protected" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nom"/>
+          <Argument type="int" name="ant"/>
+          <Argument type="double" name="sueldoBase"/>
+          <Argument type="double" name="bonoAntiguedad"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getAntiguedad" returnType="int" visibility="public"/>
+        <Method name="getSueldoBase" returnType="double" visibility="public"/>
+        <Method name="getBonoAntiguedad" returnType="double" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="aumentaAntiguedad" returnType="void" visibility="public"/>
+        <Method name="getSueldo" returnType="double" visibility="public" isAbstract="true"/>
+        <Method name="esCapitan" returnType="boolean" visibility="public" isAbstract="true"/>
+      </Methods>
+    </Class>
+    <Class name="Vulcano" package="tripulantes" visibility="public" xPosition="168.0" yPosition="652.0">
+      <Fields>
+        <Field name="BONO_VULCANO" type="double" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tripulante" name="tripulante"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSueldo" returnType="double" visibility="public"/>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <IsRelation name="is" source="tripulantes.Vulcano" target="tripulantes.EspecieDecorator"/>
+    <IsRelation name="is" source="tripulantes.Consejero" target="tripulantes.Tripulante"/>
+    <IsRelation name="is" source="tripulantes.Terricola" target="tripulantes.EspecieDecorator"/>
+    <IsRelation name="is" source="tripulantes.Teniente" target="tripulantes.Tripulante"/>
+    <UseRelation source="tripulantes.EspecieDecorator" target="tripulantes.Tripulante" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="tripulantes.Alferez" target="tripulantes.Tripulante"/>
+    <IsRelation name="is" source="tripulantes.EspecieDecorator" target="tripulantes.Tripulante"/>
+    <IsRelation name="is" source="tripulantes.Marciano" target="tripulantes.EspecieDecorator"/>
+    <IsRelation name="is" source="tripulantes.Capitan" target="tripulantes.Tripulante"/>
+    <HasRelation name="tripulante" source="tripulantes.EspecieDecorator" target="tripulantes.Tripulante" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tripulantes.FactoryPeople" target="tripulantes.Tripulante" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

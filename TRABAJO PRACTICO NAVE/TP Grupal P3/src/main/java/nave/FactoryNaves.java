@@ -11,7 +11,7 @@ public class FactoryNaves {
     *
     * @param tipoNave Es el identificador de tipo de la nave a crear.
     * @throws TipoNaveInvalidoException si el tipoNave no es valido arroja una excepcion indicando que no se puede crear el tipo.
-    * 
+    * @return Devuelve una instancia del tipo de nave seleccionada
     */
     
     public static Nave getTipo(String tipoNave) throws TipoNaveInvalidoException{
