@@ -195,12 +195,13 @@ public class Asistente {
     * Metodo para reparar la nave completamente.
     * Toma el desgaste actual de la nave y otro metodo en la clase "nave" le resta
     * el desgaste actual volviendolo 0.
-    * 
+    * <b>pre:</b> El desgaste de la nave tiene que ser mayor o igual a 80 unidades (desgaste >= 80)
     *<b>post:</b> Repara totalmente la nave (desgaste = 0)
     */
     
     public void reparaDesgasteNaveFull(){
-        this.reparaDesgasteNave(this.nave.getDesgaste());
+        if (this.getNave().getDesgaste()>=80)
+            this.reparaDesgasteNave(this.nave.getDesgaste());
     }
 
     /**
