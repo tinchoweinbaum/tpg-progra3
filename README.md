@@ -1,7 +1,7 @@
 
 # Proyecto Nave Asistida
 
-Realizado por *Martin Weinbaum , Juan Pablo Gueli , Lisandro Mazzucco , y Gonzalo Bounzerio*
+Realizado por *Martin Weinbaum , Juan Pablo Gueli , Lisandro Mazzucco , y Gonzalo Bounzerio* <br>
 Proyecto final de la materia **Programacion C** de la Universidad Nacional de Mar del Plata, dictada por el profesor *Leonel Guccione*.
 
 
