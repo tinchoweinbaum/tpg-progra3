@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args){
         escenario1();
-        escenario2();
-        escenario3();
-        escenario4();
+        //escenario2();
+        //escenario3();
+        //escenario4();
     }
 
     public static void escenario1(){
@@ -25,10 +25,10 @@ public class Main {
         Asistente ac3 = sistema.inicio("Explorador");
 
         ArrayList<Tripulante> tripulantes = new ArrayList<>();
-        Tripulante t1 = sistema.creaTripulante("CAPITAN","Vulcano","palermo",5);
-        Tripulante t2 = sistema.creaTripulante("Alferez","Marciano","riquelme",10);
-        Tripulante t3 = sistema.creaTripulante("Consejero","Marciano","bianchi",35);
-        Tripulante t4 = sistema.creaTripulante("Teniente","Marciano","dua lipa",10);
+        Tripulante t1 = sistema.creaTripulante("CAPITAN","Vulcano","lisandro",5);
+        Tripulante t2 = sistema.creaTripulante("Alferez","Marciano","juampi",10);
+        Tripulante t3 = sistema.creaTripulante("Consejero","Marciano","martin",35);
+        Tripulante t4 = sistema.creaTripulante("Teniente","Marciano","gonzalo",10);
         tripulantes.add(t1);
         tripulantes.add(t2);
         tripulantes.add(t3);
@@ -61,10 +61,10 @@ public class Main {
         Asistente ac1 = sistema.inicio("Carguero");
 
         ArrayList<Tripulante> tripulantes = new ArrayList<>();
-        Tripulante t1 = sistema.creaTripulante("CAPITAN","Vulcano","palermo",5);
-        Tripulante t2 = sistema.creaTripulante("Alferez","Marciano","riquelme",10);
-        Tripulante t3 = sistema.creaTripulante("Consejero","Marciano","bianchi",35);
-        Tripulante t4 = sistema.creaTripulante("Teniente","Marciano","dua lipa",10);
+        Tripulante t1 = sistema.creaTripulante("CAPITAN","Vulcano","martin",5);
+        Tripulante t2 = sistema.creaTripulante("Alferez","Marciano","gonzalo",10);
+        Tripulante t3 = sistema.creaTripulante("Consejero","Marciano","lisandro",35);
+        Tripulante t4 = sistema.creaTripulante("Teniente","Marciano","juampi",10);
         tripulantes.add(t1);
         tripulantes.add(t2);
         tripulantes.add(t3);
