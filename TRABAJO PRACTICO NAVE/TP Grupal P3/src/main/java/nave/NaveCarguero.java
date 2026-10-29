@@ -12,5 +12,23 @@ public class NaveCarguero extends Nave{
         this.setEnergia(60f);
     }
 
+    @Override
+    public void atacar(Nave nave) {
+        nave.atacadoPorCarguero();
+    }
 
+    @Override
+    public void atacadoPorCombate() {
+        System.out.println("Carguero vence a Combate");
+    }
+
+    @Override
+    public void atacadoPorCarguero() {
+        System.out.println("PACTO DE PAZ");
+    }
+
+    @Override
+    public void atacadoPorExplorador() {
+        System.out.println("Explorador vence a Carguero");
+    }
 }
