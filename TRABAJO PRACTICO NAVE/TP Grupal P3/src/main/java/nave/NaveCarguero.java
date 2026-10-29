@@ -1,5 +1,7 @@
 package nave;
 
+import bitacora.RegistroCombate;
+
 public class NaveCarguero extends Nave{
 
     /**
@@ -13,22 +15,23 @@ public class NaveCarguero extends Nave{
     }
 
     @Override
-    public void atacar(Nave nave) {
+    public RegistroCombate atacar(Nave nave) {
         nave.atacadoPorCarguero();
+        return new RegistroCombate("Atacando nave " + nave);
     }
 
     @Override
-    public void atacadoPorCombate() {
-        System.out.println("Carguero vence a Combate");
+    public RegistroCombate atacadoPorCombate() {
+        return new RegistroCombate("Nave de Combate destruida");
     }
 
     @Override
-    public void atacadoPorCarguero() {
-        System.out.println("PACTO DE PAZ");
+    public RegistroCombate atacadoPorCarguero() {
+        return new RegistroCombate("Pacto de Paz entre naves cargueras.");
     }
 
     @Override
-    public void atacadoPorExplorador() {
-        System.out.println("Explorador vence a Carguero");
+    public RegistroCombate atacadoPorExplorador() {
+        return new RegistroCombate("Nave Destruida por nave exploradora."); // finalize?? no devolvemos??' void?? que asemos?!?!??!?!
     }
 }

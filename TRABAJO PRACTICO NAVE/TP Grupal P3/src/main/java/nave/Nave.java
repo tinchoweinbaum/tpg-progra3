@@ -1,6 +1,7 @@
 package nave;
 import java.util.ArrayList;
 
+import bitacora.RegistroCombate;
 import bitacora.RegistroRecursos;
 import exceptions.*;
 import tripulantes.*;
@@ -18,13 +19,14 @@ public abstract class Nave{
         super();
     }
 
-    public abstract void atacar(Nave nave);
+    // Los metodos de combate devuelven objetos de tipo RegistroComabte para que el asistente que los llama los pueda agregar a su bitacora.
+    public abstract RegistroCombate atacar(Nave nave);
 
-    public abstract void atacadoPorCombate();
+    public abstract RegistroCombate atacadoPorCombate();
 
-    public abstract void atacadoPorCarguero();
+    public abstract RegistroCombate atacadoPorCarguero();
 
-    public abstract void atacadoPorExplorador();
+    public abstract RegistroCombate atacadoPorExplorador();
 
     public float getCombustible() {
         return this.combustible;

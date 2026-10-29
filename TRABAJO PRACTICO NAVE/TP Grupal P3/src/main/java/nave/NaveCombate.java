@@ -1,5 +1,7 @@
 package nave;
 
+import bitacora.RegistroCombate;
+
 public class NaveCombate extends Nave{
 
     /**
@@ -13,22 +15,23 @@ public class NaveCombate extends Nave{
     }
 
     @Override
-    public void atacar(Nave nave) {
+    public RegistroCombate atacar(Nave nave) {
         nave.atacadoPorCombate();
+        return new RegistroCombate("Atacando nave" + nave); // Usa el toString de Nave
     }
 
     @Override
-    public void atacadoPorCombate() {
+    public RegistroCombate atacadoPorCombate() {
         System.out.println("PACTO DE PAZ");
     }
 
     @Override
-    public void atacadoPorCarguero() {
+    public RegistroCombate atacadoPorCarguero() {
         System.out.println("Carguero vence a Combate");
     }
 
     @Override
-    public void atacadoPorExplorador() {
+    public RegistroCombate atacadoPorExplorador() {
         System.out.println("Combate vence a Explorador");
     }
 }

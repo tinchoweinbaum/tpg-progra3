@@ -1,3 +1,1 @@
---> Revisar los contratos y asserts de todas las funciones.
---> Completar escenarios 2 a 4
---> readme.md
+-> Destruccion de las naves, hacer que las naves se "suiciden" cuando atacan a una contra la que pierden.

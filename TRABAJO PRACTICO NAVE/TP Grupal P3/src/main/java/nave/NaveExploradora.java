@@ -1,5 +1,7 @@
 package nave;
 
+import bitacora.RegistroCombate;
+
 public class NaveExploradora extends Nave{
 
     /**
@@ -13,22 +15,23 @@ public class NaveExploradora extends Nave{
     }
 
     @Override
-    public void atacar(Nave nave) {
+    public RegistroCombate atacar(Nave nave) {
         nave.atacadoPorExplorador();
+        return new RegistroCombate("Atacando nave " + nave);
     }
 
     @Override
-    public void atacadoPorCombate() {
-        System.out.println("Combate vence a Explorador");
+    public RegistroCombate atacadoPorCombate() {
+        return new RegistroCombate("Nave destruida por nave de combate :(");
     }
 
     @Override
-    public void atacadoPorCarguero() {
-        System.out.println("Explorador vence a Combate");
+    public RegistroCombate atacadoPorCarguero() {
+        return new RegistroCombate("Nave carguera destruida.");
     }
 
     @Override
-    public void atacadoPorExplorador() {
-        System.out.println("PACTO DE PAZ");
+    public RegistroCombate atacadoPorExplorador() {
+        return new RegistroCombate("Pacto de paz entre naves exploradoras.");
     }
 }
