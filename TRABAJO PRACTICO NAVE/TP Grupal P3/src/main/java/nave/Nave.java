@@ -18,6 +18,14 @@ public abstract class Nave{
         super();
     }
 
+    public abstract void atacar(Nave nave);
+
+    public abstract void atacadoPorCombate();
+
+    public abstract void atacadoPorCarguero();
+
+    public abstract void atacadoPorExplorador();
+
     public float getCombustible() {
         return this.combustible;
     }
@@ -204,4 +212,6 @@ public abstract class Nave{
     public Tripulante getCapitan() {
         return this.capitan;
     }
+
+
 }

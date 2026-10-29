@@ -12,4 +12,5 @@ public class NaveCombate extends Nave{
         this.setEnergia(100f);
     }
 
+
 }

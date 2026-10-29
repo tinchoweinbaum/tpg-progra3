@@ -12,4 +12,5 @@ public class NaveCarguero extends Nave{
         this.setEnergia(60f);
     }
 
+
 }
