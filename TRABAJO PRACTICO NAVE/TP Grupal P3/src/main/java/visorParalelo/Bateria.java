@@ -1,16 +1,16 @@
 package visorParalelo;
 
 public class Bateria {
-    private static int contadorID = 0;
+    private static int contadorID = 1;
     private int ID;
     private int duracion;
 
-    Bateria (int duracion){
+    public Bateria (int duracion){
         this.ID = aumentarID();
         this.duracion = duracion;
     }
 
-    Bateria (){
+    public Bateria (){
         this(500);
     }
 

@@ -6,12 +6,12 @@ public class PlataformaDeCarga {
     private ArrayDeque<Bateria> baterias;
     private int tope;
 
-    PlataformaDeCarga(int t){
+    public PlataformaDeCarga(int t){
         this.baterias = new ArrayDeque<>();
         this.tope = t;
     }
 
-    PlataformaDeCarga(){
+    public PlataformaDeCarga(){
         this(5);
     }
 
