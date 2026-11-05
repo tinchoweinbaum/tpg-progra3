@@ -18,9 +18,11 @@ public class PlataformaDeCarga {
     public synchronized void ponerBateria(Bateria b) throws InterruptedException, NullPointerException {
         if (b != null){
             while (baterias.size() >= tope) {
+                System.out.println(nombreHilo() + " intento poner una bateria pero no hay mas capacidad");
                 wait();
             }
             baterias.addFirst(b);
+            System.out.println(nombreHilo() + " puso la bateria " + b.getID() + " en la plataforma | Ahora hay " + baterias.size() + " baterias");
             notifyAll();
         } else {
             throw new NullPointerException();
@@ -30,9 +32,11 @@ public class PlataformaDeCarga {
     public synchronized Bateria sacarBateria() throws InterruptedException {
         Bateria b;
         while (baterias.isEmpty()){
+            System.out.println(nombreHilo() + " intento sacar una bateria pero no hay");
             wait();
         }
         b = baterias.removeLast();
+        System.out.println(nombreHilo() + " saco la " + b + " de la plataforma | Ahora hay " + baterias.size() + " baterias");
         notifyAll();
         return b;
     }
@@ -44,5 +48,9 @@ public class PlataformaDeCarga {
     public synchronized void setTope(int tope) {
         this.tope = tope;
         notifyAll();
+    }
+
+    public String nombreHilo(){
+        return Thread.currentThread().getName();
     }
 }
