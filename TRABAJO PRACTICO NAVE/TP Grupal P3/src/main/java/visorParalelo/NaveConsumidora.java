@@ -24,18 +24,21 @@ public class NaveConsumidora implements Runnable{
         while (true){
             try {
                 b = plataforma.sacarBateria();
-                System.out.println("La nave consumidora " + this.ID + " saco la bateria " + b.getID() + " de la plataforma");
                 Thread.sleep(b.getDuracion());
-                System.out.println("La nave consumidora " + this.ID + " agoto la bateria " + b.getID());
+                System.out.println(nombreHilo() + " agoto la " + b);
             } catch (InterruptedException e){
                 //Si hay un problema de hilos
-                System.out.println("Nave consumidora " + this.ID + " interrumpida. Finalizando hilo.");
+                System.out.println(nombreHilo() + " interrumpida. Finalizando hilo.");
                 break;
             } catch (Exception e){
                 //Cualquier otro error
-                System.out.println("La nave consumidora " + this.ID + " sufrio un error " + e.toString());
+                System.out.println(nombreHilo() + " sufrio un error " + e.toString());
                 break;
             }
         }
+    }
+
+    public String nombreHilo(){
+        return Thread.currentThread().getName();
     }
 }

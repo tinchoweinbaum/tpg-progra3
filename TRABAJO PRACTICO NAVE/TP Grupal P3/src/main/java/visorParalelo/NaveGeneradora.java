@@ -20,8 +20,8 @@ public class NaveGeneradora implements Runnable{
 
     private Bateria crearBateria(){
         Bateria b;
-        b = new Bateria();
-        System.out.println("La nave generadora " + this.ID + " creo una nueva bateria " + b.getID());
+        b = new Bateria(nombreHilo());
+        System.out.println(nombreHilo() + " creo una nueva bateria " + b.getID());
         return b;
     }
 
@@ -33,16 +33,19 @@ public class NaveGeneradora implements Runnable{
                 Thread.sleep(1000);
                 b = crearBateria();
                 plataforma.ponerBateria(b);
-                System.out.println("La nave generadora " + this.ID + " puso la bateria " + b.getID() + " en la plataforma");
             } catch (InterruptedException e) {
                 //Si hay un problema de hilos
-                System.out.println("Nave generadora " + this.ID + " interrumpida. Finalizando hilo.");
+                System.out.println(nombreHilo() + " interrumpida. Finalizando hilo.");
                 break;
             } catch (Exception e){
                 //Si hay un problema desconocido, como null pointer
-                System.out.println("La nave generadora " + this.ID + " sufrio un error " + e.toString());
+                System.out.println(nombreHilo() + " sufrio un error " + e.toString());
                 break;
             }
         }
+    }
+
+    public String nombreHilo(){
+        return Thread.currentThread().getName();
     }
 }
