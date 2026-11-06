@@ -1,0 +1,27 @@
+# Default ignored files
+/shelf/
+/.idea/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+/.gitignore
+/compiler.xml
+/jarRepositories.xml
+/misc.xml
+/inspectionProfiles/Project_Default.xml
+/vcs.xml
+# Compilados de Java y clases
+*.class
+
+# Carpetas de compilación de Maven
+target/
+
+# Archivos de configuración de IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
