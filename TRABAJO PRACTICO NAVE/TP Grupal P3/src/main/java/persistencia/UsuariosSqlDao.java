@@ -1,5 +1,6 @@
 package persistencia;
 import java.util.ArrayList;
+import org.sqlite.JDBC;
 
 public class UsuariosSqlDao implements UsuariosDAO{
     @Override
