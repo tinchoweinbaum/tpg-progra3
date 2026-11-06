@@ -17,9 +17,6 @@
 # Compilados de Java y clases
 *.class
 
-# Carpetas de compilación de Maven
-target/
-
 # Archivos de configuración de IntelliJ IDEA
 .idea/
 *.iml
