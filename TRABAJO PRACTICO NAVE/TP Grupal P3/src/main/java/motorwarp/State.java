@@ -5,6 +5,7 @@ public interface State {
     void preparaSalto();
     void saltoWarp();
     void enfriamiento();
+    void saltoCorto ();
 
     int getIdEstado();
 }

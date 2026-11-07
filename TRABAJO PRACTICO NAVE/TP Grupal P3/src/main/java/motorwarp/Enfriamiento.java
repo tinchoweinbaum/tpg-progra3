@@ -17,12 +17,18 @@ public class Enfriamiento implements State {
     
     @Override
     public void disponible(){
+        motor.aumentaDesgaste(3);
         motor.setEstado(new Disponible(motor));
     }
     
     @Override
     public void preparaSalto() throws EstadoInvalidoException {
         throw new EstadoInvalidoException("El motor ya preparo el salto warp");
+    }
+
+    @Override
+    public void saltoCorto() throws EstadoInvalidoException{
+        throw new EstadoInvalidoException("Ya se ha realizado el salto corto");
     }
     
     @Override

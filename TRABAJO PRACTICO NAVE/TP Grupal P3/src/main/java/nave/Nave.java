@@ -150,6 +150,10 @@ public abstract class Nave{
         return this.desgaste;
     }
 
+    public float getMaxDesgaste(){
+        return MAX_DESGASTE;
+    }
+
     /**
      *
      * Agrega una lista completa de tripulantes iterando sobre ellos.<br>
@@ -214,6 +218,5 @@ public abstract class Nave{
     public Tripulante getCapitan() {
         return this.capitan;
     }
-
 
 }
