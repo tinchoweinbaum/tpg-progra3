@@ -3,6 +3,7 @@ import bitacora.RegistroMotor;
 import exceptions.EstadoInvalidoException;
 import sistema.Sistema;
 import asistentes.Asistente;
+import destinoytablero.*;
 
 import java.util.ArrayList;
 
