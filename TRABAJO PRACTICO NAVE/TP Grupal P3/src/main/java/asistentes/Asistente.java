@@ -31,7 +31,7 @@ public class Asistente {
         
         this.nave = nave;
         this.bitacorasNave = new Bitacora();
-        this.motor = new MotorWarp();
+        this.motor = new MotorWarp(this);
         
         assert invariant(): "Fallo en crear la bitacora y/o motorWarp";
     }
@@ -77,10 +77,13 @@ public class Asistente {
      * <b>pre:</b> Se ejecuta el salto y se guarda cada cambio de estado en bitacora
      */
     public void saltar(){
-        this.motor.prepararSalto();
+        this.motor.saltar();
         actualizaBitacoraMotor();
     }
 
+    public void saltarWarp(){
+        this.motor.saltoWarp();
+    }
     /**
      * Método que actualiza la bitacora con los cambios de estado del motor luego de saltar.
      */

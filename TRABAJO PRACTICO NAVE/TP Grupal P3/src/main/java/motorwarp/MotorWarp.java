@@ -2,6 +2,8 @@ package motorwarp;
 import bitacora.RegistroMotor;
 import exceptions.EstadoInvalidoException;
 import sistema.Sistema;
+import asistentes.Asistente;
+import destinoytablero.*;
 
 import java.util.ArrayList;
 
@@ -12,11 +14,15 @@ public class MotorWarp {
     public static final int PREPARANDO_SALTO = 1;
     public static final int SALTO_WARP = 2;
     public static final int ENFRIAMIENTO = 3;
+    public static final int SALTO_NORMAL = 4;
     private State estadoActual;
     private ArrayList<RegistroMotor> registrosTransiciones = new  ArrayList<>();
+    private final Asistente asistente;
+
     
-    public MotorWarp () {
+    public MotorWarp (Asistente asistente) {
         this.estadoActual = new Disponible(this);
+        this.asistente = asistente;
     }
 
     public ArrayList<RegistroMotor> actualizaRegistrosMotor(){
@@ -32,6 +38,9 @@ public class MotorWarp {
                 break;
             case PREPARANDO_SALTO:
                 this.prepararSalto();
+                break;
+            case SALTO_NORMAL:
+                this.saltar();
                 break;
             case SALTO_WARP:
                 this.saltoWarp();
@@ -49,6 +58,33 @@ public class MotorWarp {
 
     public void setEstado(State estadoActual) {
         this.estadoActual = estadoActual;
+    }
+
+    public double getEnergia (){
+        return asistente.getNave().getEnergia();
+    }
+
+    public double getCombustible (){
+        return asistente.getNave().getCombustible();
+    }
+
+    public void consumeEnergia (float energia){
+        asistente.consumeEnergiaNave(energia);
+    }
+
+    public void consumeCombustible (float combustible){
+        asistente.consumeCombustibleNave(combustible);
+    }
+
+    public double getDesgaste (){
+        return asistente.getNave().getDesgaste();
+    }
+
+    public double getDesgasteMaximo(){
+        return asistente.getNave().getMaxDesgaste();
+    }
+    public void aumentaDesgaste(float cantidad) {
+        asistente.aumentaDesgasteNave(cantidad);
     }
 
 
@@ -87,7 +123,16 @@ public class MotorWarp {
         Sistema.esperar(500);
         this.saltoWarp();
     }
-    
+
+    public void saltar () throws EstadoInvalidoException {
+        if (getCombustible() >= 2) {
+            consumeCombustible(2);
+            estadoActual.saltoCorto();  // Desde saltoWarp pasa a saltar y de vuelta a saltoWarp
+            this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO NORMAL", this.estadoActual));
+            Sistema.esperar(500);
+        }
+    }
+
     /**
     * Metodo que permite un cambio de estado hacia saltoWarp.
     * Solo puede ser de prepararSalto --> saltoWarp.
@@ -104,7 +149,6 @@ public class MotorWarp {
         estadoActual.saltoWarp();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO WARP",this.estadoActual));
         Sistema.esperar(500); // Espera medio segundo para que no haya race condition al agregar elementos a la bitácora.
-        this.enfriamiento();
     }
     
     /**

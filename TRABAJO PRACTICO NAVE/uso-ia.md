@@ -3,3 +3,5 @@ En algunos métodos del programa se detalla también que su desarrollo fue asist
 
 Todo el contenido generado con inteligencia artificial que se haya incluído en el proyecto fue previamente revisado y/o modificado por nosotros.
 Se utilizaron unícamente modelos de LLM por navegador web, como Gemini y ChatGPT.
+
+En la 2da entrega se utilizo inteligencia artifical para asistirnos con el uso de JDBC, especificamente la jerarquia de tipos del wrapper de Sqlite3 en JDBC.

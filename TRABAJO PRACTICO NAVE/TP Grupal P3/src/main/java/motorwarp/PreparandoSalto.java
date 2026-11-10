@@ -4,7 +4,7 @@ import exceptions.EstadoInvalidoException;
 
 public class PreparandoSalto implements State {
     
-    private MotorWarp motor;
+    private final MotorWarp motor;
     private final int ID = MotorWarp.PREPARANDO_SALTO;
 
     public int getIdEstado(){
@@ -24,10 +24,20 @@ public class PreparandoSalto implements State {
     public void preparaSalto() throws EstadoInvalidoException{
         throw new EstadoInvalidoException("El motor ya esta preparando el salto warp");
     }
-    
+
+    @Override
+    public void saltoCorto() {
+        throw new EstadoInvalidoException("El motor ya esta preparando el salto corto");
+    }
+
     @Override
     public void saltoWarp(){
-        motor.setEstado(new EnWarp(motor));
+        if (motor.getEnergia() >= 5 ) {
+            motor.setEstado(new SaltoWarp(motor));
+        }
+        else
+            motor.setEstado(new PreparandoSalto(motor)); // sin recursos = me quedo en preparandoSalto
+
     }
     
     @Override

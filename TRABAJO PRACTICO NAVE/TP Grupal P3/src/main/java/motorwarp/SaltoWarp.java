@@ -2,7 +2,7 @@ package motorwarp;
 import exceptions.EstadoInvalidoException;
 
 
-public class EnWarp implements State {
+public class SaltoWarp implements State {
     
     private MotorWarp motor;
     private final int ID = MotorWarp.SALTO_WARP;
@@ -13,7 +13,7 @@ public class EnWarp implements State {
     
     
     
-    public EnWarp (MotorWarp motor){
+    public SaltoWarp(MotorWarp motor){
         this.motor = motor;
     }
     
@@ -26,17 +26,32 @@ public class EnWarp implements State {
     public void preparaSalto() throws EstadoInvalidoException{
         throw new EstadoInvalidoException("El motor ya preparo el salto warp");
     }
-    
+
+    @Override
+    public void saltoCorto() {
+        // Salto en el tablero
+        motor.setEstado(new SaltoWarp(motor));
+    }
+
+
     @Override
     public void saltoWarp() throws EstadoInvalidoException{
-        throw new EstadoInvalidoException("Ya se ha realizado el salto warp");
+        if (motor.getEnergia() >= 5 ) {     // Vuelvo a verificar que siga con recursos
+            motor.consumeEnergia(5);
+            motor.setEstado(new SaltoWarp(motor));
+        }
     }
     
     //De salto a enfriamiento para la 2da parte
     @Override
     public void enfriamiento(){
-        motor.setEstado(new Enfriamiento(motor));
+        if (motor.getDesgaste() + 3 <= motor.getDesgasteMaximo()){
+            // Salto doble en el tablero
+            motor.setEstado(new Enfriamiento(motor));
+        }
+
     }
+
 
     //Despues lo imprime cuando se printean los registros de motor
     @Override
