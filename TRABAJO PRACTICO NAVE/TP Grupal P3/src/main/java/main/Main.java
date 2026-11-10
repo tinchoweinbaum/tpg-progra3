@@ -3,17 +3,20 @@ package main;
 import asistentes.Asistente;
 import misiones.Mision;
 import motorwarp.MotorWarp;
+import persistencia.Usuario;
+import persistencia.UsuariosDAO;
 import sistema.*;
 import tripulantes.*;
+
+import persistencia.UsuariosSqlDao; // import temporal para testear DAO de SQL
 
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
-        escenario1();
-        //escenario2();
-        //escenario3();
-        //escenario4();
+        UsuariosDAO sqlDao = new UsuariosSqlDao();
+        sqlDao.registrarUsuario(new Usuario("usuario", "12345"));
+        System.out.print(sqlDao.getUsuarios());
     }
 
     public static void escenario1(){
