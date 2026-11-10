@@ -27,11 +27,11 @@ public class NaveCombate extends Nave{
 
     @Override
     public RegistroCombate atacadoPorCarguero() {
-    	return new RegistroCombate("Carguero vence a Combate");
+        return new RegistroCombate("Carguero vence a combate");
     }
 
     @Override
     public RegistroCombate atacadoPorExplorador() {
-    	return new RegistroCombate("Combate vence a Explorador");
+        return new RegistroCombate("Combate vence a Explorador");
     }
 }
