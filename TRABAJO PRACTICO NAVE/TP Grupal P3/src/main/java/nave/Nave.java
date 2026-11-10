@@ -14,9 +14,18 @@ public abstract class Nave{
     protected float combustible, energia, desgaste = 0;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
     protected Tripulante capitan = null;
+    protected String name;
 
     public Nave(){
         super();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     // Los metodos de combate devuelven objetos de tipo RegistroComabte para que el asistente que los llama los pueda agregar a su bitacora.

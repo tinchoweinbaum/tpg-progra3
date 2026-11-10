@@ -1,4 +1,6 @@
-package Vista;
+package CapaPresentacion;
+
+import CapaNegocio.Controlador;
 
 import java.awt.GridLayout;
 import javax.swing.JFrame;
@@ -109,7 +111,12 @@ public class VistaGeneradores extends JFrame implements IVista {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
+
+	@Override
+	public void setControlador(Controlador controlador) {
+
+	}
+
 	/**
 	 * Método útil para concatenar o actualizar el historial de la consola lateral
 	 */

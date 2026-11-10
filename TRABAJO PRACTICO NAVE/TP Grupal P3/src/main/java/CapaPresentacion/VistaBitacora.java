@@ -1,4 +1,6 @@
-package Vista;
+package CapaPresentacion;
+
+import CapaNegocio.Controlador;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -66,8 +68,13 @@ public class VistaBitacora extends JFrame implements IVista {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
-	
+
+	@Override
+	public void setControlador(Controlador controlador) {
+
+	}
+
+
 	public static void main(String[] args) {
 		VistaBitacora vista = new VistaBitacora();
 		vista.arranca();

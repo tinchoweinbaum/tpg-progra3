@@ -1,5 +1,7 @@
 package main;
 
+import CapaNegocio.Controlador;
+import CapaPresentacion.VistaInicioSesion;
 import asistentes.Asistente;
 import misiones.Mision;
 import motorwarp.MotorWarp;
@@ -10,7 +12,11 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
-        escenario1();
+        VistaInicioSesion vistaInicioSesion = new VistaInicioSesion();
+        Controlador controlador = new Controlador(vistaInicioSesion);
+        vistaInicioSesion.setControlador(controlador);
+        vistaInicioSesion.arranca();
+        //escenario1();
         //escenario2();
         //escenario3();
         //escenario4();

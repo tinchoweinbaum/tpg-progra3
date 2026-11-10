@@ -1,4 +1,6 @@
-package Vista;
+package CapaPresentacion;
+
+import CapaNegocio.Controlador;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -79,6 +81,11 @@ public class VistaTripulacion extends JFrame implements IVista {
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    @Override
+    public void setControlador(Controlador controlador) {
+
     }
 
     public static void main(String[] args) {

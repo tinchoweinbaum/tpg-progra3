@@ -1,5 +1,6 @@
-package Vista;
+package CapaPresentacion;
 
+import CapaNegocio.Controlador;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,13 +16,16 @@ import java.awt.Font;
 import java.awt.Insets;
 
 public class VistaInicioSesion extends JFrame implements IVista {
-
+	public final static String INICIO_SESION = "INICIARSESION";
+	public final static String ACCESO_REGISTRO = "IRREGISTRARSE";
 	private JPanel panelPrincipal;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private JButton btnNewButton = new JButton("Iniciar Sesión");
+	private JButton btnNewButton_1 = new JButton("Registrarse");
 
-	public VistaInicioSesion(String title) {
-		setTitle(title);
+	public VistaInicioSesion() {
+		setTitle("INICIO SESIÓN");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		
@@ -91,12 +95,11 @@ public class VistaInicioSesion extends JFrame implements IVista {
 		JPanel panelBotones = new JPanel();
 		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0)); // Separación limpia de 15px entre botones
 		
-		JButton btnNewButton = new JButton("Iniciar Sesión");
+		btnNewButton.setActionCommand(INICIO_SESION);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton.setEnabled(false); // Mantiene tu estado inicial deshabilitado
 		panelBotones.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Registrarse");
+		btnNewButton_1.setActionCommand(ACCESO_REGISTRO);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelBotones.add(btnNewButton_1);
 		
@@ -116,9 +119,44 @@ public class VistaInicioSesion extends JFrame implements IVista {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
-	public static void main(String[] args) {
-		VistaInicioSesion vistaInicioSesion = new VistaInicioSesion("INICIO SESION");
-		vistaInicioSesion.arranca();
+
+	@Override
+	public void setControlador(Controlador controlador){
+		getPasswordField().getDocument().addDocumentListener(controlador);
+		getTextUsuario().getDocument().addDocumentListener(controlador);
+		getBtnInicioSesion().addActionListener(controlador);
+		getBtnRegistro().addActionListener(controlador);
+	}
+
+	public JTextField getTextUsuario() {
+		return textField;
+	}
+
+	public void setTextUsuario(JTextField textField) {
+		this.textField = textField;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
+
+	public void setPasswordField(JPasswordField passwordField) {
+		this.passwordField = passwordField;
+	}
+
+	public JButton getBtnInicioSesion() {
+		return btnNewButton;
+	}
+
+	public void setBtnInicioSesion(JButton btnNewButton) {
+		this.btnNewButton = btnNewButton;
+	}
+
+	public JButton getBtnRegistro() {
+		return btnNewButton_1;
+	}
+
+	public void setBtnRegistro(JButton btnNewButton_1) {
+		this.btnNewButton_1 = btnNewButton_1;
 	}
 }

@@ -1,6 +1,7 @@
-package Vista;
+package CapaPresentacion;
 
-import java.awt.EventQueue;
+import CapaNegocio.Controlador;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,12 +12,25 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.Color;
 import javax.swing.border.TitledBorder;
 
 public class BotonesMain extends JFrame implements IVista {
+	public final static String RESET_GAME = "RESET_GAME";
+	public final static String ACCESO_VISOR_PARALELO = "ACCESO_VISOR_PARALELO";
+	public final static String ACCESO_MISIONES = "ACCESO_MISIONES";
+	public final static String ACCESO_TRIPULACION = "ACCESO_TRIPULACION";
+	public final static String ACCESO_BITACORA = "ACCESO_BITACORA";
+	public final static String ACCESO_RECURSOS = "ACCESO_RECURSOS";
 
 	private JPanel panelPrincipal;
+	private JLabel lblCapitanMorsalo = new JLabel("Capitan Morsalo");
+	private JLabel lblNombreNave = new JLabel("Nombre de la Nave");
+	private JButton botonBorraCrearNave = new JButton("Start Again");
+	private JButton botonVisorParalelo = new JButton("Ver Celdas de Energia");
+	private JButton botonMisiones = new JButton("Ir a Misiones Disponibles");
+	private JButton botonTripulacion = new JButton("Ver Tripulantes");
+	private JButton botonBitacora = new JButton("Ir a Bitacora");
+	private JButton botonRecursos = new JButton("Ver Recursos de la Nave");
 
 	public BotonesMain() {
 		setTitle("PANEL PRINCIPAL");
@@ -24,6 +38,7 @@ public class BotonesMain extends JFrame implements IVista {
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(panelPrincipal);
+		setResizable(false);
 		
 		// 1. Cambiamos el Layout de panelPrincipal a GridBagLayout para permitir spans de filas
 		GridBagLayout gbl_panelPrincipal = new GridBagLayout();
@@ -44,7 +59,7 @@ public class BotonesMain extends JFrame implements IVista {
 		gbl_panelDatos.rowWeights = new double[]{1.0};
 		panelDatos.setLayout(gbl_panelDatos);
 		
-		JLabel lblCapitanMorsalo = new JLabel("Capitan Morsalo");
+
 		lblCapitanMorsalo.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblCapitanMorsalo = new GridBagConstraints();
 		gbc_lblCapitanMorsalo.insets = new Insets(0, 0, 0, 5);
@@ -52,7 +67,7 @@ public class BotonesMain extends JFrame implements IVista {
 		gbc_lblCapitanMorsalo.gridy = 0;
 		panelDatos.add(lblCapitanMorsalo, gbc_lblCapitanMorsalo);
 		
-		JLabel lblNombreNave = new JLabel("Nombre de la Nave");
+
 		lblNombreNave.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblNombreNave = new GridBagConstraints();
 		gbc_lblNombreNave.insets = new Insets(0, 0, 0, 5);
@@ -60,7 +75,7 @@ public class BotonesMain extends JFrame implements IVista {
 		gbc_lblNombreNave.gridy = 0;
 		panelDatos.add(lblNombreNave, gbc_lblNombreNave);
 		
-		JButton botonBorraCrearNave = new JButton("Start Again");
+		botonBorraCrearNave.setActionCommand(RESET_GAME);
 		GridBagConstraints gbc_botonBorraCrearNave = new GridBagConstraints();
 		gbc_botonBorraCrearNave.gridx = 2;
 		gbc_botonBorraCrearNave.gridy = 0;
@@ -79,20 +94,16 @@ public class BotonesMain extends JFrame implements IVista {
 		// ----------------------------------------------------
 		JPanel panelBotones = new JPanel();
 		panelBotones.setLayout(new GridLayout(3, 2, 5, 5)); // 5px de espacio interno entre botones
-		
-		JButton botonVisorParalelo = new JButton("Ver Celdas de Energia");
+
+		botonVisorParalelo.setActionCommand(ACCESO_VISOR_PARALELO);
 		panelBotones.add(botonVisorParalelo);
-		
-		JButton botonMisiones = new JButton("Ir a Misiones Disponibles");
+		botonMisiones.setActionCommand(ACCESO_MISIONES);
 		panelBotones.add(botonMisiones);
-		
-		JButton botonTripulacion = new JButton("Ver Tripulantes");
+		botonTripulacion.setActionCommand(ACCESO_TRIPULACION);
 		panelBotones.add(botonTripulacion);
-		
-		JButton botonBitacora = new JButton("Ir a Bitacora");
+		botonBitacora.setActionCommand(ACCESO_BITACORA);
 		panelBotones.add(botonBitacora);
-		
-		JButton botonRecursos = new JButton("Ver Recursos de la Nave");
+		botonRecursos.setActionCommand(ACCESO_RECURSOS);
 		panelBotones.add(botonRecursos);
 		
 		// UBICACIÓN DE PANEL BOTONES EN EL PANEL PRINCIPAL
@@ -126,7 +137,57 @@ public class BotonesMain extends JFrame implements IVista {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
+
+	@Override
+	public void setControlador(Controlador controlador) {
+		getBotonBitacora().addActionListener(controlador);
+		getBotonMisiones().addActionListener(controlador);
+		getBotonVisorParalelo().addActionListener(controlador);
+		getBotonTripulacion().addActionListener(controlador);
+		getBotonBorraCrearNave().addActionListener(controlador);
+		getBotonRecursos().addActionListener(controlador);
+	}
+
+	public JLabel getLblCapitan() {
+		return lblCapitanMorsalo;
+	}
+
+	public void setLblCapitan(JLabel lblCapitan) {
+		this.lblCapitanMorsalo = lblCapitan;
+	}
+
+	public JLabel getLblNombreNave() {
+		return lblNombreNave;
+	}
+
+	public void setLblNombreNave(JLabel lblNombreNave) {
+		this.lblNombreNave = lblNombreNave;
+	}
+
+	public JButton getBotonBorraCrearNave() {
+		return botonBorraCrearNave;
+	}
+
+	public JButton getBotonVisorParalelo() {
+		return botonVisorParalelo;
+	}
+
+	public JButton getBotonMisiones() {
+		return botonMisiones;
+	}
+
+	public JButton getBotonTripulacion() {
+		return botonTripulacion;
+	}
+
+	public JButton getBotonBitacora() {
+		return botonBitacora;
+	}
+
+	public JButton getBotonRecursos() {
+		return botonRecursos;
+	}
+
 	public static void main(String[] args) {
 		BotonesMain vistaBotonesMain = new BotonesMain();
 		vistaBotonesMain.arranca();

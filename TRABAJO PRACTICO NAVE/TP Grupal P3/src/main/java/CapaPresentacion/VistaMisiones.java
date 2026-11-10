@@ -1,4 +1,6 @@
-package Vista;
+package CapaPresentacion;
+
+import CapaNegocio.Controlador;
 
 import java.awt.GridLayout;
 import javax.swing.JFrame;
@@ -97,9 +99,10 @@ public class VistaMisiones extends JFrame implements IVista {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
-	public static void main(String[] args) {
-		VistaMisiones vista = new VistaMisiones();
-		vista.arranca();
+
+	@Override
+	public void setControlador(Controlador controlador) {
+
 	}
+
 }
