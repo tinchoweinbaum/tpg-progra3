@@ -144,6 +144,8 @@ public class Asistente {
     *<b>post:</b> Carga combustible hasta su maximo
     */
     public void cargaComustibleNaveFull()throws CantCombustibleInvalidaException{
+        if (getNave().getCombustible()==Nave.MAX_COMBUSTIBLE)
+            throw new CantCombustibleInvalidaException("Tanque lleno");
         this.cargaCombustibleNave(Nave.MAX_COMBUSTIBLE - this.nave.getCombustible());
     }
 
@@ -242,6 +244,8 @@ public class Asistente {
     *             este a su maxima capacidad  
     */
     public void cargaEnergiaNaveFull()throws CantEnergiaInvalidaException{
+        if(getNave().getEnergia()==Nave.MAX_ENERGIA)
+            throw new CantEnergiaInvalidaException("Tanque lleno");
         this.cargaEnergiaNave(Nave.MAX_ENERGIA - this.nave.getEnergia());
     }
 

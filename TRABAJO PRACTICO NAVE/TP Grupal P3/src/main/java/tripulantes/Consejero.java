@@ -31,7 +31,7 @@ public class Consejero extends Tripulante{
 
     @Override
     public String toString(){
-        return super.toString() + " es Consejero";
+        return super.toString() + " --- CARGO: Consejero";
     }
 
     /**

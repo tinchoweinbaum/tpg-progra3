@@ -33,6 +33,6 @@ public class Capitan extends Tripulante{
 
     @Override
     public String toString(){
-        return super.toString() + " es Capitan";
+        return super.toString() + " --- CARGO: Capitan";
     }
 }

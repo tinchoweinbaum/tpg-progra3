@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 //ESTE VA A CONECTARSE CON EL ENLAZADOR
@@ -27,6 +28,7 @@ public class Controlador implements DocumentListener, ActionListener {
     private VistaTripulacion vistaTripulacion;
     private VistaMisiones vistaMisiones;
     private VistaEstadoNave vistaRecursos;
+    private VistaCrearTripulante vistaCrearTripulante;
     private Asistente asistente;
     //private final TIPOBASEDATOS basedatos;
     private Tripulante capitanAct;
@@ -37,6 +39,8 @@ public class Controlador implements DocumentListener, ActionListener {
     }
 
     private void iniciaVistas(){
+        this.vistaCrearTripulante = new VistaCrearTripulante();
+        this.vistaCrearTripulante.setControlador(this);
         this.vistaRecursos = new VistaEstadoNave();
         this.vistaRecursos.setControlador(this);
         this.vistaMisiones = new VistaMisiones();
@@ -94,13 +98,16 @@ public class Controlador implements DocumentListener, ActionListener {
         else
             vistaRegistro.getBtnRegistro().setEnabled(false);
 
-        if (vistaCrearNave.getButtonGroupNaves().getSelection()!=null) {
+        if (vistaCrearNave.getButtonGroupNaves().getSelection()!=null)
             if (!vistaCrearNave.getTxtNombreNave().getText().isEmpty() && !vistaCrearNave.getTxtAntiguedadCapitan().getText().isEmpty() && !vistaCrearNave.getTxtNombreCapitan().getText().isEmpty()) {
                 vistaCrearNave.getBtnCrear().setEnabled(true);
             } else
                 vistaCrearNave.getBtnCrear().setEnabled(false);
-        }
 
+        if (!vistaCrearTripulante.getTxtAntiguedadTripulante().getText().isEmpty() && !vistaCrearTripulante.getTxtNombreTripulante().getText().isEmpty())
+            vistaCrearTripulante.getBtnCrear().setEnabled(true);
+        else
+            vistaCrearTripulante.getBtnCrear().setEnabled(false);
     }
 
     @Override
@@ -195,39 +202,55 @@ public class Controlador implements DocumentListener, ActionListener {
                 ventanaEmergente(e.getMessage(),"ERROR");
             }
 
-
         if (actionEvent.getActionCommand().equals(VistaCrearNave.CREAR_NAVE)){
             try{
-                Nave nave = null;
-                if (vistaCrearNave.getRadioCarguera().isSelected()){
-                    nave = FactoryNaves.getTipo(FactoryNaves.TIPO_CARGUERO);
-                }
-                if (vistaCrearNave.getRadioCombate().isSelected()){
-                    nave = FactoryNaves.getTipo(FactoryNaves.TIPO_COMBATE);
-                }
-                if (vistaCrearNave.getRadioExploradora().isSelected()){
-                    nave = FactoryNaves.getTipo(FactoryNaves.TIPO_EXPLORADORA);
-                }
-                asistente = new Asistente(nave);
-                nave.setName(vistaCrearNave.getTxtNombreNave().getText());
-                asignaCapitan();
-                nave.agregaTripulante(capitanAct);
-                asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora("NAVE CREADA"));
-                ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
-                actualizaRecursosNave();
-                actualizaBitacora();
-                vistaCrearNave.dispose();
-                vistaMain.getLblCapitan().setText("Capitan "+ capitanAct.getNombre());
-                vistaMain.getLblNombreNave().setText((asistente.getNave().getName()).toUpperCase());
-                vistaMain.arranca();
-            }catch (TipoNaveInvalidoException | ErrorAgregarTripulacionException e){
+                comienzaPartida();
+                actualizaVisorMotor();
+            }catch (TipoNaveInvalidoException | ErrorAgregarTripulacionException | ErrorCreacionPersonajeException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
-                for (java.awt.Window window : java.awt.Window.getWindows()) {
-                    window.dispose();
-                }
+                resetGame();
+            }catch(NumberFormatException e){
+                ventanaEmergente("Formato invalido - Antigüedad","ERROR");
+                resetGame();
             }
 
         }
+
+        if (actionEvent.getActionCommand().equals(VistaTripulacion.AGREGA_TRIPULANTE)){
+            vistaCrearTripulante.getTxtNombreTripulante().setText("");
+            vistaCrearTripulante.getTxtAntiguedadTripulante().setText("");
+            vistaCrearTripulante.arranca();
+        }
+
+        if (actionEvent.getActionCommand().equals(VistaCrearTripulante.CREAR_TRIPULANTE)){
+            try {
+                asistente.getNave().agregaTripulante(agregaTripulante());
+                ventanaEmergente("SE AGREGO CORRECTAMENTE EL TRIPULANTE","");
+            }catch(ErrorCreacionPersonajeException | ErrorAgregarTripulacionException e){
+                ventanaEmergente(e.getMessage(),"ERROR");
+            }
+            finally {
+                vistaCrearTripulante.dispose();
+                actualizaVisorTripulantes();
+            }
+        }
+
+        if (actionEvent.getActionCommand().equals(VistaTripulacion.BORRA_TRIPULANTE)){
+            Tripulante auxTrip = vistaTripulacion.getListaTripulantes().getSelectedValue();
+            if (auxTrip!=null) {
+                asistente.getNave().eliminaTripulante(auxTrip);
+                if(auxTrip.esCapitan()){
+                    ventanaEmergente("FIN DEL JUEGO - LA NAVE NO TIENE CAPITAN","ERROR");
+                    resetGame();
+                }else{
+                    ventanaEmergente("TRIPULANTE DESPEDIDO", "");
+                    actualizaVisorTripulantes();
+                }
+            }else{
+                ventanaEmergente("Debe seleccionar un tripulante","ERROR");
+            }
+        }
+
         String auxVentana = actionEvent.getActionCommand();
         switch (auxVentana) {
             case BotonesMain.ACCESO_BITACORA -> vistaBitacora.arranca();
@@ -239,12 +262,53 @@ public class Controlador implements DocumentListener, ActionListener {
         }
     }
 
+    private void actualizaVisorTripulantes(){
+        vistaTripulacion.getModeloLista().clear();
+        for(Tripulante t:asistente.getNave().getTripulacion())
+            vistaTripulacion.getModeloLista().addElement(t);
+    }
+
+    private Tripulante agregaTripulante() throws ErrorCreacionPersonajeException {
+        String nombre = vistaCrearTripulante.getTxtNombreTripulante().getText();
+        String origen = (String) vistaCrearTripulante.getComboOrigenTripulante().getSelectedItem();
+        String cargo = (String) vistaCrearTripulante.getComboCargoTripulante().getSelectedItem();
+        int antiguedad = Integer.parseInt(vistaCrearTripulante.getTxtAntiguedadTripulante().getText());
+        return FactoryPeople.creaPersonaje(cargo,origen,nombre,antiguedad);
+    }
+
+    private void comienzaPartida() throws NumberFormatException, TipoNaveInvalidoException, ErrorAgregarTripulacionException, ErrorCreacionPersonajeException {
+        Nave nave = null;
+        if (vistaCrearNave.getRadioCarguera().isSelected()){
+            nave = FactoryNaves.getTipo(FactoryNaves.TIPO_CARGUERO);
+        }
+        if (vistaCrearNave.getRadioCombate().isSelected()){
+            nave = FactoryNaves.getTipo(FactoryNaves.TIPO_COMBATE);
+        }
+        if (vistaCrearNave.getRadioExploradora().isSelected()){
+            nave = FactoryNaves.getTipo(FactoryNaves.TIPO_EXPLORADORA);
+        }
+        asistente = new Asistente(nave);
+        nave.setName(vistaCrearNave.getTxtNombreNave().getText());
+        asignaCapitan();
+        nave.agregaTripulante(capitanAct);
+        asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora("NAVE CREADA"));
+        ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
+        actualizaRecursosNave();
+        actualizaBitacora();
+        vistaCrearNave.dispose();
+        vistaMain.getLblCapitan().setText("Capitan "+ capitanAct.getNombre());
+        vistaMain.getLblNombreNave().setText((asistente.getNave().getName()).toUpperCase());
+        actualizaVisorTripulantes();
+        vistaMain.arranca();
+    }
+
     private void resetGame(){
         for (java.awt.Window window : java.awt.Window.getWindows()) {
             window.dispose();
         }
-        actualizaVisorMotor();
         vistaCrearNave.getTxtNombreNave().setText("");
+        vistaCrearNave.getTxtAntiguedadCapitan().setText("");
+        vistaCrearNave.getTxtNombreCapitan().setText("");
         vistaCrearNave.getButtonGroupNaves().clearSelection();
         vistaCrearNave.arranca();
     }
@@ -276,24 +340,12 @@ public class Controlador implements DocumentListener, ActionListener {
         vistaRecursos.getBarraEstado().setForeground(color);
     }
 
-    //METODO PARA REGISTRO
-    private void asignaCapitan() {
-        try{
-            String origen = (String) vistaCrearNave.getComboOrigenCapitan().getSelectedItem();
-            String nombre = vistaCrearNave.getTxtNombreCapitan().getText();
-            this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, 0);
-        }catch (ErrorCreacionPersonajeException e) {
-            ventanaEmergente(e.getMessage(),"ERROR");
-        }
+    private void asignaCapitan() throws ErrorCreacionPersonajeException , NumberFormatException {
+        String origen = (String) vistaCrearNave.getComboOrigenCapitan().getSelectedItem();
+        String nombre = vistaCrearNave.getTxtNombreCapitan().getText();
+        int antiguedad = Integer.parseInt(vistaCrearNave.getTxtAntiguedadCapitan().getText());
+        this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, antiguedad);
     }
-//    //METODO CUANDO RECUPERAMOS USUARIO DE LA BASE DE DATOS
-//    private void asignaCapitan(Usuario user) {
-//        try{
-//            this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, user.getOrigen, user.getUsername(), user.getAntiguedad);
-//        }catch (ErrorCreacionPersonajeException e) {
-//            ventanaEmergente(e.getMessage(),"ERROR");
-//        }
-//    }
 
     private void actualizaRecursosNave(){
         vistaRecursos.getBarraCombustible().setValue((int)asistente.getNave().getCombustible());
@@ -308,7 +360,6 @@ public class Controlador implements DocumentListener, ActionListener {
             vistaBitacora.getAreaConsola().setText(vistaBitacora.getAreaConsola().getText() + "\n" + bitacora.toString());
 
     }
-
 
     public void ventanaEmergente(String mensaje,String icono) {
         VistaExcepcion ventana = new VistaExcepcion();

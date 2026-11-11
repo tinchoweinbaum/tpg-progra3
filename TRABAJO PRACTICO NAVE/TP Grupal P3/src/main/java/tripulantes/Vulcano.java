@@ -21,6 +21,6 @@ public class Vulcano extends EspecieDecorator {
 
     @Override
     public String toString(){
-        return this.getTripulante().toString() + "\nEs de origen Vulcano";
+        return this.getTripulante().toString() + " --- ORIGEN: Vulcano --- SUELDO: $" + (Math.round(getSueldo() * 100.0) / 100.0);
     }
 }

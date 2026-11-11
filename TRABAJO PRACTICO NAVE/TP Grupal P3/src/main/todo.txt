@@ -4,4 +4,5 @@
 ->TODO: hacer que asistente ya no regule TODAS las excepciones, que delegue a la vista
 ->TODO: a futuro poner que cada X acciones los jugadores ganen 1 año de antiguedad
 ->TODO: interfaz asistente e interfaz DAO - enlazador las implemente y delega
+->TODO: observer observable entre controlador y motor para el cambio de estado
 ->TODO: agregar registro de consumo de recursos en motorWarp ademas del movimiento en el tablero

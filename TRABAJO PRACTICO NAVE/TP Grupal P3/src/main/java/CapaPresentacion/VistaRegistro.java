@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-import javax.swing.JComboBox; // <--- Importante para la lista desplegable
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -26,24 +25,23 @@ public class VistaRegistro extends JFrame implements IVista {
 		setTitle("REGISTRARSE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBorder(new EmptyBorder(25, 25, 25, 25));
 		setContentPane(panelPrincipal);
 
-		// Añadimos una fila extra en rowHeights (pasó de tener 3 a 4 alturas definidas)
+		// 1. Ajustado a 3 filas reales (Usuario, Contraseña, Botón)
 		GridBagLayout gbl = new GridBagLayout();
 		gbl.columnWidths = new int[] {130, 200};
-		gbl.rowHeights = new int[] {40, 40, 40, 50}; // <--- Fila extra de 40px de alto para el origen
+		gbl.rowHeights = new int[] {40, 40, 45};
 		gbl.columnWeights = new double[]{0.0, 1.0};
-		gbl.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		gbl.rowWeights = new double[]{0.0, 0.0, 0.0};
 		panelPrincipal.setLayout(gbl);
 
 		Font fuenteLabels = new Font("Tahoma", Font.BOLD, 14);
 		Font fuenteInputs = new Font("Tahoma", Font.PLAIN, 14);
 
 		// --------------------------------------------------------------------
-		// 2. FILA 0: USUARIO
+		// FILA 0: USUARIO
 		// --------------------------------------------------------------------
 		JLabel labelName = new JLabel("USUARIO:");
 		labelName.setFont(fuenteLabels);
@@ -65,14 +63,14 @@ public class VistaRegistro extends JFrame implements IVista {
 		panelPrincipal.add(textField, gbc_textField);
 
 		// --------------------------------------------------------------------
-		// 3. FILA 1: CONTRASEÑA
+		// FILA 1: CONTRASEÑA
 		// --------------------------------------------------------------------
 		JLabel labelPassword = new JLabel("CONTRASEÑA:");
 		labelPassword.setFont(fuenteLabels);
 		labelPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_labelPassword = new GridBagConstraints();
 		gbc_labelPassword.anchor = GridBagConstraints.WEST;
-		gbc_labelPassword.insets = new Insets(0, 0, 15, 15); // Reducido el inset inferior a 15 para mantener uniformidad
+		gbc_labelPassword.insets = new Insets(0, 0, 20, 15); // Margen inferior antes del botón
 		gbc_labelPassword.gridx = 0;
 		gbc_labelPassword.gridy = 1;
 		panelPrincipal.add(labelPassword, gbc_labelPassword);
@@ -82,13 +80,13 @@ public class VistaRegistro extends JFrame implements IVista {
 		passwordField.setEchoChar('*');
 		GridBagConstraints gbc_passwordField = new GridBagConstraints();
 		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField.insets = new Insets(0, 0, 15, 0);
+		gbc_passwordField.insets = new Insets(0, 0, 20, 0); // Margen inferior antes del botón
 		gbc_passwordField.gridx = 1;
 		gbc_passwordField.gridy = 1;
 		panelPrincipal.add(passwordField, gbc_passwordField);
 
 		// --------------------------------------------------------------------
-		// 5. FILA 3: BOTÓN REGISTRARSE (Se desplaza a la fila index 3)
+		// FILA 2: BOTÓN REGISTRARSE
 		// --------------------------------------------------------------------
 		btnNewButton_1.setActionCommand(REGISTRO_USER);
 		btnNewButton_1.setEnabled(false);
@@ -97,14 +95,13 @@ public class VistaRegistro extends JFrame implements IVista {
 		gbc_btnNewButton_1.anchor = GridBagConstraints.CENTER;
 		gbc_btnNewButton_1.gridwidth = 2;
 		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 3; // <--- Cambiado de 2 a 3
+		gbc_btnNewButton_1.gridy = 2; // <--- Vuelve a la fila 2 para eliminar el hueco
 		panelPrincipal.add(btnNewButton_1, gbc_btnNewButton_1);
 	}
 
 	@Override
 	public void arranca() {
-		pack();
-		setSize(420, 290);
+		pack(); // Calcula el tamaño exacto según los componentes y márgenes
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -139,6 +136,4 @@ public class VistaRegistro extends JFrame implements IVista {
 	public void setBtnRegistro(JButton btnNewButton_1) {
 		this.btnNewButton_1 = btnNewButton_1;
 	}
-
-
 }

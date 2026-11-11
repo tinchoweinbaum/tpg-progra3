@@ -20,6 +20,6 @@ public class Terricola extends EspecieDecorator{
 
     @Override
     public String toString(){
-        return this.getTripulante().toString() + "\nEs de origen Terricola";
+        return this.getTripulante().toString() + " --- ORIGEN: Terricola --- SUELDO: $" + (Math.round(getSueldo() * 100.0) / 100.0);
     }
 }

@@ -15,7 +15,7 @@ public class Alferez extends Tripulante{
 
     @Override
     public String toString(){
-        return super.toString() + " es Alferez";
+        return super.toString() + " --- CARGO: Alferez";
     }
     
     @Override

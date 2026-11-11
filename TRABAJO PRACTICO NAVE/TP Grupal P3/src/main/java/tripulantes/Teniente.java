@@ -20,7 +20,7 @@ public class Teniente extends Tripulante{
 
     @Override
     public String toString(){
-        return super.toString() + " es Teniente";
+        return super.toString() + " --- CARGO: Teniente";
     }
 
     /**

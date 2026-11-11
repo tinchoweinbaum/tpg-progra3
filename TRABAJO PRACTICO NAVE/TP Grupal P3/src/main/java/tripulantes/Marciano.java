@@ -20,6 +20,6 @@ public class Marciano extends EspecieDecorator{
 
     @Override
     public String toString(){
-        return this.getTripulante().toString() + "\nEs de origen Marciano";
+        return this.getTripulante().toString() + " --- ORIGEN: Marciano --- SUELDO: $" + (Math.round(getSueldo() * 100.0) / 100.0);
     }
 }

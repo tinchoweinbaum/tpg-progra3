@@ -1,6 +1,7 @@
 package CapaPresentacion;
 
 import CapaNegocio.Controlador;
+import tripulantes.FactoryPeople;
 
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -177,7 +178,7 @@ public class VistaCrearNave extends JFrame implements IVista {
 		lblOrigenCapitan.setFont(fuenteCampos);
 		panelOrigenCapitan.add(lblOrigenCapitan);
 
-		String[] origenes = {"Vulcano", "Terrícola", "Marciano"};
+		String[] origenes = {FactoryPeople.MARCIANO, FactoryPeople.TERRICOLA, FactoryPeople.VULCANO};
 		comboOrigenCapitan = new JComboBox<>(origenes);
 		comboOrigenCapitan.setFont(fuenteInputs);
 		panelOrigenCapitan.add(comboOrigenCapitan);
