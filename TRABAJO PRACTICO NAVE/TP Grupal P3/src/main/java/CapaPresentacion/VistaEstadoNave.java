@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
@@ -16,152 +18,245 @@ import java.awt.Insets;
 
 public class VistaEstadoNave extends JFrame implements IVista {
 
-    private JPanel panelPrincipal;
+    public final static String MANTENIMIENTO = "MANTENIMIENTO_NAVE";
+    public final static String CARGAR_COMBUSTIBLE = "CARGAR_COMBUSTIBLE";
+    public final static String LLENAR_COMBUSTIBLE = "LLENAR_COMBUSTIBLE";
+    public final static String CARGAR_ENERGIA = "CARGAR_ENERGIA";
+    public final static String LLENAR_ENERGIA = "LLENAR_ENERGIA";
 
-    // Declaramos las barras como atributos para poder actualizarlas desde la lógica
+    private JPanel panelPrincipal;
     private JProgressBar barraDesgaste;
     private JProgressBar barraCombustible;
     private JProgressBar barraEnergia;
+    private JTextField txtCantidadCombustible;
+    private JTextField txtCantidadEnergia;
+    private JButton btnMantenimiento;
+    private JButton btnCargarCombustible;
+    private JButton btnLlenarCombustible;
+    private JButton btnCargarEnergia;
+    private JButton btnLlenarEnergia;
 
     public VistaEstadoNave() {
         setTitle("ESTADO DE LA NAVE");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        // 1. Panel Principal con margen perimetral respirable
         panelPrincipal = new JPanel();
         panelPrincipal.setBorder(new EmptyBorder(25, 25, 25, 25));
         setContentPane(panelPrincipal);
 
-        // 2. GridBagLayout: Columna 0 (Nombres de indicadores) y Columna 1 (Barras de progreso)
         GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[] {120, 220};
-        gbl_panel.rowHeights = new int[] {35, 35, 35, 35}; // Filas proporcionales para el título y los 3 indicadores
-        gbl_panel.columnWeights = new double[]{0.0, 1.0};  // La columna de las barras absorbe el ancho de forma elástica
+        gbl_panel.columnWidths = new int[] {115, 190, 50, 80, 80};
+        gbl_panel.rowHeights = new int[] {35, 38, 38, 38};
+        gbl_panel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0};
         gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
         panelPrincipal.setLayout(gbl_panel);
 
         Font fuenteTitulo = new Font("Tahoma", Font.BOLD, 14);
         Font fuenteLabels = new Font("Tahoma", Font.BOLD, 12);
         Font fuenteBarras = new Font("Tahoma", Font.BOLD, 11);
+        Font fuenteControles = new Font("Tahoma", Font.PLAIN, 12);
+        Font fuenteBotones = new Font("Tahoma", Font.BOLD, 11);
 
-        // --------------------------------------------------------------------
-        // 3. TÍTULO PRINCIPAL (Fila 0, abarca ambas columnas)
-        // --------------------------------------------------------------------
-        JLabel lblTitulo = new JLabel("RECURSOS DE LA NAVE");
+        JLabel lblTitulo = new JLabel("RECURSOS Y ESTADO DE LA NAVE");
         lblTitulo.setFont(fuenteTitulo);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
-        gbc_lblTitulo.gridwidth = 2; // Une las dos columnas
+        gbc_lblTitulo.gridwidth = 5;
         gbc_lblTitulo.anchor = GridBagConstraints.CENTER;
-        gbc_lblTitulo.insets = new Insets(0, 0, 20, 0); // Espacio inferior de separación
+        gbc_lblTitulo.insets = new Insets(0, 0, 20, 0);
         gbc_lblTitulo.gridx = 0;
         gbc_lblTitulo.gridy = 0;
         panelPrincipal.add(lblTitulo, gbc_lblTitulo);
 
-        // --------------------------------------------------------------------
-        // 4. FILA 1: DESGASTE (Estructura de la Nave)
-        // --------------------------------------------------------------------
         JLabel lblDesgaste = new JLabel("DESGASTE:");
         lblDesgaste.setFont(fuenteLabels);
         GridBagConstraints gbc_lblDesgaste = new GridBagConstraints();
         gbc_lblDesgaste.anchor = GridBagConstraints.WEST;
-        gbc_lblDesgaste.insets = new Insets(0, 0, 12, 15);
+        gbc_lblDesgaste.insets = new Insets(0, 0, 12, 12);
         gbc_lblDesgaste.gridx = 0;
         gbc_lblDesgaste.gridy = 1;
         panelPrincipal.add(lblDesgaste, gbc_lblDesgaste);
 
         barraDesgaste = new JProgressBar(0, 100);
-        barraDesgaste.setValue(25); // Valor de prueba (25% de desgaste)
-        barraDesgaste.setStringPainted(true); // Hace visible el texto del porcentaje (e.g., "25%")
+        barraDesgaste.setValue(25);
+        barraDesgaste.setStringPainted(true);
         barraDesgaste.setFont(fuenteBarras);
-        barraDesgaste.setForeground(new Color(219, 68, 85)); // Rojo/Rosa de advertencia para el desgaste
+        barraDesgaste.setForeground(new Color(219, 68, 85));
         GridBagConstraints gbc_barraDesgaste = new GridBagConstraints();
         gbc_barraDesgaste.fill = GridBagConstraints.HORIZONTAL;
-        gbc_barraDesgaste.insets = new Insets(0, 0, 12, 0);
+        gbc_barraDesgaste.insets = new Insets(0, 0, 12, 12);
         gbc_barraDesgaste.gridx = 1;
         gbc_barraDesgaste.gridy = 1;
         panelPrincipal.add(barraDesgaste, gbc_barraDesgaste);
 
-        // --------------------------------------------------------------------
-        // 5. FILA 2: COMBUSTIBLE
-        // --------------------------------------------------------------------
+        btnMantenimiento = new JButton("Realizar Mantenimiento");
+        btnMantenimiento.setActionCommand(MANTENIMIENTO);
+        btnMantenimiento.setFont(fuenteBotones);
+        GridBagConstraints gbc_btnMantenimiento = new GridBagConstraints();
+        gbc_btnMantenimiento.gridwidth = 3;
+        gbc_btnMantenimiento.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnMantenimiento.insets = new Insets(0, 0, 12, 0);
+        gbc_btnMantenimiento.gridx = 2;
+        gbc_btnMantenimiento.gridy = 1;
+        panelPrincipal.add(btnMantenimiento, gbc_btnMantenimiento);
+
         JLabel lblCombustible = new JLabel("COMBUSTIBLE:");
         lblCombustible.setFont(fuenteLabels);
         GridBagConstraints gbc_lblCombustible = new GridBagConstraints();
         gbc_lblCombustible.anchor = GridBagConstraints.WEST;
-        gbc_lblCombustible.insets = new Insets(0, 0, 12, 15);
+        gbc_lblCombustible.insets = new Insets(0, 0, 12, 12);
         gbc_lblCombustible.gridx = 0;
         gbc_lblCombustible.gridy = 2;
         panelPrincipal.add(lblCombustible, gbc_lblCombustible);
 
         barraCombustible = new JProgressBar(0, 100);
-        barraCombustible.setValue(85); // Valor de prueba (85% de combustible)
         barraCombustible.setStringPainted(true);
         barraCombustible.setFont(fuenteBarras);
-        barraCombustible.setForeground(new Color(231, 142, 34)); // Naranja/Amarillo estilo depósito de combustible
+        barraCombustible.setForeground(new Color(231, 142, 34));
         GridBagConstraints gbc_barraCombustible = new GridBagConstraints();
         gbc_barraCombustible.fill = GridBagConstraints.HORIZONTAL;
-        gbc_barraCombustible.insets = new Insets(0, 0, 12, 0);
+        gbc_barraCombustible.insets = new Insets(0, 0, 12, 12);
         gbc_barraCombustible.gridx = 1;
         gbc_barraCombustible.gridy = 2;
         panelPrincipal.add(barraCombustible, gbc_barraCombustible);
 
-        // --------------------------------------------------------------------
-        // 6. FILA 3: ENERGÍA
-        // --------------------------------------------------------------------
+        txtCantidadCombustible = new JTextField();
+        txtCantidadCombustible.setFont(fuenteControles);
+        txtCantidadCombustible.setHorizontalAlignment(SwingConstants.CENTER);
+        GridBagConstraints gbc_txtCombustible = new GridBagConstraints();
+        gbc_txtCombustible.fill = GridBagConstraints.HORIZONTAL;
+        gbc_txtCombustible.insets = new Insets(0, 0, 12, 6);
+        gbc_txtCombustible.gridx = 2;
+        gbc_txtCombustible.gridy = 2;
+        panelPrincipal.add(txtCantidadCombustible, gbc_txtCombustible);
+
+        btnCargarCombustible = new JButton("Cargar");
+        btnCargarCombustible.setActionCommand(CARGAR_COMBUSTIBLE);
+        btnCargarCombustible.setFont(fuenteBotones);
+        GridBagConstraints gbc_btnCargarComb = new GridBagConstraints();
+        gbc_btnCargarComb.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnCargarComb.insets = new Insets(0, 0, 12, 6);
+        gbc_btnCargarComb.gridx = 3;
+        gbc_btnCargarComb.gridy = 2;
+        panelPrincipal.add(btnCargarCombustible, gbc_btnCargarComb);
+
+        btnLlenarCombustible = new JButton("Llenar");
+        btnLlenarCombustible.setActionCommand(LLENAR_COMBUSTIBLE);
+        btnLlenarCombustible.setFont(fuenteBotones);
+        GridBagConstraints gbc_btnLlenarComb = new GridBagConstraints();
+        gbc_btnLlenarComb.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnLlenarComb.insets = new Insets(0, 0, 12, 0);
+        gbc_btnLlenarComb.gridx = 4;
+        gbc_btnLlenarComb.gridy = 2;
+        panelPrincipal.add(btnLlenarCombustible, gbc_btnLlenarComb);
+
         JLabel lblEnergia = new JLabel("ENERGÍA:");
         lblEnergia.setFont(fuenteLabels);
         GridBagConstraints gbc_lblEnergia = new GridBagConstraints();
         gbc_lblEnergia.anchor = GridBagConstraints.WEST;
-        gbc_lblEnergia.insets = new Insets(0, 0, 0, 15);
+        gbc_lblEnergia.insets = new Insets(0, 0, 0, 12);
         gbc_lblEnergia.gridx = 0;
         gbc_lblEnergia.gridy = 3;
         panelPrincipal.add(lblEnergia, gbc_lblEnergia);
 
         barraEnergia = new JProgressBar(0, 100);
-        barraEnergia.setValue(60); // Valor de prueba (60% de energía)
         barraEnergia.setStringPainted(true);
         barraEnergia.setFont(fuenteBarras);
-        barraEnergia.setForeground(new Color(46, 139, 87)); // Verde esmeralda para representar energía activa estable
+        barraEnergia.setForeground(new Color(46, 139, 87));
         GridBagConstraints gbc_barraEnergia = new GridBagConstraints();
         gbc_barraEnergia.fill = GridBagConstraints.HORIZONTAL;
+        gbc_barraEnergia.insets = new Insets(0, 0, 0, 12);
         gbc_barraEnergia.gridx = 1;
         gbc_barraEnergia.gridy = 3;
         panelPrincipal.add(barraEnergia, gbc_barraEnergia);
+
+        txtCantidadEnergia = new JTextField();
+        txtCantidadEnergia.setFont(fuenteControles);
+        txtCantidadEnergia.setHorizontalAlignment(SwingConstants.CENTER);
+        GridBagConstraints gbc_txtEnergia = new GridBagConstraints();
+        gbc_txtEnergia.fill = GridBagConstraints.HORIZONTAL;
+        gbc_txtEnergia.insets = new Insets(0, 0, 0, 6);
+        gbc_txtEnergia.gridx = 2;
+        gbc_txtEnergia.gridy = 3;
+        panelPrincipal.add(txtCantidadEnergia, gbc_txtEnergia);
+
+        btnCargarEnergia = new JButton("Cargar");
+        btnCargarEnergia.setActionCommand(CARGAR_ENERGIA);
+        btnCargarEnergia.setFont(fuenteBotones);
+        GridBagConstraints gbc_btnCargarEnergia = new GridBagConstraints();
+        gbc_btnCargarEnergia.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnCargarEnergia.insets = new Insets(0, 0, 0, 6);
+        gbc_btnCargarEnergia.gridx = 3;
+        gbc_btnCargarEnergia.gridy = 3;
+        panelPrincipal.add(btnCargarEnergia, gbc_btnCargarEnergia);
+
+        btnLlenarEnergia = new JButton("Llenar");
+        btnLlenarEnergia.setActionCommand(LLENAR_ENERGIA);
+        btnLlenarEnergia.setFont(fuenteBotones);
+        GridBagConstraints gbc_btnLlenarEnergia = new GridBagConstraints();
+        gbc_btnLlenarEnergia.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnLlenarEnergia.gridx = 4;
+        gbc_btnLlenarEnergia.gridy = 3;
+        panelPrincipal.add(btnLlenarEnergia, gbc_btnLlenarEnergia);
     }
 
     @Override
     public void arranca() {
         pack();
-        // Formato horizontal estirado para que las barras tengan suficiente recorrido visual
-        setSize(440, 240);
+        setSize(620, 250);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     @Override
     public void setControlador(Controlador controlador) {
-
+        btnMantenimiento.addActionListener(controlador);
+        btnCargarCombustible.addActionListener(controlador);
+        btnLlenarCombustible.addActionListener(controlador);
+        btnCargarEnergia.addActionListener(controlador);
+        btnLlenarEnergia.addActionListener(controlador);
     }
 
-    /**
-     * Métodos públicos para actualizar los valores de los indicadores desde tu controlador en tiempo real
-     */
-    public void setDesgaste(int valor) {
-        if(valor >= 0 && valor <= 100) barraDesgaste.setValue(valor);
+    public JProgressBar getBarraDesgaste() {
+        return barraDesgaste;
     }
 
-    public void setCombustible(int valor) {
-        if(valor >= 0 && valor <= 100) barraCombustible.setValue(valor);
+    public JProgressBar getBarraCombustible() {
+        return barraCombustible;
     }
 
-    public void setEnergia(int valor) {
-        if(valor >= 0 && valor <= 100) barraEnergia.setValue(valor);
+    public JProgressBar getBarraEnergia() {
+        return barraEnergia;
     }
 
-    public static void main(String[] args) {
-        VistaEstadoNave vista = new VistaEstadoNave();
-        vista.arranca();
+    public JTextField getTxtCantidadCombustible() {
+        return txtCantidadCombustible;
     }
+
+    public JTextField getTxtCantidadEnergia() {
+        return txtCantidadEnergia;
+    }
+
+    public JButton getBtnMantenimiento() {
+        return btnMantenimiento;
+    }
+
+    public JButton getBtnCargarCombustible() {
+        return btnCargarCombustible;
+    }
+
+    public JButton getBtnLlenarCombustible() {
+        return btnLlenarCombustible;
+    }
+
+    public JButton getBtnCargarEnergia() {
+        return btnCargarEnergia;
+    }
+
+    public JButton getBtnLlenarEnergia() {
+        return btnLlenarEnergia;
+    }
+
+    
 }

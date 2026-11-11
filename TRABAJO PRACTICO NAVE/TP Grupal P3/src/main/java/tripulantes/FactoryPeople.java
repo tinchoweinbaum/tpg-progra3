@@ -2,6 +2,14 @@ package tripulantes;
 import exceptions.*;
 
 public class FactoryPeople {
+    public final static String CAPITAN = "CAPITAN";
+    public final static String CONSEJERO = "CONSEJERO";
+    public final static String ALFEREZ = "ALFEREZ";
+    public final static String TENIENTE = "TENIENTE";
+    public final static String TERRICOLA = "TERRICOLA";
+    public final static String MARCIANO = "MARCIANO";
+    public final static String VULCANO = "VULCANO";
+
     /**
      * Crea una tripulante del tipo indicado por el usuario
      *<b>Pre:</b>El tipo de cargo y de origen son tipos válidos.Antiguedad es un valor > 0.
@@ -16,16 +24,16 @@ public class FactoryPeople {
     public static Tripulante creaPersonaje(String cargo,String origen,String nombre,int antiguedad) throws ErrorCreacionPersonajeException{
         Tripulante aux = null;
         switch (cargo.toUpperCase()) {
-            case "CAPITAN":
+            case CAPITAN:
                 aux = new Capitan(nombre,antiguedad);
                 break;
-            case "ALFEREZ":
+            case ALFEREZ:
                 aux = new Alferez(nombre,antiguedad);
                 break;
-            case "CONSEJERO":
+            case CONSEJERO:
                 aux = new Consejero(nombre,antiguedad);
                 break;
-            case "TENIENTE":
+            case TENIENTE:
                 aux = new Teniente(nombre,antiguedad);
                 break;
             default:
@@ -33,11 +41,11 @@ public class FactoryPeople {
         }
 
         switch (origen.toUpperCase()) {
-            case "TERRICOLA":
+            case TERRICOLA:
                 return new Terricola(aux);
-            case "MARCIANO":
+            case MARCIANO:
                 return new Marciano(aux);
-            case "VULCANO":
+            case VULCANO:
                 return new Vulcano(aux);
             default:
                 throw new OrigenInvalidoException("El origen '" + origen + "' no existe");

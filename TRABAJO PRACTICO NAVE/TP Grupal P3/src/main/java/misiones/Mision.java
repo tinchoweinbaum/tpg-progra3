@@ -104,8 +104,9 @@ public abstract class Mision{
 
         ac.consumeCombustibleNave(this.combustibleRequerido);
         ac.aumentaDesgasteNave(this.desgasteRequerido);
-        if (this.energiaAportada > 0)
-            ac.cargaEnergiaNave(this.energiaAportada);
+        //LA COMENTO MOMENTANEAMENTE PORQUE HAY QUE RETRABAJAR EXCEPCIONES CON LA VISTA Y LIBERARLAS TODAS DEL ASISTENTE
+        //if (this.energiaAportada > 0)
+        //    ac.cargaEnergiaNave(this.energiaAportada);
 
         ac.actualizaBitacoraMotor();
     }

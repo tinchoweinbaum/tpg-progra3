@@ -54,7 +54,7 @@ public abstract class Nave{
     }
 
     /**
-     * Método para cargar combustible a la nave.<br>
+     * Cargar combustible a la nave.<br>
      * <b> Pre: </b>cantCarga > 0.<br>
      * <b>Post: </b>Se carga la cantidad de combustible indicada a la nave.
      *
@@ -74,7 +74,7 @@ public abstract class Nave{
 
     /**
      * Depende de quien llame a esta función en la 2da entrega la excepción no tiene senitdo, se checkearía antes si hay combustible o no.
-     * Método para consumir combustible de la nave.
+     * Consumir combustible de la nave.
      * @param cantConsumida Cantidad de combustible a consumir
      * @return Objeto de tipo {@code RegistroRecursos} para agregar a la bitácora de la nave.
      * @throws CantCombustibleInvalidaException cuando se intenta consumir una cantidad de combustible mayor a la que se tiene.

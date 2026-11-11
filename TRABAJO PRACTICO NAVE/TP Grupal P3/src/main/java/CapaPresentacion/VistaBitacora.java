@@ -19,8 +19,9 @@ public class VistaBitacora extends JFrame implements IVista {
 	public VistaBitacora() {
 		setTitle("Bitácora de la Nave - Consola del Sistema");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cambiado a DISPOSE para no cerrar toda la app al salir de la bitácora
-		
-		// 1. Configuramos el panel principal con BorderLayout para que la consola ocupe todo el espacio elástico
+		setResizable(false);
+
+		// 1. Configuramos el panel principal con BorderLayout para que la consola ocupe el espacio elástico
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panelPrincipal.setBackground(new Color(12, 12, 12)); // Fondo oscuro exterior
@@ -42,15 +43,6 @@ public class VistaBitacora extends JFrame implements IVista {
 		// TRUCO CLAVE para oraciones largas: Ajuste de línea inteligente
 		areaConsola.setLineWrap(true);       // Activa el salto de línea automático
 		areaConsola.setWrapStyleWord(true);  // Corta por palabras completas, no a mitad de una letra
-		
-		// Texto de prueba inicial simulando un sistema espacial
-		areaConsola.setText("Windows PowerShell\n" +
-				"Copyright (C) Microsoft Corporation. Todos los derechos reservados.\n\n" +
-				"MORSALO-OS [Versión 1.0.24]\n" +
-				"C:\\Sistemas\\Nave\\Bitacora> cargando registros de viaje...\n\n" +
-				"[LOG - 10:45] Sistema de propulsión hiperespacial activado con éxito. Sin anomalías.\n" +
-				"[LOG - 11:12] Alerta menor detectada en la celda de energía 4, el subsistema de autoreparación ha estabilizado los voltajes.\n" +
-				"[LOG - 12:00] Entrada de bitácora de largo alcance: El Capitán Morsalo reporta que la tripulación ha entrado en estado de hibernación segura mientras cruzamos el cuadrante gamma.");
 
 		// 3. Añadimos la consola al JScrollPane y eliminamos bordes nativos feos
 		JScrollPane scrollPaneBitacoras = new JScrollPane(areaConsola);
@@ -63,8 +55,7 @@ public class VistaBitacora extends JFrame implements IVista {
 	@Override
 	public void arranca() {
 		pack();
-		// Tamaño óptimo para leer oraciones largas cómodamente (Ancho panorámico de consola)
-		setSize(700, 450); 
+		setSize(700, 250);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -74,9 +65,7 @@ public class VistaBitacora extends JFrame implements IVista {
 
 	}
 
-
-	public static void main(String[] args) {
-		VistaBitacora vista = new VistaBitacora();
-		vista.arranca();
+	public JTextArea getAreaConsola() {
+		return areaConsola;
 	}
 }

@@ -114,7 +114,7 @@ public class Main {
         Sistema sistema = Sistema.getInstance();
         Asistente ac1 = sistema.inicio("Carguero");
 
-        ac1.cargaCombustibleNave(1000);
+//        ac1.cargaCombustibleNave(1000);
         ac1.muestraBitacora();
 
         System.out.println("-------------------------------");

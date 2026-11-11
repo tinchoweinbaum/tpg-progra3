@@ -87,9 +87,4 @@ public class VistaTripulacion extends JFrame implements IVista {
     public void setControlador(Controlador controlador) {
 
     }
-
-    public static void main(String[] args) {
-    	VistaTripulacion vista = new VistaTripulacion();
-    	vista.arranca();
-    }
 }

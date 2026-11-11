@@ -97,9 +97,9 @@ public class VistaGeneradores extends JFrame implements IVista {
 		GridBagConstraints gbc_scrollPaneMini = new GridBagConstraints();
 		gbc_scrollPaneMini.insets = new Insets(15, 0, 15, 15); // Margen externo perimetral derecho
 		gbc_scrollPaneMini.fill = GridBagConstraints.BOTH; // <--- Se estira tanto a lo ancho como a lo alto
-		gbc_scrollPaneMini.gridheight = 5; // <--- TRUCO CLAVE: Abarca desde la fila 0 hasta la fila 4 (todo el alto)
+		gbc_scrollPaneMini.gridheight = 5;
 		gbc_scrollPaneMini.gridx = 1; // Segunda columna
-		gbc_scrollPaneMini.gridy = 0; // Comienza desde arriba de todo
+		gbc_scrollPaneMini.gridy = 0;
 		panel.add(scrollPaneMini, gbc_scrollPaneMini);
 	}
 	
@@ -118,7 +118,7 @@ public class VistaGeneradores extends JFrame implements IVista {
 	}
 
 	/**
-	 * Método útil para concatenar o actualizar el historial de la consola lateral
+	 * Para concatenar o actualizar el historial de la consola lateral
 	 */
 	public void actualizarConsola(String texto) {
 		areaConsolaMini.setText(texto);
@@ -128,8 +128,5 @@ public class VistaGeneradores extends JFrame implements IVista {
 		areaConsolaMini.append("\n" + linea);
 	}
 	
-	public static void main(String[] args) {
-		VistaGeneradores vista = new VistaGeneradores();
-		vista.arranca();
-	}
+
 }

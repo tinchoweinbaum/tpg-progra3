@@ -99,7 +99,7 @@ public class Tablero extends Observable {
      * elementos establecidos al construir el tablero.</p>
      * <p><b>Postcondiciones:</b> cada entrada de la lista ocupa una casilla
      * distinta dentro del tablero. El objetivo sigue libre. La nave y el
-     * objetivo conservan sus posiciones. Este método no notifica a los
+     * objetivo conservan sus posiciones. No notifica a los
      * observadores.</p>
      */
     private void distribuirObjetos() {
@@ -188,7 +188,7 @@ public class Tablero extends Observable {
     /**
      * Comprueba si una casilla puede recibir un elemento.
      * <p><b>Precondiciones:</b> la posición no es nula y está dentro del tablero.
-     * Este método no comprueba los límites.</p>
+     * No comprueba los límites.</p>
      * <p><b>Postcondiciones:</b> el estado permanece igual.</p>
      * @param posicion casilla por consultar
      * @return {@code true} si no hay elemento y no coincide con el objetivo

@@ -1,1 +1,7 @@
--> Destruccion de las naves, hacer que las naves se "suiciden" cuando atacan a una contra la que pierden.
+
+->TODO: Destruccion de las naves, hacer que las naves se "suiciden" cuando atacan a una contra la que pierden.
+->TODO: vista de mensaje emergente
+->TODO: usar objecto recuperado de base de datos como capitan
+->TODO: boton para acceder al motor warp
+->TODO: hacer que asistente ya no regule TODAS las excepciones, que delegue a la vista
+->TODO: revisar cargas negativas!!!
