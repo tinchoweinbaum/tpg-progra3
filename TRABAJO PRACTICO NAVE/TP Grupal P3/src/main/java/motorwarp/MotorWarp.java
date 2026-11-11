@@ -1,5 +1,5 @@
 package motorwarp;
-import bitacora.RegistroMotor;
+import bitacora.*;
 import exceptions.*;
 import sistema.Sistema;
 import asistentes.Asistente;
@@ -31,7 +31,7 @@ public class MotorWarp {
         return auxiliar;
     }
 
-    public void llamaEstado(int i){
+    public void llamaEstado(int i) throws EstadoInvalidoException {
         switch (i){
             case DISPONIBLE:
                 this.disponible();
@@ -161,13 +161,15 @@ public class MotorWarp {
     */
     public void saltoWarp() {
         this.consumeEnergia(5);
+        // Salto doble en el tablero
         estadoActual.saltoWarp();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO WARP", this.estadoActual));
         Sistema.esperar(500); // Espera medio segundo para que no haya race condition al agregar elementos a la bitácora.
         if (getDesgaste() + 3 <= getDesgasteMaximo()) {
-            // Salto doble en el tablero
             aumentaDesgaste(3);
         }
+        else
+            System.out.println("Se supero el nivel de desgaste -- GAME OVER --");
     }
     
     /**
