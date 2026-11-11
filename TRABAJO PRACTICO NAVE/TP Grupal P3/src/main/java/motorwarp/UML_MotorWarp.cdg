@@ -117,10 +117,10 @@
   </ClassDiagramComponents>
   <ClassDiagramRelations>
     <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="motorwarp.PreparandoSalto" target="motorwarp.State"/>
-    <HasRelation name="motor" source="motorwarp.EnWarp" target="motorwarp.MotorWarp" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="motor" source="motorwarp.SaltoWarp" target="motorwarp.MotorWarp" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="motor" source="motorwarp.Disponible" target="motorwarp.MotorWarp" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="estadoActual" source="motorwarp.MotorWarp" target="motorwarp.State" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="motorwarp.EnWarp" target="motorwarp.State"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="motorwarp.SaltoWarp" target="motorwarp.State"/>
     <HasRelation name="motor" source="motorwarp.PreparandoSalto" target="motorwarp.MotorWarp" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="motorwarp.MotorWarp" target="motorwarp.State" sourceCardinality="1..1" targetCardinality="1..1"/>
     <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="motorwarp.Enfriamiento" target="motorwarp.State"/>

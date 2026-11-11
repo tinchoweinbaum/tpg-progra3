@@ -77,13 +77,14 @@ public class Asistente {
      * <b>pre:</b> Se ejecuta el salto y se guarda cada cambio de estado en bitacora
      */
     public void saltar(){
-        this.motor.saltar();
+        this.motor.prepararSalto(2); // 2 -> SALTO_WARP = 2
         actualizaBitacoraMotor();
     }
 
     public void saltarWarp(){
-        this.motor.saltoWarp();
+        this.motor.prepararSalto(4); // SALTO_NORMAL = 4;
     }
+
     /**
      * Método que actualiza la bitacora con los cambios de estado del motor luego de saltar.
      */

@@ -86,7 +86,7 @@ public abstract class Mision{
     }
 
     protected void saltar(Asistente ac){
-        ac.getMotor().prepararSalto();
+        ac.getMotor().prepararSalto(4); //SALTO_CORTO = 4
     }
 
     abstract protected void ejecutar();

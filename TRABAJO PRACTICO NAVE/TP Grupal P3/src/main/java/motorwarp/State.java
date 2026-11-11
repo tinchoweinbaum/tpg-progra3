@@ -2,10 +2,9 @@ package motorwarp;
 
 public interface State {
     void disponible();
-    void preparaSalto();
+    void preparaSalto(int tipoSalto);
     void saltoWarp();
     void enfriamiento();
-    void saltoCorto ();
 
     int getIdEstado();
 }

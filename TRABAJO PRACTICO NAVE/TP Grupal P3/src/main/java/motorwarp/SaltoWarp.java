@@ -23,35 +23,20 @@ public class SaltoWarp implements State {
     }
     
     @Override
-    public void preparaSalto() throws EstadoInvalidoException{
+    public void preparaSalto(int tipoSalto) throws EstadoInvalidoException{
         throw new EstadoInvalidoException("El motor ya preparo el salto warp");
     }
 
     @Override
-    public void saltoCorto() {
-        // Salto en el tablero
-        motor.setEstado(new SaltoWarp(motor));
-    }
-
-
-    @Override
     public void saltoWarp() throws EstadoInvalidoException{
-        if (motor.getEnergia() >= 5 ) {     // Vuelvo a verificar que siga con recursos
-            motor.consumeEnergia(5);
-            motor.setEstado(new SaltoWarp(motor));
-        }
+        throw new EstadoInvalidoException("Ya se ha realizado el salto warp");
     }
     
     //De salto a enfriamiento para la 2da parte
     @Override
     public void enfriamiento(){
-        if (motor.getDesgaste() + 3 <= motor.getDesgasteMaximo()){
-            // Salto doble en el tablero
-            motor.setEstado(new Enfriamiento(motor));
-        }
-
+        motor.setEstado(new Enfriamiento(motor));
     }
-
 
     //Despues lo imprime cuando se printean los registros de motor
     @Override

@@ -21,23 +21,19 @@ public class PreparandoSalto implements State {
     }
     
     @Override
-    public void preparaSalto() throws EstadoInvalidoException{
-        throw new EstadoInvalidoException("El motor ya esta preparando el salto warp");
-    }
-
-    @Override
-    public void saltoCorto() {
-        throw new EstadoInvalidoException("El motor ya esta preparando el salto corto");
+    public void preparaSalto(int tipoSalto) throws EstadoInvalidoException{
+        if (tipoSalto == 4) // SALTO_CORTO = 4;
+            motor.setEstado(new PreparandoSalto(motor)); // Me quedo en preparandoSalto
+        else
+            if (tipoSalto == 2) // SALTO_WARP = 2;
+                this.saltoWarp(); // Paso al estado saltoWarp
+            else
+                throw new EstadoInvalidoException("El motor ya esta preparando el salto");
     }
 
     @Override
     public void saltoWarp(){
-        if (motor.getEnergia() >= 5 ) {
-            motor.setEstado(new SaltoWarp(motor));
-        }
-        else
-            motor.setEstado(new PreparandoSalto(motor)); // sin recursos = me quedo en preparandoSalto
-
+        motor.setEstado(new SaltoWarp(motor));
     }
     
     @Override

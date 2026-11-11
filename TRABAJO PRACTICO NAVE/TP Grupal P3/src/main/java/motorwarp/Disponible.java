@@ -20,15 +20,10 @@ public class Disponible implements State {
     }
 
     @Override
-    public void preparaSalto(){
+    public void preparaSalto(int tipoSalto){
         motor.setEstado(new PreparandoSalto(motor));
     }
 
-    @Override
-    public void saltoCorto() {
-        throw new EstadoInvalidoException("El motor no preparo el salto corto");
-    }
-        
     @Override
     public void saltoWarp() throws EstadoInvalidoException{
         throw new EstadoInvalidoException("El motor no preparo el salto warp");
