@@ -1,1 +1,6 @@
--> Destruccion de las naves, hacer que las naves se "suiciden" cuando atacan a una contra la que pierden.
+
+->TODO: Destruccion de las naves, hacer que las naves se "suiciden" cuando atacan a una contra la que pierden.
+->TODO: conflictos con tablero
+->TODO: hacer que asistente ya no regule TODAS las excepciones, que delegue a la vista
+->TODO: a futuro poner que cada X acciones los jugadores ganen 1 año de antiguedad
+->TODO: interfaz asistente e interfaz DAO - enlazador las implemente y delega

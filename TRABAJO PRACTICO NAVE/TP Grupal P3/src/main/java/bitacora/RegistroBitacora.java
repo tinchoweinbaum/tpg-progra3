@@ -8,7 +8,7 @@ import java.util.Date;
  * Capaz conviene usar una interfaz en vez de herencia de esta manera.
  */
 
-public abstract class RegistroBitacora implements Comparable<RegistroBitacora>{
+public class RegistroBitacora implements Comparable<RegistroBitacora>{
     private final Date fechaRegistro;
     private final String descripcionRegistro;
     

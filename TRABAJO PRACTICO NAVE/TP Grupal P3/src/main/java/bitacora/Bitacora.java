@@ -71,6 +71,10 @@ public class Bitacora {
         assert invariant();
     }
 
+    public List<RegistroBitacora> getRegistros() {
+        return registros;
+    }
+
     /**
      * Muestra todos los registros de la bitacora
      * 

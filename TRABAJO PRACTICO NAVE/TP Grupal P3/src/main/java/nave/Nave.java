@@ -14,9 +14,18 @@ public abstract class Nave{
     protected float combustible, energia, desgaste = 0;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
     protected Tripulante capitan = null;
+    protected String name;
 
     public Nave(){
         super();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     // Los metodos de combate devuelven objetos de tipo RegistroComabte para que el asistente que los llama los pueda agregar a su bitacora.
@@ -45,7 +54,7 @@ public abstract class Nave{
     }
 
     /**
-     * Método para cargar combustible a la nave.<br>
+     * Cargar combustible a la nave.<br>
      * <b> Pre: </b>cantCarga > 0.<br>
      * <b>Post: </b>Se carga la cantidad de combustible indicada a la nave.
      *
@@ -58,6 +67,8 @@ public abstract class Nave{
 
         if (this.getCombustible() + cantCarga > MAX_COMBUSTIBLE)
             throw new CantCombustibleInvalidaException("La carga supera la capacidad máxima del tanque.");
+        if (cantCarga<=0)
+            throw new CantCombustibleInvalidaException("No puede realizarse una carga negativa");
 
         this.combustible += cantCarga;
         return new RegistroRecursos("COMBUSTIBLE",cantCarga,this.combustible);
@@ -65,7 +76,7 @@ public abstract class Nave{
 
     /**
      * Depende de quien llame a esta función en la 2da entrega la excepción no tiene senitdo, se checkearía antes si hay combustible o no.
-     * Método para consumir combustible de la nave.
+     * Consumir combustible de la nave.
      * @param cantConsumida Cantidad de combustible a consumir
      * @return Objeto de tipo {@code RegistroRecursos} para agregar a la bitácora de la nave.
      * @throws CantCombustibleInvalidaException cuando se intenta consumir una cantidad de combustible mayor a la que se tiene.
@@ -100,6 +111,8 @@ public abstract class Nave{
 
         if (this.energia + cantCarga > MAX_ENERGIA)
             throw new CantEnergiaInvalidaException("La carga supera la capacidad máxima de energia.");
+        if (cantCarga<=0)
+            throw new CantEnergiaInvalidaException("No puede realizarse una carga negativa");
 
         this.energia += cantCarga;
         return new RegistroRecursos("ENERGIA", cantCarga, this.energia);
@@ -131,6 +144,8 @@ public abstract class Nave{
 
         if (this.desgaste + cantAumentada > MAX_DESGASTE)
             throw new CantDesgasteInvalidaException("No se puede aumentar el desgaste, superaría el máximo de 100.");
+        if (cantAumentada<0)
+            throw new CantDesgasteInvalidaException("No puede utilizarse un valor negativo");
 
         this.desgaste += cantAumentada;
         return new RegistroRecursos("DESGASTE", cantAumentada, this.desgaste);

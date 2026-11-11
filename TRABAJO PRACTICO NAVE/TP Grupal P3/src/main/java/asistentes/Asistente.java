@@ -86,7 +86,7 @@ public class Asistente {
     }
 
     /**
-     * Método que actualiza la bitacora con los cambios de estado del motor luego de saltar.
+     * Actualiza la bitacora con los cambios de estado del motor luego de saltar.
      */
     public void actualizaBitacoraMotor(){
         for (RegistroMotor r : this.motor.actualizaRegistrosMotor()){
@@ -105,16 +105,11 @@ public class Asistente {
      * @param cantCarga cantidad de combustible a cargar.
      */
     
-    public void cargaCombustibleNave(float cantCarga){
+    public void cargaCombustibleNave(float cantCarga)throws CantCombustibleInvalidaException{
         assert cantCarga > 0 : "La cantidad de combustible cargada debe de ser mayor que cero";
         assert invariant();
         
-        try{
-            this.bitacorasNave.agregarRegistro(this.nave.cargaCombustible(cantCarga));
-        } catch (CantCombustibleInvalidaException e){
-            this.bitacorasNave.agregarRegistro(new RegistroError("Error al cargar combustible", e));
-            System.out.println(e.getMessage());
-        }
+        this.bitacorasNave.agregarRegistro(this.nave.cargaCombustible(cantCarga));
         
         assert invariant();
     }
@@ -148,7 +143,7 @@ public class Asistente {
     * 
     *<b>post:</b> Carga combustible hasta su maximo
     */
-    public void cargaComustibleNaveFull(){
+    public void cargaComustibleNaveFull()throws CantCombustibleInvalidaException{
         this.cargaCombustibleNave(Nave.MAX_COMBUSTIBLE - this.nave.getCombustible());
     }
 
@@ -181,16 +176,12 @@ public class Asistente {
      * 
      */
     
-    public void reparaDesgasteNave(float cantReparada){
+    public void reparaDesgasteNave(float cantReparada)throws CantDesgasteInvalidaException{
         assert cantReparada > 0 : "La cantidad de reparacion debe de ser mayor que cero";
         assert invariant();
         
-        try{
-            this.bitacorasNave.agregarRegistro(this.nave.reparaDesgaste(cantReparada));
-        } catch (CantDesgasteInvalidaException e) {
-            this.bitacorasNave.agregarRegistro(new RegistroError("Error al reparar la nave", e));
-            System.out.println(e.getMessage());
-        }
+        this.bitacorasNave.agregarRegistro(this.nave.reparaDesgaste(cantReparada));
+
         
         assert invariant();
     }
@@ -203,9 +194,10 @@ public class Asistente {
     *<b>post:</b> Repara totalmente la nave (desgaste = 0)
     */
     
-    public void reparaDesgasteNaveFull(){
-        if (this.getNave().getDesgaste()>=80)
-            this.reparaDesgasteNave(this.nave.getDesgaste());
+    public void reparaDesgasteNaveFull()throws CantDesgasteInvalidaException{
+        if (this.getNave().getDesgaste()<80)
+            throw new CantDesgasteInvalidaException("No puede realizarse el mantenimiento con un nivel de Desgaste menor a 80");
+        this.reparaDesgasteNave(this.nave.getDesgaste());
     }
 
     /**
@@ -215,16 +207,11 @@ public class Asistente {
      * @param cantEnergia cantidad de energía a cargar.
      */
     
-    public void cargaEnergiaNave(float cantEnergia){
+    public void cargaEnergiaNave(float cantEnergia)throws CantEnergiaInvalidaException{
         assert cantEnergia > 0 : "La cantidad de energia cargada debe de ser mayor que cero";
         assert invariant();
-        
-        try{
-            this.bitacorasNave.agregarRegistro(this.nave.cargaEnergia(cantEnergia));
-        } catch (CantEnergiaInvalidaException e){
-            this.bitacorasNave.agregarRegistro(new RegistroError("Error al cargar energía", e));
-            System.out.println(e.getMessage());
-        }
+
+        this.bitacorasNave.agregarRegistro(this.nave.cargaEnergia(cantEnergia));
         
         assert invariant();
     }
@@ -254,7 +241,7 @@ public class Asistente {
     *<b>post:</b> Carga la cantidad energia restante para que la nave 
     *             este a su maxima capacidad  
     */
-    public void cargaEnergiaNaveFull(){
+    public void cargaEnergiaNaveFull()throws CantEnergiaInvalidaException{
         this.cargaEnergiaNave(Nave.MAX_ENERGIA - this.nave.getEnergia());
     }
 
@@ -328,7 +315,7 @@ public class Asistente {
     }
 
     /**
-     * toString de Asistente que printea todos los datos relevantes. Método hecho con Gemini.
+     * toString de Asistente que printea todos los datos relevantes. Hecho con Gemini.
      */
     @Override
     public String toString() {

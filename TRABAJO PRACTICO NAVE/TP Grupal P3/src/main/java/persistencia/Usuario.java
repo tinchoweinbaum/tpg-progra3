@@ -25,4 +25,12 @@ public class Usuario {
     public void setContra(String contra) {
         this.contra = contra;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "username='" + username + '\'' +
+                ", contra='" + contra + '\'' +
+                '}';
+    }
 }

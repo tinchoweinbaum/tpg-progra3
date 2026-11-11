@@ -22,16 +22,16 @@ public class NaveCombate extends Nave{
 
     @Override
     public RegistroCombate atacadoPorCombate() {
-        System.out.println("PACTO DE PAZ");
+        return new RegistroCombate("Pacto de paz entre naves de combate");
     }
 
     @Override
     public RegistroCombate atacadoPorCarguero() {
-        System.out.println("Carguero vence a Combate");
+        return new RegistroCombate("Carguero vence a combate");
     }
 
     @Override
     public RegistroCombate atacadoPorExplorador() {
-        System.out.println("Combate vence a Explorador");
+        return new RegistroCombate("Combate vence a Explorador");
     }
 }

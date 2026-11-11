@@ -2,7 +2,11 @@ package nave;
 import exceptions.*;
 
 public class FactoryNaves {
-    
+
+    public final static String TIPO_CARGUERO = "TIPO_CARGUERO";
+    public final static String TIPO_EXPLORADORA = "TIPO_EXPLORADORA";
+    public final static String TIPO_COMBATE = "TIPO_COMBATE";
+
     /**
      * Crea una nave del tipo indicado por el sistema
      * 
@@ -16,11 +20,11 @@ public class FactoryNaves {
     
     public static Nave getTipo(String tipoNave) throws TipoNaveInvalidoException{
             switch (tipoNave.toUpperCase()) {
-                case "CARGUERO":
+                case TIPO_CARGUERO:
                     return new NaveCarguero();
-                case "COMBATE":
+                case TIPO_COMBATE:
                     return new NaveCombate();
-                case "EXPLORADOR":
+                case TIPO_EXPLORADORA:
                     return new NaveExploradora();
                 default:
                     throw new TipoNaveInvalidoException("Tipo de nave inválido: " + tipoNave);
