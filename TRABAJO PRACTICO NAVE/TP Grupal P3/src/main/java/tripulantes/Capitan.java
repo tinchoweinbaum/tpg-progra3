@@ -1,5 +1,7 @@
 package tripulantes;
 
+import persistencia.Usuario;
+
 public class Capitan extends Tripulante{
     private static final double SUELDO_BASE_CAPITAN = 1000;
     private static final double BONO_ANTIGUEDAD_CAPITAN = 0.2;

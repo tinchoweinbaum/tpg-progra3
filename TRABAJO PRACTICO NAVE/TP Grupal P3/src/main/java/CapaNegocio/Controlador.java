@@ -4,7 +4,9 @@ import CapaPresentacion.*;
 import asistentes.*;
 import bitacora.RegistroBitacora;
 import exceptions.*;
+import motorwarp.MotorWarp;
 import nave.*;
+import persistencia.Usuario;
 import tripulantes.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,7 +14,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 //ESTE VA A CONECTARSE CON EL ENLAZADOR
@@ -93,22 +94,25 @@ public class Controlador implements DocumentListener, ActionListener {
         else
             vistaRegistro.getBtnRegistro().setEnabled(false);
 
-        if (vistaCrearNave.getButtonGroupNaves().getSelection()!=null)
-            if (!vistaCrearNave.getTxtNombreNave().getText().isEmpty()){
+        if (vistaCrearNave.getButtonGroupNaves().getSelection()!=null) {
+            if (!vistaCrearNave.getTxtNombreNave().getText().isEmpty() && !vistaCrearNave.getTxtAntiguedadCapitan().getText().isEmpty() && !vistaCrearNave.getTxtNombreCapitan().getText().isEmpty()) {
                 vistaCrearNave.getBtnCrear().setEnabled(true);
-            }else
+            } else
                 vistaCrearNave.getBtnCrear().setEnabled(false);
-
+        }
 
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.INICIO_SESION)) {
             //metodo para chequear si existen datos en db
             //metodo para rescatar el usuario ( que sera el capitan de la nave) y usarlo
             //capitanAct = usuarioRecuperado;
+            //podria ponerse en un try catch si se recupera el objeto y sino tira una vista emergente
             vistaInicioSesion.dispose();
+            ventanaEmergente("INICIO DE SESION EXITOSO","");
             vistaCrearNave.arranca();
         }
 
@@ -120,45 +124,65 @@ public class Controlador implements DocumentListener, ActionListener {
         if (actionEvent.getActionCommand().equals(VistaRegistro.REGISTRO_USER)) {
             //metodo para registrar usuario
             //metodo para rescatar el usuario ( que sera el capitan de la nave) y usarlo
-            asignaCapitan();
+
             vistaRegistro.dispose();
+            ventanaEmergente("REGISTRO EXITOSO","");
             vistaCrearNave.arranca();
         }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_COMBUSTIBLE))
             try{
                 asistente.cargaCombustibleNave(Float.parseFloat(vistaRecursos.getTxtCantidadCombustible().getText()));
-                actualizaBitacora();
                 actualizaRecursosNave();
+                ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
             } catch (CantCombustibleInvalidaException e) {
-                //new error window
+                ventanaEmergente(e.getMessage(),"ERROR");
+            } catch (NumberFormatException e) {
+                ventanaEmergente("Formato Invalido","ERROR");
+            }finally{
+                vistaRecursos.getTxtCantidadCombustible().setText("");
+                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_ENERGIA))
             try {
                 asistente.cargaEnergiaNave(Float.parseFloat(vistaRecursos.getTxtCantidadEnergia().getText()));
-                actualizaBitacora();
                 actualizaRecursosNave();
+                ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
             }catch (CantEnergiaInvalidaException e){
-                //new error window
+                ventanaEmergente(e.getMessage(),"ERROR");
+            } catch (NumberFormatException e) {
+                ventanaEmergente("Formato Invalido","ERROR");
+            }
+            finally {
+                vistaRecursos.getTxtCantidadEnergia().setText("");
+                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.LLENAR_COMBUSTIBLE))
             try{
                 asistente.cargaComustibleNaveFull();
-                actualizaBitacora();
                 actualizaRecursosNave();
+                vistaRecursos.getTxtCantidadCombustible().setText("");
+                ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
             } catch (CantCombustibleInvalidaException e) {
-                //new error window
+                ventanaEmergente(e.getMessage(),"ERROR");
+            }finally {
+                vistaRecursos.getTxtCantidadCombustible().setText("");
+                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.LLENAR_ENERGIA))
             try {
                 asistente.cargaEnergiaNaveFull();
-                actualizaBitacora();
                 actualizaRecursosNave();
+                vistaRecursos.getTxtCantidadEnergia().setText("");
+                ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
             }catch (CantEnergiaInvalidaException e){
-                //new error window
+                ventanaEmergente(e.getMessage(),"ERROR");
+            }finally {
+                vistaRecursos.getTxtCantidadEnergia().setText("");
+                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.MANTENIMIENTO))
@@ -166,8 +190,9 @@ public class Controlador implements DocumentListener, ActionListener {
                 asistente.reparaDesgasteNaveFull();
                 actualizaBitacora();
                 actualizaRecursosNave();
+                ventanaEmergente("MANTENIMIENTO EXITOSO","");
             }catch (CantDesgasteInvalidaException e) {
-                //new erro windows
+                ventanaEmergente(e.getMessage(),"ERROR");
             }
 
 
@@ -185,19 +210,23 @@ public class Controlador implements DocumentListener, ActionListener {
                 }
                 asistente = new Asistente(nave);
                 nave.setName(vistaCrearNave.getTxtNombreNave().getText());
+                asignaCapitan();
                 nave.agregaTripulante(capitanAct);
-            }catch (TipoNaveInvalidoException e){
-                //new vistaError?
-            }catch (ErrorAgregarTripulacionException e){
-                //new  vistaError?
+                asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora("NAVE CREADA"));
+                ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
+                actualizaRecursosNave();
+                actualizaBitacora();
+                vistaCrearNave.dispose();
+                vistaMain.getLblCapitan().setText("Capitan "+ capitanAct.getNombre());
+                vistaMain.getLblNombreNave().setText((asistente.getNave().getName()).toUpperCase());
+                vistaMain.arranca();
+            }catch (TipoNaveInvalidoException | ErrorAgregarTripulacionException e){
+                ventanaEmergente(e.getMessage(),"ERROR");
+                for (java.awt.Window window : java.awt.Window.getWindows()) {
+                    window.dispose();
+                }
             }
-            asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora("NAVE CREADA"));
-            actualizaRecursosNave();
-            actualizaBitacora();
-            vistaCrearNave.dispose();
-            vistaMain.getLblCapitan().setText("Capitan "+ capitanAct.getNombre());
-            vistaMain.getLblNombreNave().setText((asistente.getNave().getName()).toUpperCase());
-            vistaMain.arranca();
+
         }
         String auxVentana = actionEvent.getActionCommand();
         switch (auxVentana) {
@@ -214,24 +243,56 @@ public class Controlador implements DocumentListener, ActionListener {
         for (java.awt.Window window : java.awt.Window.getWindows()) {
             window.dispose();
         }
+        actualizaVisorMotor();
         vistaCrearNave.getTxtNombreNave().setText("");
         vistaCrearNave.getButtonGroupNaves().clearSelection();
         vistaCrearNave.arranca();
     }
 
-    //este es temproral, luego se usaria el de abajo para pasarlo el dto
-    private void asignaCapitan() {
-        try{
-            String origen = (String) vistaRegistro.getComboOrigen().getSelectedItem();
-            String nombre = vistaRegistro.getTextUsuario().getText();
-            this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, 0);
-        }catch (ErrorCreacionPersonajeException e) {
-            //new errorwindows
+    //TIENE QUE SER OBSERVER - OBSERVABLE XDXD
+    //el visro es observer de hilo del motor , ver motor como runnable , lo que observa es justamente el motor que el motor llama a notifcar visor
+    private void actualizaVisorMotor(){
+        String estado = "";
+        Color color = null;
+        switch(asistente.getMotor().getEstadoActual().getIdEstado()){
+            case MotorWarp.DISPONIBLE:
+                estado = "DISPONIBLE";
+                color = new Color(46, 139, 87);
+                break;
+            case MotorWarp.PREPARANDO_SALTO:
+                estado = "PREPARANDO SALTO";
+                color = new Color(230, 145, 56);
+                break;
+            case MotorWarp.SALTO_WARP:
+                estado = "EN SALTO WARP";
+                color = new Color(30, 144, 255);
+                break;
+            case MotorWarp.ENFRIAMIENTO:
+                estado = "ENFRIANDO MOTOR";
+                color = new Color(95, 158, 160);
+                break;
         }
+        vistaRecursos.getBarraEstado().setString(estado);
+        vistaRecursos.getBarraEstado().setForeground(color);
     }
 
-//    private void asignaCapitan(Tripulante cap ){
-//
+    //METODO PARA REGISTRO
+    private void asignaCapitan() {
+        try{
+            String origen = (String) vistaCrearNave.getComboOrigenCapitan().getSelectedItem();
+            String nombre = vistaCrearNave.getTxtNombreCapitan().getText();
+            this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, 0);
+        }catch (ErrorCreacionPersonajeException e) {
+            ventanaEmergente(e.getMessage(),"ERROR");
+        }
+    }
+//    //METODO CUANDO RECUPERAMOS USUARIO DE LA BASE DE DATOS
+//    private void asignaCapitan(Usuario user) {
+//        try{
+//            this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, user.getOrigen, user.getUsername(), user.getAntiguedad);
+//        }catch (ErrorCreacionPersonajeException e) {
+//            ventanaEmergente(e.getMessage(),"ERROR");
+//        }
 //    }
 
     private void actualizaRecursosNave(){
@@ -247,5 +308,18 @@ public class Controlador implements DocumentListener, ActionListener {
             vistaBitacora.getAreaConsola().setText(vistaBitacora.getAreaConsola().getText() + "\n" + bitacora.toString());
 
     }
+
+
+    public void ventanaEmergente(String mensaje,String icono) {
+        VistaExcepcion ventana = new VistaExcepcion();
+        if (icono.equals("ERROR"))
+            ventana.getLblIcono().setIcon(UIManager.getIcon("OptionPane.warningIcon"));
+        else
+            ventana.getLblIcono().setIcon(UIManager.getIcon("OptionPane.informationIcon"));
+        ventana.getLblMensaje().setText("<html><body style='width: 220px'>" + mensaje + "</body></html>");
+        ventana.arranca();
+    }
+
+
 
 }

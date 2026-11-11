@@ -194,8 +194,9 @@ public class Asistente {
     */
     
     public void reparaDesgasteNaveFull()throws CantDesgasteInvalidaException{
-        if (this.getNave().getDesgaste()>=80)
-            this.reparaDesgasteNave(this.nave.getDesgaste());
+        if (this.getNave().getDesgaste()<80)
+            throw new CantDesgasteInvalidaException("No puede realizarse el mantenimiento con un nivel de Desgaste menor a 80");
+        this.reparaDesgasteNave(this.nave.getDesgaste());
     }
 
     /**

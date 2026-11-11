@@ -16,7 +16,8 @@
 /vcs.xml
 # Compilados de Java y clases
 *.class
-
+#eclipse
+/bin/
 # Archivos de configuración de IntelliJ IDEA
 .idea/
 *.iml

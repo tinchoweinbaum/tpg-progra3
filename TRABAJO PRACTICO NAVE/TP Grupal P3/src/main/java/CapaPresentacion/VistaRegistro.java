@@ -20,7 +20,6 @@ public class VistaRegistro extends JFrame implements IVista {
 	private JPanel panelPrincipal;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	private JComboBox<String> comboOrigen;
 	private JButton btnNewButton_1 = new JButton("Registrarse");
 
 	public VistaRegistro() {
@@ -89,30 +88,6 @@ public class VistaRegistro extends JFrame implements IVista {
 		panelPrincipal.add(passwordField, gbc_passwordField);
 
 		// --------------------------------------------------------------------
-		// 4. NUEVA FILA 2: ORIGEN (JComboBox integrado en el formulario)
-		// --------------------------------------------------------------------
-		JLabel labelOrigen = new JLabel("ORIGEN:");
-		labelOrigen.setFont(fuenteLabels);
-		labelOrigen.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_labelOrigen = new GridBagConstraints();
-		gbc_labelOrigen.anchor = GridBagConstraints.WEST;
-		gbc_labelOrigen.insets = new Insets(0, 0, 20, 15); // Inset inferior de 20 para espaciar los botones
-		gbc_labelOrigen.gridx = 0;
-		gbc_labelOrigen.gridy = 2;
-		panelPrincipal.add(labelOrigen, gbc_labelOrigen);
-
-		// Creamos el JComboBox cargando las opciones espaciales solicitadas
-		String[] opcionesOrigen = {"Terricola", "Vulcano", "Marciano"};
-		comboOrigen = new JComboBox<>(opcionesOrigen);
-		comboOrigen.setFont(fuenteInputs);
-		GridBagConstraints gbc_comboOrigen = new GridBagConstraints();
-		gbc_comboOrigen.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboOrigen.insets = new Insets(0, 0, 20, 0);
-		gbc_comboOrigen.gridx = 1;
-		gbc_comboOrigen.gridy = 2;
-		panelPrincipal.add(comboOrigen, gbc_comboOrigen);
-
-		// --------------------------------------------------------------------
 		// 5. FILA 3: BOTÓN REGISTRARSE (Se desplaza a la fila index 3)
 		// --------------------------------------------------------------------
 		btnNewButton_1.setActionCommand(REGISTRO_USER);
@@ -139,7 +114,6 @@ public class VistaRegistro extends JFrame implements IVista {
 		getPasswordField().getDocument().addDocumentListener(controlador);
 		getTextUsuario().getDocument().addDocumentListener(controlador);
 		getBtnRegistro().addActionListener(controlador);
-		getComboOrigen().addActionListener(controlador);
 	}
 
 	public JTextField getTextUsuario() {
@@ -166,8 +140,5 @@ public class VistaRegistro extends JFrame implements IVista {
 		this.btnNewButton_1 = btnNewButton_1;
 	}
 
-	public JComboBox<String> getComboOrigen() {
-		return comboOrigen;
-	}
 
 }

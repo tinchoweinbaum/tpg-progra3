@@ -67,6 +67,8 @@ public abstract class Nave{
 
         if (this.getCombustible() + cantCarga > MAX_COMBUSTIBLE)
             throw new CantCombustibleInvalidaException("La carga supera la capacidad máxima del tanque.");
+        if (cantCarga<=0)
+            throw new CantCombustibleInvalidaException("No puede realizarse una carga negativa");
 
         this.combustible += cantCarga;
         return new RegistroRecursos("COMBUSTIBLE",cantCarga,this.combustible);
@@ -109,6 +111,8 @@ public abstract class Nave{
 
         if (this.energia + cantCarga > MAX_ENERGIA)
             throw new CantEnergiaInvalidaException("La carga supera la capacidad máxima de energia.");
+        if (cantCarga<=0)
+            throw new CantEnergiaInvalidaException("No puede realizarse una carga negativa");
 
         this.energia += cantCarga;
         return new RegistroRecursos("ENERGIA", cantCarga, this.energia);
@@ -140,6 +144,8 @@ public abstract class Nave{
 
         if (this.desgaste + cantAumentada > MAX_DESGASTE)
             throw new CantDesgasteInvalidaException("No se puede aumentar el desgaste, superaría el máximo de 100.");
+        if (cantAumentada<0)
+            throw new CantDesgasteInvalidaException("No puede utilizarse un valor negativo");
 
         this.desgaste += cantAumentada;
         return new RegistroRecursos("DESGASTE", cantAumentada, this.desgaste);
