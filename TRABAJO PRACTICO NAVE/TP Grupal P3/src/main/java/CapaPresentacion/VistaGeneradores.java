@@ -18,9 +18,14 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class VistaGeneradores extends JFrame implements IVista {
+	public final static String PRODUCE_BATERIA = "PRODUCE_BATERIA";
+	public final static String PRODUCE_NAVE = "PRODUCE_NAVE";
 
 	private JPanel panelPrincipal;
 	private JTextArea areaConsolaMini;
+	private JButton btnConsumidora = new JButton("Crear Nave Consumidora");
+	private JButton btnProductora = new JButton("Crear Nave Productora");
+
 
 	public VistaGeneradores() {
 		setTitle("GENERADORES");
@@ -66,12 +71,11 @@ public class VistaGeneradores extends JFrame implements IVista {
 		gbc_panelBotonesCreacion.gridy = 3;
 		panel.add(panelBotonesCreacion, gbc_panelBotonesCreacion);
 		panelBotonesCreacion.setLayout(new GridLayout(0, 1, 0, 12)); // 12px de separación vertical
-		
-		JButton btnConsumidora = new JButton("Crear Nave Consumidora");
+
+		btnConsumidora.setActionCommand(PRODUCE_NAVE);
 		btnConsumidora.setFont(fuenteBotonesAccion);
 		panelBotonesCreacion.add(btnConsumidora);
-		
-		JButton btnProductora = new JButton("Crear Nave Productora");
+		btnProductora.setActionCommand(PRODUCE_BATERIA);
 		btnProductora.setFont(fuenteBotonesAccion);
 		panelBotonesCreacion.add(btnProductora);
 		
@@ -86,9 +90,8 @@ public class VistaGeneradores extends JFrame implements IVista {
 		areaConsolaMini.setWrapStyleWord(true);
 		
 		// Texto inicial adaptado al formato vertical de consola
-		areaConsolaMini.setText("Windows PowerShell\nMORSALO-OS [Energía]\n\n" +
+		areaConsolaMini.setText("Doors PowerShell\nFAKE-OS [Visor Universo]\n\n" +
 				"[SISTEMA]: Panel activo.\n" +
-				"Esperando órdenes...\n\n" +
 				"Red: Estable al 100%");
 		
 		JScrollPane scrollPaneMini = new JScrollPane(areaConsolaMini);
@@ -114,19 +117,20 @@ public class VistaGeneradores extends JFrame implements IVista {
 
 	@Override
 	public void setControlador(Controlador controlador) {
-
+		getBtnConsumidora().addActionListener(controlador);
+		getBtnProductora().addActionListener(controlador);
 	}
 
-	/**
-	 * Para concatenar o actualizar el historial de la consola lateral
-	 */
-	public void actualizarConsola(String texto) {
-		areaConsolaMini.setText(texto);
+	public JTextArea getAreaConsolaMini() {
+		return areaConsolaMini;
 	}
-	
-	public void añadirLog(String linea) {
-		areaConsolaMini.append("\n" + linea);
+
+	public JButton getBtnConsumidora() {
+		return btnConsumidora;
 	}
-	
+
+	public JButton getBtnProductora() {
+		return btnProductora;
+	}
 
 }

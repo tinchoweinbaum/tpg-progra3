@@ -1,16 +1,24 @@
 package visorParalelo;
 
+import CapaNegocio.Controlador;
+
 import java.util.ArrayList;
 
 public class Visor {
     private ArrayList<Thread> generadoras;
     private ArrayList<Thread> consumidoras;
     private PlataformaDeCarga plataforma;
+    private Controlador controlador;
 
-    public Visor(){
+    public Visor(Controlador controlador){
         generadoras = new ArrayList<>();
         consumidoras = new ArrayList<>();
-        plataforma = new PlataformaDeCarga();
+        plataforma = new PlataformaDeCarga(3,this);
+        this.controlador = controlador;
+    }
+
+    public void actualizaBitacoraParalela(String text){
+        controlador.actualizaVisorParalelo(text);
     }
 
     public void nuevaGeneradora(){

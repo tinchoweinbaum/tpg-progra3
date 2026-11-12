@@ -1,5 +1,6 @@
 package visorParalelo;
 
+
 public class NaveGeneradora implements Runnable{
     private static int contadorID = 1;
     private final int ID;
@@ -21,7 +22,7 @@ public class NaveGeneradora implements Runnable{
     private Bateria crearBateria(){
         Bateria b;
         b = new Bateria(nombreHilo());
-        System.out.println(nombreHilo() + " creo una nueva bateria " + b.getID());
+        plataforma.recibeMensajeNaves(nombreHilo() + " creo una nueva bateria " + b.getID());
         return b;
     }
 
@@ -35,11 +36,11 @@ public class NaveGeneradora implements Runnable{
                 plataforma.ponerBateria(b);
             } catch (InterruptedException e) {
                 //Si hay un problema de hilos
-                System.out.println(nombreHilo() + " interrumpida. Finalizando hilo.");
+                plataforma.recibeMensajeNaves(nombreHilo() + " interrumpida. Finalizando hilo.");
                 break;
             } catch (Exception e){
                 //Si hay un problema desconocido, como null pointer
-                System.out.println(nombreHilo() + " sufrio un error " + e.toString());
+                plataforma.recibeMensajeNaves(nombreHilo() + " sufrio un error " + e.toString());
                 break;
             }
         }

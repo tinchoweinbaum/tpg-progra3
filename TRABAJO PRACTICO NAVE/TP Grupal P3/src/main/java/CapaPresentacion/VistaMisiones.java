@@ -16,14 +16,19 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class VistaMisiones extends JFrame implements IVista {
-
+	public final static String SELECCIONA_MISION = "SELECCIONA_MISION";
 	private JPanel panelPrincipal;
 	private final ButtonGroup buttonGroupMisiones = new ButtonGroup();
+	private JRadioButton radioOne = new JRadioButton("MISION 1 - Intercepción y asistencia");
+	private JRadioButton radioTwo = new JRadioButton("MISION 2 - Recolección");
+	private JRadioButton radioThree = new JRadioButton("MISION 3 - Retorno a punto seguro");
+	private JButton btnNewButton = new JButton("Realizar Mision");
 
 	public VistaMisiones() {
 		setTitle("MISIONES");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		setResizable(false);
+
 		// 1. Panel Principal con GridLayout de 1 sola celda para expandir el panel interno
 		panelPrincipal = new JPanel();
 		setContentPane(panelPrincipal);
@@ -63,25 +68,23 @@ public class VistaMisiones extends JFrame implements IVista {
 		gbc_panelRadioButtons.gridy = 3;
 		panel.add(panelRadioButtons, gbc_panelRadioButtons);
 		panelRadioButtons.setLayout(new GridLayout(0, 1, 0, 5)); // 5px de separación vertical entre opciones
-		
-		JRadioButton radioOne = new JRadioButton("MISION 1 - ####");
+
 		radioOne.setFont(fuenteOpciones);
 		panelRadioButtons.add(radioOne);
 		buttonGroupMisiones.add(radioOne); // Agregado al grupo (Faltaba en tu código)
-		
-		JRadioButton radioTwo = new JRadioButton("MISION 2 - ####");
+
 		radioTwo.setFont(fuenteOpciones);
 		panelRadioButtons.add(radioTwo);
 		buttonGroupMisiones.add(radioTwo);
-		
-		JRadioButton radioThree = new JRadioButton("MISION 3 - ####");
+
 		radioThree.setFont(fuenteOpciones);
 		panelRadioButtons.add(radioThree);
 		buttonGroupMisiones.add(radioThree);
 		
 		
 		// 5. BOTÓN PRINCIPAL (Fila 5) - Configurado al CENTRO
-		JButton btnNewButton = new JButton("Realizar Mision");
+
+		btnNewButton.setActionCommand(SELECCIONA_MISION);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 10, 10, 10);
@@ -95,7 +98,7 @@ public class VistaMisiones extends JFrame implements IVista {
 	public void arranca() {
 		pack();
 		// Le asignamos un tamaño mínimo cómodo para que se aprecie bien el centrado
-		setSize(250, 280); 
+		setSize(300, 280);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -105,4 +108,23 @@ public class VistaMisiones extends JFrame implements IVista {
 
 	}
 
+	public ButtonGroup getButtonGroupMisiones() {
+		return buttonGroupMisiones;
+	}
+
+	public JRadioButton getRadioOne() {
+		return radioOne;
+	}
+
+	public JRadioButton getRadioTwo() {
+		return radioTwo;
+	}
+
+	public JRadioButton getRadioThree() {
+		return radioThree;
+	}
+
+	public JButton getBtnAceptaMision() {
+		return btnNewButton;
+	}
 }

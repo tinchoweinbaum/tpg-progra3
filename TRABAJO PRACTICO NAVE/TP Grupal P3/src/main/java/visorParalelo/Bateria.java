@@ -16,7 +16,7 @@ public class Bateria {
 
     public Bateria (String creador){
         this.ID = aumentarID();
-        this.duracion = ThreadLocalRandom.current().nextInt(500, 1501);
+        this.duracion = ThreadLocalRandom.current().nextInt(5000, 15000);
         this.creador = creador;
     }
 

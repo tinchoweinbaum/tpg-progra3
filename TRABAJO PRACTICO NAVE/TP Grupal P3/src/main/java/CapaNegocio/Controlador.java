@@ -8,6 +8,8 @@ import motorwarp.MotorWarp;
 import nave.*;
 import persistencia.Usuario;
 import tripulantes.*;
+import visorParalelo.Visor;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -32,6 +34,7 @@ public class Controlador implements DocumentListener, ActionListener {
     private Asistente asistente;
     //private final TIPOBASEDATOS basedatos;
     private Tripulante capitanAct;
+    private Visor visor;
 
     public Controlador(VistaInicioSesion vista) {
         this.vistaInicioSesion = vista;
@@ -53,8 +56,6 @@ public class Controlador implements DocumentListener, ActionListener {
         this.vistaBitacora.setControlador(this);
         this.vistaCrearNave = new VistaCrearNave();
         this.vistaCrearNave.setControlador(this);
-        this.vistaGeneradores = new VistaGeneradores();
-        this.vistaGeneradores.setControlador(this);
         this.vistaTripulacion = new VistaTripulacion();
         this.vistaTripulacion.setControlador(this);
     }
@@ -251,6 +252,16 @@ public class Controlador implements DocumentListener, ActionListener {
             }
         }
 
+        if (actionEvent.getActionCommand().equals(VistaGeneradores.PRODUCE_BATERIA)){
+            vistaGeneradores.getAreaConsolaMini().append("\n-INGRESO UNA NUEVA NAVE PRODUCTORA-");
+            visor.nuevaGeneradora();
+        }
+
+        if (actionEvent.getActionCommand().equals(VistaGeneradores.PRODUCE_NAVE)){
+            vistaGeneradores.getAreaConsolaMini().append("\n-INGRESO UNA NUEVA NAVE CONSUMIDORA-");
+            visor.nuevaConsumidora();
+        }
+
         String auxVentana = actionEvent.getActionCommand();
         switch (auxVentana) {
             case BotonesMain.ACCESO_BITACORA -> vistaBitacora.arranca();
@@ -299,7 +310,18 @@ public class Controlador implements DocumentListener, ActionListener {
         vistaMain.getLblCapitan().setText("Capitan "+ capitanAct.getNombre());
         vistaMain.getLblNombreNave().setText((asistente.getNave().getName()).toUpperCase());
         actualizaVisorTripulantes();
+        iniciaUniversoParalelo();
         vistaMain.arranca();
+    }
+
+    public void actualizaVisorParalelo(String text){
+        vistaGeneradores.getAreaConsolaMini().append("\n#"+text+"\n@-@-@-@-@-@-@");
+    }
+
+    private void iniciaUniversoParalelo(){
+        this.visor = new Visor(this);
+        this.vistaGeneradores = new VistaGeneradores();
+        this.vistaGeneradores.setControlador(this);
     }
 
     private void resetGame(){
