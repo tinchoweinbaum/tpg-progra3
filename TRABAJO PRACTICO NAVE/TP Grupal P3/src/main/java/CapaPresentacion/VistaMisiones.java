@@ -105,7 +105,7 @@ public class VistaMisiones extends JFrame implements IVista {
 
 	@Override
 	public void setControlador(Controlador controlador) {
-
+		getBtnAceptaMision().addActionListener(controlador);
 	}
 
 	public ButtonGroup getButtonGroupMisiones() {

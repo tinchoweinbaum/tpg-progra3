@@ -6,3 +6,4 @@
 ->TODO: interfaz asistente e interfaz DAO - enlazador las implemente y delega
 ->TODO: observer observable entre controlador y motor para el cambio de estado
 ->TODO: agregar registro de consumo de recursos en motorWarp ademas del movimiento en el tablero
+->TODO: preguntar si botones para cargar recursos estan siempre activos o solo en ocaciones?

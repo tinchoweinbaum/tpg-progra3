@@ -4,6 +4,8 @@ import CapaPresentacion.*;
 import asistentes.*;
 import bitacora.RegistroBitacora;
 import exceptions.*;
+import misiones.Mision;
+import misiones.Mision1;
 import motorwarp.MotorWarp;
 import nave.*;
 import persistencia.Usuario;
@@ -262,6 +264,35 @@ public class Controlador implements DocumentListener, ActionListener {
             visor.nuevaConsumidora();
         }
 
+        if (actionEvent.getActionCommand().equals(VistaMisiones.SELECCIONA_MISION)){
+            try {
+                Mision mAct = null;
+                if (vistaMisiones.getRadioOne().isSelected()){
+                    mAct = new Mision1();
+                }
+                if (vistaMisiones.getRadioTwo().isSelected()){
+
+                }
+                if (vistaMisiones.getRadioThree().isSelected()){
+
+                }
+                if (mAct != null) {
+                    vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
+                    mAct.ejecutarMision(asistente);
+                    ejecucionMision();
+                }
+            } catch (MisionImposibleException e) {
+                ventanaEmergente(e.getMessage(),"ERROR");
+            }catch (NaveDestruidaException e){
+                ventanaEmergente(e.getMessage() + " - NAVE DESTRUIDA - FIN DEL JUEGO","ERROR");
+                resetGame();
+            }
+            finally {
+                actualizaBitacora();
+                vistaMain.setTitle("PANEL PRINCIPAL");
+            }
+        }
+
         String auxVentana = actionEvent.getActionCommand();
         switch (auxVentana) {
             case BotonesMain.ACCESO_BITACORA -> vistaBitacora.arranca();
@@ -271,6 +302,24 @@ public class Controlador implements DocumentListener, ActionListener {
             case BotonesMain.ACCESO_RECURSOS -> vistaRecursos.arranca();
             case BotonesMain.RESET_GAME -> resetGame();
         }
+    }
+
+    private void ejecucionMision(){
+        vistaGeneradores.dispose();
+        vistaTripulacion.dispose();
+        vistaCrearTripulante.dispose();
+        vistaMisiones.dispose();
+        vistaRecursos.getBtnCargarCombustible().setEnabled(false);
+        vistaRecursos.getBtnCargarEnergia().setEnabled(false);
+        vistaRecursos.getBtnLlenarCombustible().setEnabled(false);
+        vistaRecursos.getBtnLlenarEnergia().setEnabled(false);
+        vistaRecursos.getBtnMantenimiento().setEnabled(false);
+        vistaRecursos.getTxtCantidadCombustible().setEnabled(false);
+        vistaRecursos.getTxtCantidadEnergia().setEnabled(false);
+        vistaMain.getBotonBorraCrearNave().setEnabled(false);
+        vistaMain.getBotonMisiones().setEnabled(false);
+        vistaMain.getBotonTripulacion().setEnabled(false);
+        vistaMain.getBotonVisorParalelo().setEnabled(false);
     }
 
     private void actualizaVisorTripulantes(){

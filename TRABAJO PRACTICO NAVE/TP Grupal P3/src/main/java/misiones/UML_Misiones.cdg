@@ -97,6 +97,6 @@
     <IsRelation name="is" source="misiones.Mision1" target="misiones.Mision"/>
     <IsRelation name="is" source="misiones.Mision3" target="misiones.Mision"/>
     <UseRelation source="misiones.FactoryMision" target="misiones.Mision" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <IsRelation name="is" source="misiones.Mision2" target="misiones.Mision"/>
+    <IsRelation name="is" source="misiones.Mision1" target="misiones.Mision"/>
   </ClassDiagramRelations>
 </ClassDiagram>

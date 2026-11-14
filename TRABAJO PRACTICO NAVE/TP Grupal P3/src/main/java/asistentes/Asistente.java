@@ -129,7 +129,6 @@ public class Asistente {
             this.bitacorasNave.agregarRegistro(this.nave.consumeCombustible(cantConsumida));
         } catch (CantCombustibleInvalidaException e) {
             this.bitacorasNave.agregarRegistro(new RegistroError("Error al consumir combustible" , e));
-            System.out.println(e.getMessage());
         }
         
         assert invariant();

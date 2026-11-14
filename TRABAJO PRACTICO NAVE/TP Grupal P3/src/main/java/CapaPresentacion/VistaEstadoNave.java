@@ -30,6 +30,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
     private JProgressBar barraCombustible;
     private JProgressBar barraEnergia;
     private JTextField txtCantidadCombustible;
+    private JLabel lblTitulo = new JLabel("RECURSOS Y ESTADO DE LA NAVE");
     private JTextField txtCantidadEnergia;
     private JButton btnMantenimiento;
     private JButton btnCargarCombustible;
@@ -63,7 +64,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         // --------------------------------------------------------------------
         // FILA 0: TÍTULO PRINCIPAL
         // --------------------------------------------------------------------
-        JLabel lblTitulo = new JLabel("RECURSOS Y ESTADO DE LA NAVE");
+
         lblTitulo.setFont(fuenteTitulo);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
@@ -282,5 +283,8 @@ public class VistaEstadoNave extends JFrame implements IVista {
     }
     public JButton getBtnLlenarEnergia() {
         return btnLlenarEnergia;
+    }
+    public JLabel getLblTitulo() {
+        return lblTitulo;
     }
 }
