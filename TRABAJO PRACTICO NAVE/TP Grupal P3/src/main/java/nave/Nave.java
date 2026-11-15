@@ -29,13 +29,19 @@ public abstract class Nave{
     }
 
     // Los metodos de combate devuelven objetos de tipo RegistroComabte para que el asistente que los llama los pueda agregar a su bitacora.
-    public abstract RegistroCombate atacar(Nave nave);
+//    public abstract RegistroCombate atacar(Nave nave);
+//
+//    public abstract RegistroCombate atacadoPorCombate();
+//
+//    public abstract RegistroCombate atacadoPorCarguero();
+//
+//    public abstract RegistroCombate atacadoPorExplorador();
 
-    public abstract RegistroCombate atacadoPorCombate();
-
-    public abstract RegistroCombate atacadoPorCarguero();
-
-    public abstract RegistroCombate atacadoPorExplorador();
+//creo que tendrai que ser int para ver que se hace en cada caso 1-muerte 2-victoria 3- pacto de paz
+    public abstract int atacar(Nave nave);
+    public abstract int atacadoPorCombate();
+    public abstract int atacadoPorCarguero();
+    public abstract int atacadoPorExplorador();
 
     public float getCombustible() {
         return this.combustible;

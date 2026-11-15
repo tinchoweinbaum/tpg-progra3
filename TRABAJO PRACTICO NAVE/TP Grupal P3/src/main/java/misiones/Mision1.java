@@ -2,6 +2,7 @@ package misiones;
 
 import asistentes.Asistente;
 import bitacora.RegistroError;
+import destinoytablero.Posicion;
 import exceptions.*;
 
 import java.util.Random;
@@ -30,13 +31,18 @@ public class Mision1 extends Mision{
     }
 
     @Override
-    public void ejecutar(Asistente ac) throws MisionImposibleException ,NaveDestruidaException{
+    public void ejecutar(Asistente ac){
         super.ejecutar(ac);
-        if (energiaSOS>0 && ac.getNave().getEnergia()<=energiaSOS)
-            throw new EnergiaInsuficienteException("No alcanza la reserva de energia para realizar el salvataje");
+        try{
+            if (energiaSOS>0 && ac.getNave().getEnergia()<=energiaSOS)//agregar que cambie estado
+                throw new EnergiaInsuficienteException("No alcanza la reserva de energia para realizar el salvataje");
 
-        if (combustibleSOS>0 && ac.getNave().getCombustible()<=combustibleSOS)
-            throw new CombustibleInsuficienteException("No alcanza la reserva de combustible para realizar el salvataje");
+            if (combustibleSOS>0 && ac.getNave().getCombustible()<=combustibleSOS)
+                throw new CombustibleInsuficienteException("No alcanza la reserva de combustible para realizar el salvataje");
+        } catch (Exception e) {
+            notificarObservadores("MISION");
+            estadoActual = ESTADO_FALLIDO;;
+        }
     }
 
 
@@ -49,6 +55,9 @@ public class Mision1 extends Mision{
                 ac.getNave().consumeCombustible(combustibleSOS);
         } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {
             ac.getBitacorasNave().agregarRegistro(new RegistroError("ERROR INESPERADO",e));
+        }
+        finally {
+            notificarObservadores("BITACORA");
         }
     }
 }

@@ -15,23 +15,52 @@ public class NaveExploradora extends Nave{
     }
 
     @Override
-    public RegistroCombate atacar(Nave nave) {
-        nave.atacadoPorExplorador();
-        return new RegistroCombate("Atacando nave " + nave);
+    public int atacar(Nave nave) {
+        int resultado = 0;
+        switch (nave.atacadoPorExplorador()){
+            case 1 -> {
+                resultado = -1;
+            }
+            case -1 -> {
+                resultado = 1;
+            }
+        }
+        return resultado;
     }
 
     @Override
-    public RegistroCombate atacadoPorCombate() {
-        return new RegistroCombate("Nave destruida por nave de combate :(");
+    public int atacadoPorCombate() {
+        return -1;
     }
 
     @Override
-    public RegistroCombate atacadoPorCarguero() {
-        return new RegistroCombate("Nave carguera destruida.");
+    public int atacadoPorCarguero() {
+        return 1;
     }
 
     @Override
-    public RegistroCombate atacadoPorExplorador() {
-        return new RegistroCombate("Pacto de paz entre naves exploradoras.");
+    public int atacadoPorExplorador() {
+        return 0;
     }
+
+//    @Override
+//    public RegistroCombate atacar(Nave nave) {
+//        nave.atacadoPorExplorador();
+//        return new RegistroCombate("Atacando nave " + nave);
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorCombate() {
+//        return new RegistroCombate("Nave destruida por nave de combate :(");
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorCarguero() {
+//        return new RegistroCombate("Nave carguera destruida.");
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorExplorador() {
+//        return new RegistroCombate("Pacto de paz entre naves exploradoras.");
+//    }
 }

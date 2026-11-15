@@ -191,4 +191,6 @@ public class BotonesMain extends JFrame implements IVista {
 	public JButton getBotonRecursos() {
 		return botonRecursos;
 	}
+
+
 }

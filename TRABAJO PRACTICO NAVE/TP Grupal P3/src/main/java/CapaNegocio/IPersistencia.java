@@ -1,4 +1,4 @@
 package CapaNegocio;
 
-public class IPersistencia {
+public interface IPersistencia {
 }

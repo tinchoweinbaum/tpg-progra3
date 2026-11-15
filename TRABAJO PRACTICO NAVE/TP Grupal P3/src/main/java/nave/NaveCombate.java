@@ -15,23 +15,52 @@ public class NaveCombate extends Nave{
     }
 
     @Override
-    public RegistroCombate atacar(Nave nave) {
-        nave.atacadoPorCombate();
-        return new RegistroCombate("Atacando nave" + nave); // Usa el toString de Nave
+    public int atacar(Nave nave) {
+        int resultado = 0;
+        switch (nave.atacadoPorCombate()){
+            case 1 -> {
+                resultado = -1;
+            }
+            case -1 -> {
+                resultado = 1;
+            }
+        }
+        return resultado;
     }
 
     @Override
-    public RegistroCombate atacadoPorCombate() {
-        return new RegistroCombate("Pacto de paz entre naves de combate");
+    public int atacadoPorCombate() {
+        return 0;
     }
 
     @Override
-    public RegistroCombate atacadoPorCarguero() {
-        return new RegistroCombate("Carguero vence a combate");
+    public int atacadoPorCarguero() {
+        return -1;
     }
 
     @Override
-    public RegistroCombate atacadoPorExplorador() {
-        return new RegistroCombate("Combate vence a Explorador");
+    public int atacadoPorExplorador() {
+        return 1;
     }
+
+//    @Override
+//    public RegistroCombate atacar(Nave nave) {
+//        nave.atacadoPorCombate();
+//        return new RegistroCombate("Atacando nave" + nave); // Usa el toString de Nave
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorCombate() {
+//        return new RegistroCombate("Pacto de paz entre naves de combate");
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorCarguero() {
+//        return new RegistroCombate("Carguero vence a combate");
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorExplorador() {
+//        return new RegistroCombate("Combate vence a Explorador");
+//    }
 }

@@ -4,6 +4,7 @@ import CapaNegocio.Controlador;
 import CapaPresentacion.VistaInicioSesion;
 import asistentes.Asistente;
 import misiones.Mision;
+import misiones.Mision1;
 import motorwarp.MotorWarp;
 import persistencia.Usuario;
 import persistencia.UsuariosDAO;
@@ -20,6 +21,8 @@ public class Main {
         Controlador controlador = new Controlador(vistaInicioSesion);
         vistaInicioSesion.setControlador(controlador);
         vistaInicioSesion.arranca();
+
+
 
 //        UsuariosDAO sqlDao = new UsuariosSqlDao();
 //        sqlDao.registrarUsuario(new Usuario("usuario", "12345"));

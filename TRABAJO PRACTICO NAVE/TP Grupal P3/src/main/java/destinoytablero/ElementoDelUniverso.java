@@ -4,8 +4,12 @@ package destinoytablero;
 
 public enum ElementoDelUniverso {
     ASTEROIDE,
-    ANOMALIA_GRAVITACIONAL,
-    TORMENTA_ELECTROMAGNETICA,
-    NAVE_EXTERNA,
-    SEÑAL_AUXILIO
+    NAVE_CARGUERA,
+    NAVE_COMBATE,
+    NAVE_EXPLORADORA,
+    ESTACION_CARGA,
+    //ANOMALIA_GRAVITACIONAL,
+    //TORMENTA_ELECTROMAGNETICA,
+    //SEÑAL_AUXILIO
+//    ver porque en la consigna no hay taantas
 }

@@ -41,7 +41,6 @@ public class PreparandoSalto implements State {
         throw new EstadoInvalidoException("El motor no está disponible");
     }
 
-    //Despues lo imprime cuando se printean los registros de motor
     @Override
     public String toString(){
         return "PREPARANDO SALTO";

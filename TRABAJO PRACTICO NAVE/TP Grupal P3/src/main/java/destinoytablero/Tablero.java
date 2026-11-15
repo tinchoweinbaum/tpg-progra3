@@ -1,8 +1,4 @@
 package destinoytablero;
-
-import exceptions.CantidadDeElementosSuperaCasillaException;
-import exceptions.DimensionesDeTableroInconsistentesException;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,7 +95,7 @@ public class Tablero extends Observable {
      * elementos establecidos al construir el tablero.</p>
      * <p><b>Postcondiciones:</b> cada entrada de la lista ocupa una casilla
      * distinta dentro del tablero. El objetivo sigue libre. La nave y el
-     * objetivo conservan sus posiciones. No notifica a los
+     * objetivo conservan sus posiciones. Este método no notifica a los
      * observadores.</p>
      */
     private void distribuirObjetos() {
@@ -188,7 +184,7 @@ public class Tablero extends Observable {
     /**
      * Comprueba si una casilla puede recibir un elemento.
      * <p><b>Precondiciones:</b> la posición no es nula y está dentro del tablero.
-     * No comprueba los límites.</p>
+     * Este método no comprueba los límites.</p>
      * <p><b>Postcondiciones:</b> el estado permanece igual.</p>
      * @param posicion casilla por consultar
      * @return {@code true} si no hay elemento y no coincide con el objetivo
@@ -240,7 +236,8 @@ public class Tablero extends Observable {
      */
     public void moverNave(Posicion posicion) {
         posicionNave = posicion;
-        notificarObservadores();
+        notificarObservadores("La nave se movió a la posición ("
+                + posicion.getX() + ", " + posicion.getY() + ").");
     } 
 
     /**
@@ -283,9 +280,9 @@ public class Tablero extends Observable {
      * Consulta el objetivo actual sin volver a elegirlo.
      * <p><b>Precondiciones:</b> ninguna.</p>
      * <p><b>Postcondiciones:</b> el estado permanece igual.</p>
-     * @return objetivo actual, o {@code null} si todavía no se eligió uno
+     *  @return objetivo actual, o {@code null} si todavía no se eligió uno
      */
-    protected Posicion getObjetivo() {
+    public Posicion getObjetivo() {
         return objetivo;
     }
 
@@ -316,7 +313,8 @@ public class Tablero extends Observable {
             libre = libres.get(azar.nextInt(libres.size()));
         }
         this.objetivo = libre;
-        notificarObservadores();
+        notificarObservadores("Se estableció el objetivo en la posición ("
+                + libre.getX() + ", " + libre.getY() + ").");
         return libre;
     }
 
@@ -338,14 +336,15 @@ public class Tablero extends Observable {
 
     /**
      * Notifica a los observadores registrados que el estado del tablero se
-     * actualizó.
+     * actualizó, enviándoles el mensaje recibido.
      * <p><b>Precondiciones:</b> ninguna.</p>
-     * <p><b>Postcondiciones:</b> marca el tablero como modificado y notifica a
-     * sus observadores. No altera dimensiones, ocupación, nave ni objetivo.</p>
+     * <p><b>Postcondiciones:</b> notifica a sus observadores. No altera
+     * dimensiones, ocupación, nave ni objetivo.</p>
      * <p><b>Excepciones declaradas:</b> ninguna.</p>
+     * @param mensaje texto que describe la actualización
      */
-    protected void notificarActualizacion(){
-        notificarObservadores();
+    protected void notificarActualizacion(String mensaje){
+        notificarObservadores(mensaje);
     }
 
 

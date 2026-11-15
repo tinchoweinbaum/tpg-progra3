@@ -3,6 +3,7 @@ package CapaNegocio;
 import CapaPresentacion.*;
 import asistentes.*;
 import bitacora.RegistroBitacora;
+import destinoytablero.*;
 import exceptions.*;
 import misiones.Mision;
 import misiones.Mision1;
@@ -18,11 +19,12 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.IllegalFormatException;
 import java.util.List;
 
 //ESTE VA A CONECTARSE CON EL ENLAZADOR
-public class Controlador implements DocumentListener, ActionListener {
+public class Controlador implements DocumentListener, ActionListener , Observador {
     private VistaInicioSesion vistaInicioSesion;
     private VistaRegistro vistaRegistro;
     private BotonesMain vistaMain;
@@ -34,6 +36,8 @@ public class Controlador implements DocumentListener, ActionListener {
     private VistaEstadoNave vistaRecursos;
     private VistaCrearTripulante vistaCrearTripulante;
     private Asistente asistente;
+    private Tablero tablero;
+    private ArrayList<ElementoDelUniverso> elementosUni = new ArrayList<>();
     //private final TIPOBASEDATOS basedatos;
     private Tripulante capitanAct;
     private Visor visor;
@@ -265,31 +269,21 @@ public class Controlador implements DocumentListener, ActionListener {
         }
 
         if (actionEvent.getActionCommand().equals(VistaMisiones.SELECCIONA_MISION)){
-            try {
-                Mision mAct = null;
-                if (vistaMisiones.getRadioOne().isSelected()){
-                    mAct = new Mision1();
-                }
-                if (vistaMisiones.getRadioTwo().isSelected()){
-
-                }
-                if (vistaMisiones.getRadioThree().isSelected()){
-
-                }
-                if (mAct != null) {
-                    vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
-                    mAct.ejecutarMision(asistente);
-                    ejecucionMision();
-                }
-            } catch (MisionImposibleException e) {
-                ventanaEmergente(e.getMessage(),"ERROR");
-            }catch (NaveDestruidaException e){
-                ventanaEmergente(e.getMessage() + " - NAVE DESTRUIDA - FIN DEL JUEGO","ERROR");
-                resetGame();
+            Mision mAct = null;
+            if (vistaMisiones.getRadioOne().isSelected()){
+                mAct = new Mision1();
             }
-            finally {
-                actualizaBitacora();
-                vistaMain.setTitle("PANEL PRINCIPAL");
+            if (vistaMisiones.getRadioTwo().isSelected()){
+
+            }
+            if (vistaMisiones.getRadioThree().isSelected()){
+
+            }
+            if (mAct != null) {
+                ejecucionMision();
+                mAct.agregarObservador(this);
+                vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
+                mAct.ejecutarMision(asistente);
             }
         }
 
@@ -304,18 +298,31 @@ public class Controlador implements DocumentListener, ActionListener {
         }
     }
 
+    private void creaTablero(){
+        try{
+            elementosUni.add(ElementoDelUniverso.ASTEROIDE);
+            elementosUni.add(ElementoDelUniverso.ASTEROIDE);
+            elementosUni.add(ElementoDelUniverso.ASTEROIDE);
+            elementosUni.add(ElementoDelUniverso.NAVE_CARGUERA);
+            elementosUni.add(ElementoDelUniverso.NAVE_CARGUERA);
+            elementosUni.add(ElementoDelUniverso.NAVE_CARGUERA);
+            elementosUni.add(ElementoDelUniverso.NAVE_COMBATE);
+            elementosUni.add(ElementoDelUniverso.NAVE_COMBATE);
+            elementosUni.add(ElementoDelUniverso.NAVE_EXPLORADORA);
+            elementosUni.add(ElementoDelUniverso.NAVE_EXPLORADORA);
+            elementosUni.add(ElementoDelUniverso.ESTACION_CARGA);
+            elementosUni.add(ElementoDelUniverso.ESTACION_CARGA);
+            tablero = new Tablero(20,20,elementosUni);
+        } catch (CantidadDeElementosSuperaCasillaException | DimensionesDeTableroInconsistentesException e) {
+            ventanaEmergente(e.getMessage(),"");
+        }
+    }
+
     private void ejecucionMision(){
         vistaGeneradores.dispose();
         vistaTripulacion.dispose();
         vistaCrearTripulante.dispose();
         vistaMisiones.dispose();
-        vistaRecursos.getBtnCargarCombustible().setEnabled(false);
-        vistaRecursos.getBtnCargarEnergia().setEnabled(false);
-        vistaRecursos.getBtnLlenarCombustible().setEnabled(false);
-        vistaRecursos.getBtnLlenarEnergia().setEnabled(false);
-        vistaRecursos.getBtnMantenimiento().setEnabled(false);
-        vistaRecursos.getTxtCantidadCombustible().setEnabled(false);
-        vistaRecursos.getTxtCantidadEnergia().setEnabled(false);
         vistaMain.getBotonBorraCrearNave().setEnabled(false);
         vistaMain.getBotonMisiones().setEnabled(false);
         vistaMain.getBotonTripulacion().setEnabled(false);
@@ -347,7 +354,8 @@ public class Controlador implements DocumentListener, ActionListener {
         if (vistaCrearNave.getRadioExploradora().isSelected()){
             nave = FactoryNaves.getTipo(FactoryNaves.TIPO_EXPLORADORA);
         }
-        asistente = new Asistente(nave);
+        creaTablero();
+        asistente = new Asistente(nave,tablero);
         nave.setName(vistaCrearNave.getTxtNombreNave().getText());
         asignaCapitan();
         nave.agregaTripulante(capitanAct);
@@ -443,5 +451,15 @@ public class Controlador implements DocumentListener, ActionListener {
     }
 
 
-
+    @Override
+    public void actualizar(String mensaje) {
+        if (mensaje.equals("FIN_MISION"))
+            vistaMain.getBotonBorraCrearNave().setEnabled(true);
+        if (mensaje.equals("BITACORA"))
+            actualizaBitacora();
+        else {
+            asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora(mensaje));
+            actualizaBitacora();
+        }
+    }
 }

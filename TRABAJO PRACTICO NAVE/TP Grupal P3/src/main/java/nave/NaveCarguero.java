@@ -15,23 +15,53 @@ public class NaveCarguero extends Nave{
     }
 
     @Override
-    public RegistroCombate atacar(Nave nave) {
-        nave.atacadoPorCarguero();
-        return new RegistroCombate("Atacando nave " + nave);
+    public int atacar(Nave nave) {
+        int resultado = 0;
+        switch (nave.atacadoPorCarguero()){
+            case 1 -> {
+                resultado = -1;
+            }
+            case -1 -> {
+                resultado = 1;
+            }
+        }
+        return resultado;
     }
 
     @Override
-    public RegistroCombate atacadoPorCombate() {
-        return new RegistroCombate("Nave de Combate destruida");
+    public int atacadoPorCombate() {
+        return 1;
     }
 
     @Override
-    public RegistroCombate atacadoPorCarguero() {
-        return new RegistroCombate("Pacto de Paz entre naves cargueras.");
+    public int atacadoPorCarguero() {
+        return 0;
     }
 
     @Override
-    public RegistroCombate atacadoPorExplorador() {
-        return new RegistroCombate("Nave Destruida por nave exploradora."); // finalize?? no devolvemos??' void?? que asemos?!?!??!?!
+    public int atacadoPorExplorador() {
+        return -1;
     }
+
+//    @Override
+//    public RegistroCombate atacar(Nave nave) {
+//        nave.atacadoPorCarguero();
+//        return new RegistroCombate("Atacando nave " + nave);
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorCombate() {
+//        return new RegistroCombate("Nave de Combate destruida");
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorCarguero() {
+//        return new RegistroCombate("Pacto de Paz entre naves cargueras.");
+//    }
+//
+//    @Override
+//    public RegistroCombate atacadoPorExplorador() {
+//        return new RegistroCombate("Nave Destruida por nave exploradora."); // finalize?? no devolvemos??' void?? que asemos?!?!??!?!
+//    }
+
 }

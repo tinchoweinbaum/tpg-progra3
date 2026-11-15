@@ -1,9 +1,9 @@
 
-->TODO: Destruccion de las naves, hacer que las naves se "suiciden" cuando atacan a una contra la que pierden.
-->TODO: conflictos con tablero
+->TODO: ver bien actualizacion de bitacora -- evaluar disitnito pro mision??? -- no salirse de bordes al moverse -- ver actualizacion de recursos durante ejecucion de mision
+->TODO: ver bien motor warp!!.
 ->TODO: hacer que asistente ya no regule TODAS las excepciones, que delegue a la vista
-->TODO: a futuro poner que cada X acciones los jugadores ganen 1 año de antiguedad
 ->TODO: interfaz asistente e interfaz DAO - enlazador las implemente y delega
 ->TODO: observer observable entre controlador y motor para el cambio de estado
 ->TODO: agregar registro de consumo de recursos en motorWarp ademas del movimiento en el tablero
 ->TODO: preguntar si botones para cargar recursos estan siempre activos o solo en ocaciones?
+->TODO: cambiar vista de tablero a boton para mostrarlo y que se abra una nueva ventanita re bonita fachera re sexy como yo
