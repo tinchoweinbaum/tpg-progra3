@@ -1,8 +1,12 @@
 
 ->TODO: ver bien motor warp!!.
-->TODO: terminar interfaz asistente y comenzar interfaz DAO - enlazador las implemente y delega
 ->TODO: observer observable entre controlador y motor para el cambio de estado
-->TODO: preguntar si botones para cargar recursos estan siempre activos o solo en ocaciones?
+
+->TODO: terminar interfaz asistente y comenzar interfaz DAO - enlazador las implemente y delega
+
+->TODO: botones para cargar recursos solo se habilita a cerrar mision 3
+->TODO: una vez hacido el motor, completar misiones 1 y 2
+
 ->TODO: cambiar vista de tablero a boton para mostrarlo y que se abra una nueva ventanita re bonita fachera re sexy como yo
 
 ->TODO: Capa de persistencia DAO

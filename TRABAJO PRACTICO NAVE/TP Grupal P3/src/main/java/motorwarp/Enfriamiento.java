@@ -36,7 +36,6 @@ public class Enfriamiento implements State {
         throw new EstadoInvalidoException("Ya se ha enfriado el motor");
     }
 
-    //Despues lo imprime cuando se printean los registros de motor
     @Override
     public String toString(){
         return "ENFRIAMIENTO";

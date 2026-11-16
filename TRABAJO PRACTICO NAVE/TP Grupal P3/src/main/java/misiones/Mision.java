@@ -122,7 +122,7 @@ public abstract class Mision extends Observable{
                     }
                     if (ac.getNave().getCombustible()==0 || ac.getNave().getEnergia()==0 || ac.getNave().getDesgaste()==100)
                         throw new NaveDestruidaException("LA NAVE NO LOGRO SOBREVIVIR AL UNIVERSO");
-                    ac.darTurnosTablero(1);
+                    ac.darTurnosTablero();
                 }
                 this.acumuladoPerdidaCombustible = ac.getNave().getCombustible()-estadoCombustibleInicial;
                 this.acumuladoIncrementoDesgaste = ac.getNave().getDesgaste()-estadoDesgasteInicial;

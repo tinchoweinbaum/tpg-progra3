@@ -1,6 +1,5 @@
 package motorwarp;
 import bitacora.*;
-import destinoytablero.Observable;
 import exceptions.*;
 import asistentes.Asistente;
 
@@ -14,6 +13,9 @@ public class MotorWarp {
     public static final int SALTO_WARP = 2;
     public static final int ENFRIAMIENTO = 3;
     public static final int SALTO_CORTO = 4;
+
+    public static final int CONSUMO_ENERGIA_SALTO_WARP = 5;
+    public static final int CONSUMO_COMBUSTIBLE_SALTO = 2;
 
     private State estadoActual;
     private ArrayList<RegistroMotor> registrosTransiciones = new  ArrayList<>();
@@ -144,4 +146,14 @@ public class MotorWarp {
         //Sistema.esperar(500);
         this.disponible();
     }
+
+    public void saltoWarp(Tablero tablero,Asistente ac, Posicion direccion){
+        ac.darTurnosTablero();
+        estadoActual.preparaSalto(tablero,ac,direccion);//desde disponible ,moves el tablero, pasas a preparar salto
+//        ahora estado actrual es prepararSalto() , hay que hacer que de dons turnos de tablero y pase a salto warp
+        // cuando este en salto warp, con los parametros que le pasamos, que se mueva
+        //una vez que se mueve pasa a estado enfriamiento, vuelve a dar turno tablero y continuas con la ejecucion del programa ya que vuelve a disponible
+    }
+
+
 }

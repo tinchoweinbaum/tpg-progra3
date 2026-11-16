@@ -115,8 +115,8 @@ public class Enlazador implements IAsistente,IVisor{
     }
 
     @Override
-    public void darTurnosTablero(int i) {
-        getAsistente().darTurnosTablero(i);
+    public void darTurnosTablero() {
+        getAsistente().darTurnosTablero();
     }
 
     @Override

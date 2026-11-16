@@ -22,6 +22,8 @@ public class Disponible implements State {
     @Override
     public void preparaSalto(int tipoSalto){
         motor.setEstado(new PreparandoSalto(motor));
+        //da 2 turnos tablero
+        //pasa a motor.getEstado.salto
     }
 
     @Override

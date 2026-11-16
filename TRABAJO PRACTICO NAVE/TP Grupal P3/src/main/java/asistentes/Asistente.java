@@ -11,6 +11,8 @@ import tripulantes.Tripulante;
 import java.util.Random;
 
 public class Asistente implements IAsistente {
+    public static int tick = 0;
+
     private final Nave nave;
     private final Bitacora bitacorasNave;
     private final MotorWarp motor;
@@ -260,12 +262,12 @@ public class Asistente implements IAsistente {
             actual.interactuaConNave(this);
     }
 
-    public void darTurnosTablero(int i){
-        for(int j=0;j<i;j++)
-            destino.turnoDestino();
+    public void darTurnosTablero() throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+        destino.turnoDestino();
+        chequeaPosicionActual();
     }
 
-    private boolean analizaAvanceRadarCortoAlcance(Posicion pos){
+    private boolean puedeSaltarNormal(Posicion pos){
         int x = pos.getX() + 1;
         int y = pos.getY() + 1;
         ElementoDelUniverso[][] radarCortoAlcance = getTablero().observarAlrededores();
@@ -298,24 +300,19 @@ public class Asistente implements IAsistente {
                 nuevaPos = new Posicion(0,-1);
         }
         if (orientacionX !=0 || orientacionY!=0){
-            if (!estaFuera(nuevaPos) && !analizaAvanceRadarCortoAlcance(nuevaPos) && getMotor().getEstadoActual().getIdEstado()==MotorWarp.DISPONIBLE && getNave().getEnergia()>5){
-                consumeEnergiaNave(5);
+            if (!saltoFuera(nuevaPos) && !puedeSaltarNormal(nuevaPos) &&getNave().getEnergia()>MotorWarp.CONSUMO_ENERGIA_SALTO_WARP){
+                consumeEnergiaNave(MotorWarp.CONSUMO_ENERGIA_SALTO_WARP);
                 nuevaPos = new Posicion(nuevaPos.getX()*2,nuevaPos.getY()*2);
-                //tira 2 turnos de tablero
-                //revisa nuevamente la posicion actual
-                //rechequea los recursos de la nave
-                // si todo esta ok, tira el salto warp
-                //aca tendria que manejar turnos, primero habria que ver como actualizamos el motor para ver como nos comnuicamos aca
-                //getMotor().saltoWarp();
+                //getBitacora().agregaRegistro(getMotor().saltoWarp(getTablero(),this,nuevaPos));
             }else{
                 consumeCombustibleNave(2);
-                //getMotor().saltar();
+                //getBitacora().agregarRegistro(getMotor().saltar(getTablero(),nuevaPos));
             }
             getTablero().moverNave(new Posicion(Xnave + nuevaPos.getX(),Ynave + nuevaPos.getY()));
         }
     }
 
-    private boolean estaFuera(Posicion posicion) {
+    private boolean saltoFuera(Posicion posicion) {
         int x = getTablero().getPosicionNave().getX() + posicion.getX()*2;
         int y = getTablero().getPosicionNave().getY() + posicion.getY()*2;
 

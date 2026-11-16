@@ -34,6 +34,8 @@ public class PreparandoSalto implements State {
     @Override
     public void saltoWarp(){
         motor.setEstado(new SaltoWarp(motor));
+        //mueve nave en el tablero
+        //pasa a estado enfriamiento
     }
     
     @Override

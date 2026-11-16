@@ -36,6 +36,8 @@ public class SaltoWarp implements State {
     @Override
     public void enfriamiento(){
         motor.setEstado(new Enfriamiento(motor));
+        //da turno a tablero, se mueven fichas || thread sleep
+        //pasa a estado dispnbe
     }
 
     //Despues lo imprime cuando se printean los registros de motor

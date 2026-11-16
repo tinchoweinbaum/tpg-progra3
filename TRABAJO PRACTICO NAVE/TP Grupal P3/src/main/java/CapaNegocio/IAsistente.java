@@ -40,6 +40,6 @@ public interface IAsistente {
 
     // Tablero y movimiento
     void chequeaPosicionActual() throws NaveDestruidaException, CantCombustibleInvalidaException, CantEnergiaInvalidaException;
-    void darTurnosTablero(int i);
+    void darTurnosTablero() throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException;
     void mueveNave() throws CantEnergiaInvalidaException, CombustibleInsuficienteException, CantCombustibleInvalidaException, NaveDestruidaException;
 }
