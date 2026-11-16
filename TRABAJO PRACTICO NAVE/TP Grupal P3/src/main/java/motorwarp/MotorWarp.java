@@ -1,9 +1,7 @@
 package motorwarp;
 import bitacora.*;
 import exceptions.*;
-import sistema.Sistema;
 import asistentes.Asistente;
-import destinoytablero.*;
 
 import java.util.ArrayList;
 
@@ -31,24 +29,6 @@ public class MotorWarp {
         return auxiliar;
     }
 
-    public void llamaEstado(int i) throws EstadoInvalidoException {
-        switch (i){
-            case DISPONIBLE:
-                this.disponible();
-                break;
-            case PREPARANDO_SALTO:
-                this.prepararSalto(SALTO_CORTO);
-                break;
-            case SALTO_WARP:
-                this.saltoWarp();
-                break;
-            case ENFRIAMIENTO:
-                this.enfriamiento();
-                break;
-            default: throw new EstadoInvalidoException("No existe el estado nro " + i);
-        }
-    }
-
     public State getEstadoActual() {
         return estadoActual;
     }
@@ -56,34 +36,6 @@ public class MotorWarp {
     public void setEstado(State estadoActual) {
         this.estadoActual = estadoActual;
     }
-
-    public double getEnergia (){
-        return asistente.getNave().getEnergia();
-    }
-
-    public double getCombustible (){
-        return asistente.getNave().getCombustible();
-    }
-
-    public void consumeEnergia (float energia){
-        asistente.consumeEnergiaNave(energia);
-    }
-
-    public void consumeCombustible (float combustible){
-        asistente.consumeCombustibleNave(combustible);
-    }
-
-    public double getDesgaste (){
-        return asistente.getNave().getDesgaste();
-    }
-
-    public double getDesgasteMaximo(){
-        return asistente.getNave().getMaxDesgaste();
-    }
-    public void aumentaDesgaste(float cantidad) {
-        asistente.aumentaDesgasteNave(cantidad);
-    }
-
 
     /**
     * Metodo que permite un cambio de estado hacia disponible.
@@ -117,7 +69,7 @@ public class MotorWarp {
 
     public void prepararSalto(int tipoSalto) {
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: PREPARANDO SALTO",this.estadoActual));
-        Sistema.esperar(500);
+        //Sistema.esperar(500);
 
         if (tipoSalto == SALTO_WARP)  // SALTO_WARP = 2
             try {
@@ -141,10 +93,10 @@ public class MotorWarp {
     }
 
     public void saltar ()  {
-            consumeCombustible(2);
-            this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO CORTO", this.estadoActual));
-            //Salto en el tablero
-            Sistema.esperar(500);
+        consumeCombustible(2);
+        this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO CORTO", this.estadoActual));
+        //Salto en el tablero
+        //Sistema.esperar(500);
 }
 
     /**
@@ -164,7 +116,7 @@ public class MotorWarp {
         // Salto doble en el tablero
         estadoActual.saltoWarp();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO WARP", this.estadoActual));
-        Sistema.esperar(500); // Espera medio segundo para que no haya race condition al agregar elementos a la bitácora.
+        //Sistema.esperar(500); // Espera medio segundo para que no haya race condition al agregar elementos a la bitácora.
         if (getDesgaste() + 3 <= getDesgasteMaximo()) {
             aumentaDesgaste(3);
         }
@@ -187,7 +139,7 @@ public class MotorWarp {
     public void enfriamiento() throws EstadoInvalidoException {
         estadoActual.enfriamiento();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: ENFRIAMIENTO",this.estadoActual));
-        Sistema.esperar(500);
+        //Sistema.esperar(500);
         this.disponible();
     }
 }

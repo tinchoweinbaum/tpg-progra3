@@ -1,5 +1,5 @@
 
-->TODO: ver bien actualizacion de bitacora -- evaluar disitnito pro mision???  -- ver actualizacion de recursos durante ejecucion de mision
+->TODO: enum a clase abstarcta?
 ->TODO: ver bien motor warp!!.
 ->TODO: hacer que asistente ya no regule TODAS las excepciones, que delegue a la vista
 ->TODO: interfaz asistente e interfaz DAO - enlazador las implemente y delega

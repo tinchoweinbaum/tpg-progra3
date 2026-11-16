@@ -53,32 +53,7 @@ public class Asistente {
     public MotorWarp getMotor() {
         return motor;
     }
-    
-    /**
-     * Metodo para establecer un estado al motor.
-     * Si el estado es invalido se catchea la excepcion y registra el error en la bitacora.
-     * (DISPONIBLE = 0, PREPARANDO_SALTO = 1, SALTO_WARP = 2, ENFRIAMIENTO = 3).
-     * 
-     * <b>pre:</b> Número valido de estado del motor, de 0 a 3.
-     * <b>post:</b> Se actualiza el estado del motor, si falla no se cambia el estado y se registra en bitacora.
-     * 
-     * @param idEstado Estado deseado del motor (0 a 3 u otro valor para excepcion).
 
-     */
-    public void setEstadoMotor(int idEstado){
-        assert invariant();
-        
-        try {
-            this.motor.llamaEstado(idEstado);
-        }
-        catch (EstadoInvalidoException e){
-            this.bitacorasNave.agregarRegistro(new RegistroError("CAMBIO DE ESTADO INVALIDO", e));
-        }
-        finally {
-            this.actualizaBitacoraMotor();
-        }
-        assert invariant();
-    }
     
     //ESTA LA DEJAMOS. ASÍ PROBAMOS QUE NO PUEDE PASAR A ESTADOS INVALIDOS Y TIRA EXCEPCIONES
 
@@ -468,6 +443,10 @@ public class Asistente {
             if (!estaFuera(nuevaPos) && !analizaAvanceRadarCortoAlcance(nuevaPos) && getMotor().getEstadoActual().getIdEstado()==MotorWarp.DISPONIBLE && getNave().getEnergia()>5){
                 getNave().consumeEnergia(5);
                 nuevaPos = new Posicion(nuevaPos.getX()*2,nuevaPos.getY()*2);
+                //tira 2 turnos de tablero
+                //revisa nuevamente la posicion actual
+                //rechequea los recursos de la nave
+                // si todo esta ok, tira el salto warp
                 //aca tendria que manejar turnos, primero habria que ver como actualizamos el motor para ver como nos comnuicamos aca
                 //getMotor().saltoWarp();
             }else{
