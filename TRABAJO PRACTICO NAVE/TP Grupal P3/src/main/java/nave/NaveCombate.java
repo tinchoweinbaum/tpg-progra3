@@ -30,17 +30,17 @@ public class NaveCombate extends Nave{
 
     @Override
     public int atacadoPorCombate() {
-        return 0;
+        return Nave.COMBATE_PAZ;
     }
 
     @Override
     public int atacadoPorCarguero() {
-        return -1;
+        return Nave.COMBATE_DERROTA;
     }
 
     @Override
     public int atacadoPorExplorador() {
-        return 1;
+        return Nave.COMBATE_VICTORIA;
     }
 
 //    @Override

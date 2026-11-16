@@ -11,6 +11,10 @@ public abstract class Nave{
     public static final float MAX_ENERGIA = 100;
     public static final float MAX_DESGASTE = 100;
 
+    public static final int COMBATE_DERROTA = -1;
+    public static final int COMBATE_PAZ = 0;
+    public static final int COMBATE_VICTORIA = 1;
+
     protected float combustible, energia, desgaste = 0;
     protected ArrayList<Tripulante> tripulantes = new ArrayList<>();
     protected Tripulante capitan = null;
@@ -39,6 +43,9 @@ public abstract class Nave{
 
 //creo que tendrai que ser int para ver que se hace en cada caso 1-muerte 2-victoria 3- pacto de paz
     public abstract int atacar(Nave nave);
+
+    // ESTOS MÉTODOS TIENEN QUE TIRAR LA EXCEPECIÓN DE NaveDestruidaException. NO interactuaConNave();
+    // LA EXCEPECIÓN TIENE QUE SUBIR HASTA DONDE SEA NECESARIO PARA QUE SE TERMINE EL JUEGO. PERO SE TIENE QUE ORIGINAR ACÁ.
     public abstract int atacadoPorCombate();
     public abstract int atacadoPorCarguero();
     public abstract int atacadoPorExplorador();

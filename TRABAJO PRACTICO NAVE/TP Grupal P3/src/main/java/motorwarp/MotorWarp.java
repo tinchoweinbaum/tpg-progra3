@@ -15,7 +15,7 @@ public class MotorWarp {
     public static final int SALTO_CORTO = 4;
     private State estadoActual;
     private ArrayList<RegistroMotor> registrosTransiciones = new  ArrayList<>();
-    private final Asistente asistente;
+    private final Asistente asistente; // el motor NO puede tener una referencia al asistente, evitar a toda costa la doble referencia asistente <--> motor
 
     
     public MotorWarp (Asistente asistente) {

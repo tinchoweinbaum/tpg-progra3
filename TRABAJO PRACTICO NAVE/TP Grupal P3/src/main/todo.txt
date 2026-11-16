@@ -7,3 +7,7 @@
 ->TODO: agregar registro de consumo de recursos en motorWarp ademas del movimiento en el tablero
 ->TODO: preguntar si botones para cargar recursos estan siempre activos o solo en ocaciones?
 ->TODO: cambiar vista de tablero a boton para mostrarlo y que se abra una nueva ventanita re bonita fachera re sexy como yo
+
+->TODO: chequeaPosicionActual() está arrojando excepciones que fueron creadas para ser arrojadas por las misiones.
+->TODO: Los métodos del double dispatch de combate son los que tienen que tirar la expecion de nave destruída. NO quien llame a estos métodos.
+->TODO: Capa de persistencia DAO

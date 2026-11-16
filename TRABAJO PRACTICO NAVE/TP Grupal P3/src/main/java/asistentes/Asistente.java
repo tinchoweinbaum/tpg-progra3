@@ -127,7 +127,7 @@ public class Asistente {
     * 
     *<b>post:</b> Carga combustible hasta su maximo
     */
-    public void cargaComustibleNaveFull()throws CantCombustibleInvalidaException{
+    public void cargaCombustibleNaveFull()throws CantCombustibleInvalidaException{
         if (getNave().getCombustible()==Nave.MAX_COMBUSTIBLE)
             throw new CantCombustibleInvalidaException("Tanque lleno");
         this.cargaCombustibleNave(Nave.MAX_COMBUSTIBLE - this.nave.getCombustible());
@@ -179,7 +179,6 @@ public class Asistente {
     * <b>pre:</b> El desgaste de la nave tiene que ser mayor o igual a 80 unidades (desgaste >= 80)
     *<b>post:</b> Repara totalmente la nave (desgaste = 0)
     */
-    
     public void reparaDesgasteNaveFull()throws CantDesgasteInvalidaException{
         if (this.getNave().getDesgaste()<80)
             throw new CantDesgasteInvalidaException("No puede realizarse el mantenimiento con un nivel de Desgaste menor a 80");
@@ -302,90 +301,77 @@ public class Asistente {
         return this.nave.eliminaTripulante(t);
     }
 
-    /**
-     * toString de Asistente que printea todos los datos relevantes. Hecho con Gemini.
-     */
-    @Override
-    public String toString() {
-        String string = "--- Estado del Asistente y la Nave ---\n" +
-                "-> Tipo de la nave: " + this.nave.getClass().getSimpleName() + "\n" +
-                "-> Tripulación: " + this.nave.getTripulacion() + "\n" +
-                "-> Cantidad de recursos:\n" +
-                "   - Combustible: " + this.nave.getCombustible() + " / " + Nave.MAX_COMBUSTIBLE + "\n" +
-                "   - Energía: " + this.nave.getEnergia() + " / " + Nave.MAX_ENERGIA + "\n" +
-                "   - Desgaste: " + this.nave.getDesgaste() + " / " + Nave.MAX_DESGASTE;
 
-        return string;
-    }
 
-    public void chequeaPosicionActual() throws NaveDestruidaException, CantCombustibleInvalidaException, CantEnergiaInvalidaException, EnergiaInsuficienteException {
+    public void chequeaPosicionActual() throws NaveDestruidaException, CantCombustibleInvalidaException, CantEnergiaInvalidaException {
         Random rand = new Random();
         ElementoDelUniverso actual = getTablero().inspeccionarPosicion();
-        if(actual!=null)
-            switch (actual){
-                case ASTEROIDE -> {
-                    getBitacorasNave().agregarRegistro(new RegistroBitacora("IMPACTO CON ASTEROIDE"));
-                    float energiaTomada = rand.nextInt(5)+1;
-                    if (getNave().getEnergia()-energiaTomada<=0)
-                        throw new EnergiaInsuficienteException("SE AGOTO LA ENERGIA DE LA NAVE");
-                    else
-                        consumeEnergiaNave(energiaTomada);
-                }
-                case NAVE_COMBATE ->  {
-                    switch (getNave().atacadoPorCombate()){
-                        case -1 -> {
-                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - LA NAVE ESTA SIENDO ASEDIADA"));
-                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE DE COMBATE");
-                        }
-                        case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - PACTO DE PAZ REALIZADO"));
-                        case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
-                    }
-                }
-                case ESTACION_CARGA -> {
-                    int opcion = rand.nextInt(2)+1;
-                    getBitacorasNave().agregarRegistro(new RegistroBitacora("LLEGADA A ESTACION DE CARGA - INTENTANDO REABASTECER " + ((opcion==1) ? "COMBUSTIBLE" : "ENERGIA")));
-                    float carga = rand.nextInt(50)+1;
-                    switch (opcion) {
-                        case 1 -> {
-                            if (getNave().getCombustible()<Nave.MAX_COMBUSTIBLE)
-                                if (getNave().getCombustible()+carga > Nave.MAX_COMBUSTIBLE)
-                                    cargaComustibleNaveFull();
-                                else
-                                    cargaCombustibleNave(carga);
-                        }
-                        case 2 -> {
-                            if (getNave().getEnergia()<Nave.MAX_ENERGIA)
-                                if (getNave().getEnergia()+carga > Nave.MAX_ENERGIA)
-                                    cargaEnergiaNaveFull();
-                                else
-                                    cargaEnergiaNave(carga);
-                        }
-                    }
-                }
-                case NAVE_CARGUERA -> {
-                    switch (getNave().atacadoPorCarguero()){
-                        case -1 -> {
-                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - LA NAVE ESTA SIENDO ASEDIADA"));
-                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE CARGUERA");
-                        }
-                        case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - PACTO DE PAZ REALIZADO"));
-                        case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
-                    }
-                }
-                case NAVE_EXPLORADORA -> {
-                    switch (getNave().atacadoPorExplorador()){
-                        case -1 -> {
-                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - LA NAVE ESTA SIENDO ASEDIADA"));
-                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE EXPLORADORA");
-                        }
-                        case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - PACTO DE PAZ REALIZADO"));
-                        case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
-                    }
-                }
-                default -> {
-                    getBitacorasNave().agregarRegistro(new RegistroBitacora("RADAR DETECTO EN LA POSICION DE LA NAVE: " + actual));
-                }
-            }
+        actual.interactuaConNave(this);
+//        if(actual!=null)
+//            switch (actual){
+//                case ASTEROIDE -> {
+//                    getBitacorasNave().agregarRegistro(new RegistroBitacora("IMPACTO CON ASTEROIDE"));
+//                    float energiaTomada = rand.nextInt(5)+1;
+//                    if (getNave().getEnergia()-energiaTomada<=0)
+//                        throw new EnergiaInsuficienteException("SE AGOTO LA ENERGIA DE LA NAVE");
+//                    else
+//                        consumeEnergiaNave(energiaTomada);
+//                }
+//                case NAVE_COMBATE ->  {
+//                    switch (getNave().atacadoPorCombate()){
+//                        case -1 -> {
+//                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - LA NAVE ESTA SIENDO ASEDIADA"));
+//                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE DE COMBATE");
+//                        }
+//                        case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - PACTO DE PAZ REALIZADO"));
+//                        case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
+//                    }
+//                }
+//                case ESTACION_CARGA -> {
+//                    int opcion = rand.nextInt(2)+1;
+//                    getBitacorasNave().agregarRegistro(new RegistroBitacora("LLEGADA A ESTACION DE CARGA - INTENTANDO REABASTECER " + ((opcion==1) ? "COMBUSTIBLE" : "ENERGIA")));
+//                    float carga = rand.nextInt(50)+1;
+//                    switch (opcion) {
+//                        case 1 -> {
+//                            if (getNave().getCombustible()<Nave.MAX_COMBUSTIBLE)
+//                                if (getNave().getCombustible()+carga > Nave.MAX_COMBUSTIBLE)
+//                                    cargaComustibleNaveFull();
+//                                else
+//                                    cargaCombustibleNave(carga);
+//                        }
+//                        case 2 -> {
+//                            if (getNave().getEnergia()<Nave.MAX_ENERGIA)
+//                                if (getNave().getEnergia()+carga > Nave.MAX_ENERGIA)
+//                                    cargaEnergiaNaveFull();
+//                                else
+//                                    cargaEnergiaNave(carga);
+//                        }
+//                    }
+//                }
+//                case NAVE_CARGUERA -> {
+//                    switch (getNave().atacadoPorCarguero()){
+//                        case -1 -> {
+//                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - LA NAVE ESTA SIENDO ASEDIADA"));
+//                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE CARGUERA");
+//                        }
+//                        case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - PACTO DE PAZ REALIZADO"));
+//                        case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
+//                    }
+//                }
+//                case NAVE_EXPLORADORA -> {
+//                    switch (getNave().atacadoPorExplorador()){
+//                        case -1 -> {
+//                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - LA NAVE ESTA SIENDO ASEDIADA"));
+//                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE EXPLORADORA");
+//                        }
+//                        case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - PACTO DE PAZ REALIZADO"));
+//                        case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
+//                    }
+//                }
+//                default -> {
+//                    getBitacorasNave().agregarRegistro(new RegistroBitacora("RADAR DETECTO EN LA POSICION DE LA NAVE: " + actual));
+//                }
+//            }
 
     }
 
@@ -462,10 +448,21 @@ public class Asistente {
     private boolean estaFuera(Posicion posicion) {
         int x = getTablero().getPosicionNave().getX() + posicion.getX()*2;
         int y = getTablero().getPosicionNave().getY() + posicion.getY()*2;
-        if (getTablero().getX()<x || getTablero().getY()<y)
-            return true;
-        return false;
+
+        return getTablero().getX() < x || getTablero().getY() < y;
     }
+    /**
+     * toString de Asistente que printea todos los datos relevantes. Hecho con Gemini.
+     */
+    @Override
+    public String toString() {
 
-
+        return "--- Estado del Asistente y la Nave ---\n" +
+                "-> Tipo de la nave: " + this.nave.getClass().getSimpleName() + "\n" +
+                "-> Tripulación: " + this.nave.getTripulacion() + "\n" +
+                "-> Cantidad de recursos:\n" +
+                "   - Combustible: " + this.nave.getCombustible() + " / " + Nave.MAX_COMBUSTIBLE + "\n" +
+                "   - Energía: " + this.nave.getEnergia() + " / " + Nave.MAX_ENERGIA + "\n" +
+                "   - Desgaste: " + this.nave.getDesgaste() + " / " + Nave.MAX_DESGASTE;
+    }
 }
