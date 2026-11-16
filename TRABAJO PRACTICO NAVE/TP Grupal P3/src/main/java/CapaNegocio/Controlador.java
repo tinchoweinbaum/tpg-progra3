@@ -4,6 +4,7 @@ import CapaPresentacion.*;
 import asistentes.*;
 import bitacora.RegistroBitacora;
 import destinoytablero.*;
+import elementosUniverso.*;
 import exceptions.*;
 import misiones.Mision;
 import misiones.Mision1;
@@ -24,7 +25,6 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Random;
 
-//ESTE VA A CONECTARSE CON EL ENLAZADOR
 public class Controlador implements DocumentListener, ActionListener , Observador {
     private VistaInicioSesion vistaInicioSesion;
     private VistaRegistro vistaRegistro;
@@ -36,12 +36,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     private VistaMisiones vistaMisiones;
     private VistaEstadoNave vistaRecursos;
     private VistaCrearTripulante vistaCrearTripulante;
-    private Asistente asistente;
     private Tablero tablero;
     private ArrayList<ElementoDelUniverso> elementosUni = new ArrayList<>();
-    //private final TIPOBASEDATOS basedatos;
-    private Tripulante capitanAct;
-    private Visor visor;
+
+    private Enlazador enlazador;
 
     public Controlador(VistaInicioSesion vista) {
         this.vistaInicioSesion = vista;
@@ -67,17 +65,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         this.vistaTripulacion.setControlador(this);
     }
 
-    public Asistente getAsistente() {
-        return asistente;
-    }
-
-//    public TIPOBASEDATOS getBasedatos() {
-//        return basedatos;
-//    }
-
-
-    public void setAsistente(Asistente asistente) {
-        this.asistente = asistente;
+    private void setEnlazador(Enlazador e){
+        this.enlazador = e;
     }
 
     @Override
@@ -147,7 +136,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_COMBUSTIBLE))
             try{
-                asistente.cargaCombustibleNave(Float.parseFloat(vistaRecursos.getTxtCantidadCombustible().getText()));
+                enlazador.cargaCombustibleNave(Float.parseFloat(vistaRecursos.getTxtCantidadCombustible().getText()));
                 actualizaRecursosNave();
                 ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
             } catch (CantCombustibleInvalidaException e) {
@@ -161,7 +150,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_ENERGIA))
             try {
-                asistente.cargaEnergiaNave(Float.parseFloat(vistaRecursos.getTxtCantidadEnergia().getText()));
+                enlazador.cargaEnergiaNave(Float.parseFloat(vistaRecursos.getTxtCantidadEnergia().getText()));
                 actualizaRecursosNave();
                 ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
             }catch (CantEnergiaInvalidaException e){
@@ -176,7 +165,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.LLENAR_COMBUSTIBLE))
             try{
-                asistente.cargaComustibleNaveFull();
+                enlazador.cargaCombustibleNaveFull();
                 actualizaRecursosNave();
                 vistaRecursos.getTxtCantidadCombustible().setText("");
                 ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
@@ -189,7 +178,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.LLENAR_ENERGIA))
             try {
-                asistente.cargaEnergiaNaveFull();
+                enlazador.cargaEnergiaNaveFull();
                 actualizaRecursosNave();
                 vistaRecursos.getTxtCantidadEnergia().setText("");
                 ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
@@ -202,7 +191,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.MANTENIMIENTO))
             try {
-                asistente.reparaDesgasteNaveFull();
+                enlazador.reparaDesgasteNaveFull();
                 actualizaBitacora();
                 actualizaRecursosNave();
                 ventanaEmergente("MANTENIMIENTO EXITOSO","");
@@ -232,7 +221,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaCrearTripulante.CREAR_TRIPULANTE)){
             try {
-                asistente.getNave().agregaTripulante(agregaTripulante());
+                enlazador.getNave().agregaTripulante(agregaTripulante());
                 ventanaEmergente("SE AGREGO CORRECTAMENTE EL TRIPULANTE","");
             }catch(ErrorCreacionPersonajeException | ErrorAgregarTripulacionException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
@@ -246,7 +235,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaTripulacion.BORRA_TRIPULANTE)){
             Tripulante auxTrip = vistaTripulacion.getListaTripulantes().getSelectedValue();
             if (auxTrip!=null) {
-                asistente.getNave().eliminaTripulante(auxTrip);
+                enlazador.getNave().eliminaTripulante(auxTrip);
                 if(auxTrip.esCapitan()){
                     ventanaEmergente("FIN DEL JUEGO - LA NAVE NO TIENE CAPITAN","ERROR");
                     resetGame();
@@ -261,12 +250,12 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaGeneradores.PRODUCE_BATERIA)){
             vistaGeneradores.getAreaConsolaMini().append("\n-INGRESO UNA NUEVA NAVE PRODUCTORA-");
-            visor.nuevaGeneradora();
+            enlazador.nuevaGeneradora();
         }
 
         if (actionEvent.getActionCommand().equals(VistaGeneradores.PRODUCE_NAVE)){
             vistaGeneradores.getAreaConsolaMini().append("\n-INGRESO UNA NUEVA NAVE CONSUMIDORA-");
-            visor.nuevaConsumidora();
+            enlazador.nuevaConsumidora();
         }
 
         if (actionEvent.getActionCommand().equals(VistaMisiones.SELECCIONA_MISION)){
@@ -285,7 +274,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 ejecucionMision();
                 mAct.agregarObservador(this);
                 vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
-                mAct.ejecutarMision(asistente);
+                mAct.ejecutarMision(enlazador.getAsistente());
             }
         }
 
@@ -302,11 +291,13 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     private void agregaTripulantePrueba() {
         try {
-            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
         } catch (ErrorCreacionPersonajeException e) {
+            //
+        } catch (ErrorAgregarTripulacionException e) {
             //
         }
     }
@@ -321,11 +312,19 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     }
 
     private void iniciaElementosUni() {
-        ArrayList<ElementoDelUniverso> auxList = new ArrayList<>(List.of(ElementoDelUniverso.values()));
         Random aleatorio = new Random();
         elementosUni.clear();
+        ElementoDelUniverso aux = null;
         for (int i=0; i<300; i++){
-            elementosUni.add(auxList.get(aleatorio.nextInt(auxList.size())));
+            int opcion = aleatorio.nextInt(5)+1;//cant de elementos
+            switch (opcion){
+                case 1 -> aux = new Asteroide();
+                case 2 -> aux = new ElementoNaveCarguera();
+                case 3 -> aux = new ElementoNaveCombate();
+                case 4 -> aux = new ElementoNaveExploradora();
+                case 5 -> aux = new EstacionCarga();
+            }
+            elementosUni.add(aux);
         }
     }
 
@@ -350,7 +349,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     private void actualizaVisorTripulantes(){
         vistaTripulacion.getModeloLista().clear();
-        for(Tripulante t:asistente.getNave().getTripulacion())
+        for(Tripulante t:enlazador.getNave().getTripulacion())
             vistaTripulacion.getModeloLista().addElement(t);
     }
 
@@ -374,19 +373,16 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             nave = FactoryNaves.getTipo(FactoryNaves.TIPO_EXPLORADORA);
         }
         creaTablero();
-        asistente = new Asistente(nave,tablero);
         nave.setName(vistaCrearNave.getTxtNombreNave().getText());
-        asignaCapitan();
-        nave.agregaTripulante(capitanAct);
-        asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora("NAVE CREADA"));
+        nave.agregaTripulante(asignaCapitan());
+        vistaCrearNave.dispose();
         ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
+        setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo()));
         actualizaRecursosNave();
         actualizaBitacora();
-        vistaCrearNave.dispose();
-        vistaMain.getLblCapitan().setText("Capitan "+ capitanAct.getNombre());
-        vistaMain.getLblNombreNave().setText((asistente.getNave().getName()).toUpperCase());
         actualizaVisorTripulantes();
-        iniciaUniversoParalelo();
+        vistaMain.getLblCapitan().setText("Capitan "+ enlazador.getNave().getCapitan().getNombre());
+        vistaMain.getLblNombreNave().setText((enlazador.getNave().getName()).toUpperCase());
         vistaMain.arranca();
     }
 
@@ -394,10 +390,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaGeneradores.getAreaConsolaMini().append("\n#"+text+"\n@-@-@-@-@-@-@");
     }
 
-    private void iniciaUniversoParalelo(){
-        this.visor = new Visor(this);
+    private Visor iniciaUniversoParalelo(){
         this.vistaGeneradores = new VistaGeneradores();
         this.vistaGeneradores.setControlador(this);
+        return new Visor(this);
     }
 
     private void resetGame(){
@@ -416,7 +412,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     private void actualizaVisorMotor(){
         String estado = "";
         Color color = null;
-        switch(asistente.getMotor().getEstadoActual().getIdEstado()){
+        switch(enlazador.getMotor().getEstadoActual().getIdEstado()){
             case MotorWarp.DISPONIBLE:
                 estado = "DISPONIBLE";
                 color = new Color(46, 139, 87);
@@ -438,22 +434,22 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaRecursos.getBarraEstado().setForeground(color);
     }
 
-    private void asignaCapitan() throws ErrorCreacionPersonajeException , NumberFormatException {
+    private Tripulante asignaCapitan() throws ErrorCreacionPersonajeException , NumberFormatException {
         String origen = (String) vistaCrearNave.getComboOrigenCapitan().getSelectedItem();
         String nombre = vistaCrearNave.getTxtNombreCapitan().getText();
         int antiguedad = Integer.parseInt(vistaCrearNave.getTxtAntiguedadCapitan().getText());
-        this.capitanAct = FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, antiguedad);
+        return FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, antiguedad);
     }
 
     private void actualizaRecursosNave(){
-        vistaRecursos.getBarraCombustible().setValue((int)asistente.getNave().getCombustible());
-        vistaRecursos.getBarraDesgaste().setValue((int)asistente.getNave().getDesgaste());
-        vistaRecursos.getBarraEnergia().setValue((int)asistente.getNave().getEnergia());
+        vistaRecursos.getBarraCombustible().setValue((int)enlazador.getNave().getCombustible());
+        vistaRecursos.getBarraDesgaste().setValue((int)enlazador.getNave().getDesgaste());
+        vistaRecursos.getBarraEnergia().setValue((int)enlazador.getNave().getEnergia());
     }
 
     private void actualizaBitacora(){
-        List<RegistroBitacora> bitacoras = asistente.getBitacorasNave().getRegistros();
-        vistaBitacora.getAreaConsola().setText("Registro de bitacoras de " + (asistente.getNave().getName()).toUpperCase() + "\nCapitaneada por " + (capitanAct.getNombre()).toUpperCase());
+        List<RegistroBitacora> bitacoras = enlazador.getBitacorasNave().getRegistros();
+        vistaBitacora.getAreaConsola().setText("Registro de bitacoras de " + (enlazador.getNave().getName()).toUpperCase() + "\nCapitaneada por " + (enlazador.getNave().getCapitan().getNombre()).toUpperCase());
         for (RegistroBitacora bitacora : bitacoras)
             vistaBitacora.getAreaConsola().setText(vistaBitacora.getAreaConsola().getText() + "\n" + bitacora.toString());
 
@@ -472,9 +468,11 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     @Override
     public void actualizar(String mensaje) {
-        if (mensaje.equals("FIN_MISION")){
+        if (mensaje.equals("FIN_MISION")) {
             actualizaBitacora();
             finMision();
+        }else if(mensaje.equals("HOLA")){
+            ventanaEmergente("FFF","");
         }else if (mensaje.equals("GAME_OVER")){
             ventanaEmergente("GAME OVER","ERROR");
             vistaMain.getBotonBorraCrearNave().setEnabled(true);

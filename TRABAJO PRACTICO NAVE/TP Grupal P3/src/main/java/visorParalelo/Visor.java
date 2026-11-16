@@ -1,10 +1,11 @@
 package visorParalelo;
 
 import CapaNegocio.Controlador;
+import CapaNegocio.IVisor;
 
 import java.util.ArrayList;
 
-public class Visor {
+public class Visor implements IVisor {
     private ArrayList<Thread> generadoras;
     private ArrayList<Thread> consumidoras;
     private PlataformaDeCarga plataforma;

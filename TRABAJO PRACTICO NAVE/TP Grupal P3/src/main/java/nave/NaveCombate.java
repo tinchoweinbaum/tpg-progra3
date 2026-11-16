@@ -1,6 +1,7 @@
 package nave;
 
 import bitacora.RegistroCombate;
+import exceptions.NaveDestruidaException;
 
 public class NaveCombate extends Nave{
 
@@ -15,52 +16,27 @@ public class NaveCombate extends Nave{
     }
 
     @Override
-    public int atacar(Nave nave) {
-        int resultado = 0;
-        switch (nave.atacadoPorCombate()){
-            case 1 -> {
-                resultado = -1;
-            }
-            case -1 -> {
-                resultado = 1;
-            }
-        }
-        return resultado;
+    public String toString(){
+        return "Nave de Combate";
     }
 
     @Override
-    public int atacadoPorCombate() {
-        return Nave.COMBATE_PAZ;
+    public RegistroCombate atacar(Nave nave) throws NaveDestruidaException {
+        return nave.atacadoPorCombate();
     }
 
     @Override
-    public int atacadoPorCarguero() {
-        return Nave.COMBATE_DERROTA;
+    public RegistroCombate atacadoPorCombate() {
+        return new RegistroCombate("TE HAS CRUZADO CONTRA UNA NAVE DE COMBATE - PACTO DE PAZ");
     }
 
     @Override
-    public int atacadoPorExplorador() {
-        return Nave.COMBATE_VICTORIA;
+    public RegistroCombate atacadoPorCarguero() throws NaveDestruidaException {
+        throw new NaveDestruidaException("Encuentro con nave Carguera");
     }
 
-//    @Override
-//    public RegistroCombate atacar(Nave nave) {
-//        nave.atacadoPorCombate();
-//        return new RegistroCombate("Atacando nave" + nave); // Usa el toString de Nave
-//    }
-//
-//    @Override
-//    public RegistroCombate atacadoPorCombate() {
-//        return new RegistroCombate("Pacto de paz entre naves de combate");
-//    }
-//
-//    @Override
-//    public RegistroCombate atacadoPorCarguero() {
-//        return new RegistroCombate("Carguero vence a combate");
-//    }
-//
-//    @Override
-//    public RegistroCombate atacadoPorExplorador() {
-//        return new RegistroCombate("Combate vence a Explorador");
-//    }
+    @Override
+    public RegistroCombate atacadoPorExplorador() {
+        return new RegistroCombate("UNA NAVE EXPLORADORA INTENTO ASEDIARTE - NO PUDO CONTRA TU NAVE Y REPELIERON EL ATAQUE");
+    }
 }

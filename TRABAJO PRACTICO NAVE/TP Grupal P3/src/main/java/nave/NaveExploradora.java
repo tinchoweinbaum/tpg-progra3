@@ -1,6 +1,7 @@
 package nave;
 
 import bitacora.RegistroCombate;
+import exceptions.NaveDestruidaException;
 
 public class NaveExploradora extends Nave{
 
@@ -15,52 +16,28 @@ public class NaveExploradora extends Nave{
     }
 
     @Override
-    public int atacar(Nave nave) {
-        int resultado = 0;
-        switch (nave.atacadoPorExplorador()){
-            case 1 -> {
-                resultado = -1;
-            }
-            case -1 -> {
-                resultado = 1;
-            }
-        }
-        return resultado;
+    public String toString(){
+        return "Nave Exploradora";
+    }
+
+
+    @Override
+    public RegistroCombate atacar(Nave nave)throws NaveDestruidaException {
+        return nave.atacadoPorExplorador();
     }
 
     @Override
-    public int atacadoPorCombate() {
-        return Nave.COMBATE_DERROTA;
+    public RegistroCombate atacadoPorCombate() throws NaveDestruidaException {
+        throw new NaveDestruidaException("Encuentro con nave de Combate");
     }
 
     @Override
-    public int atacadoPorCarguero() {
-        return Nave.COMBATE_VICTORIA;
+    public RegistroCombate atacadoPorCarguero() {
+        return new RegistroCombate("UNA NAVE CARGUERA INTENTO ASEDIARTE - NO PUDO CONTRA TU NAVE Y REPELIERON EL ATAQUE");
     }
 
     @Override
-    public int atacadoPorExplorador() {
-        return Nave.COMBATE_PAZ;
+    public RegistroCombate atacadoPorExplorador() {
+        return new RegistroCombate("TE HAS CRUZADO CONTRA UNA NAVE EXPLORADORA - PACTO DE PAZ");
     }
-
-//    @Override
-//    public RegistroCombate atacar(Nave nave) {
-//        nave.atacadoPorExplorador();
-//        return new RegistroCombate("Atacando nave " + nave);
-//    }
-//
-//    @Override
-//    public RegistroCombate atacadoPorCombate() {
-//        return new RegistroCombate("Nave destruida por nave de combate :(");
-//    }
-//
-//    @Override
-//    public RegistroCombate atacadoPorCarguero() {
-//        return new RegistroCombate("Nave carguera destruida.");
-//    }
-//
-//    @Override
-//    public RegistroCombate atacadoPorExplorador() {
-//        return new RegistroCombate("Pacto de paz entre naves exploradoras.");
-//    }
 }

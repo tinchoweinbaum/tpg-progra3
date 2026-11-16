@@ -80,7 +80,7 @@ public abstract class Mision extends Observable{
     protected void preparar(Asistente ac){
         Nave nave = ac.getNave();
         try{
-            if ((nave.getCapitan()==null ) || (nave.getCantTripulantes()<=4))
+            if ((nave.getCapitan()==null ) || (nave.getTripulacion().size()<=4))
                 throw new ErrorTripulantesException("La tripulacion no cumple los minimos requisitos para realizar la mision");
 
             if (this.getCombustibleRequerido() >= nave.getCombustible())
@@ -103,20 +103,20 @@ public abstract class Mision extends Observable{
 
     protected void ejecutar(Asistente ac) {
         if(estadoActual.equals(ESTADO_ACTIVA)){
+            notificarObservadores("HOLA");
             float estadoCombustibleInicial = ac.getNave().getCombustible();
             float estadoEnergiaInicial = ac.getNave().getEnergia();
             float estadoDesgasteInicial = ac.getNave().getDesgaste();
             boolean encontro = false;
-            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("REQUERIMIENTOS MINIMOS DE MISION CONSUMIDOS"));
-            ac.consumeCombustibleNave(this.combustibleRequerido);
-            ac.consumeEnergiaNave(this.energiaRequerida);
-            ac.aumentaDesgasteNave(this.desgasteRequerido);
             try {
+                ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("REQUERIMIENTOS MINIMOS DE MISION CONSUMIDOS"));
+                ac.consumeCombustibleNave(this.combustibleRequerido);
+                ac.consumeEnergiaNave(this.energiaRequerida);
+                ac.aumentaDesgasteNave(this.desgasteRequerido);
                 while (estadoActual.equals(ESTADO_ACTIVA) && !encontro) {
                     Thread.sleep(2000);
                     ac.chequeaPosicionActual();
                     ac.mueveNave();
-                    System.out.println(String.valueOf(ac.getTablero().getPosicionNave().getX() + " " + ac.getTablero().getPosicionNave().getY()));
                     if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY()) {
                         encontro = true;
                     }

@@ -51,17 +51,19 @@ public class Mision1 extends Mision{
             try {
                 String texto = "";
                 if (energiaSOS>0){
-                    ac.getNave().consumeEnergia(energiaSOS);
+                    ac.consumeEnergiaNave(energiaSOS);
                     texto+= String.valueOf(energiaSOS) + " PUNTOS DE ENERGIA";
                 }
                 if (combustibleSOS>0){
-                    ac.getNave().consumeCombustible(combustibleSOS);
+                    ac.consumeCombustibleNave(combustibleSOS);
                     texto+= String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
                 }
 
                 ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
             } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {
                 ac.getBitacorasNave().agregarRegistro(new RegistroError("No pudo realizarse la asistencia por recursos insuficientes",e));
+            } catch (NaveDestruidaException e) {
+                // ver esto!!!
             }
         notificarObservadores("FIN_MISION");
     }

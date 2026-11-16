@@ -1,19 +1,15 @@
 package elementosUniverso;
 
 import asistentes.Asistente;
-import bitacora.RegistroCombate;
-import exceptions.CantCombustibleInvalidaException;
-import exceptions.CantEnergiaInvalidaException;
-import exceptions.NaveDestruidaException;
-import nave.Nave;
+import exceptions.*;
 
 public class ElementoNaveCarguera extends ElementoDelUniverso{
-    public ElementoNaveCarguera(String nombre) {
-        super(nombre);
+    public ElementoNaveCarguera() {
+        super();
     }
 
     @Override
     public void interactuaConNave(Asistente ac) throws NaveDestruidaException {
-
+        ac.getBitacorasNave().agregarRegistro(ac.getNave().atacadoPorCarguero());
     }
 }

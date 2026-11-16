@@ -1,13 +1,8 @@
 
-->TODO: enum a clase abstarcta?
 ->TODO: ver bien motor warp!!.
-->TODO: hacer que asistente ya no regule TODAS las excepciones, que delegue a la vista
-->TODO: interfaz asistente e interfaz DAO - enlazador las implemente y delega
+->TODO: terminar interfaz asistente y comenzar interfaz DAO - enlazador las implemente y delega
 ->TODO: observer observable entre controlador y motor para el cambio de estado
-->TODO: agregar registro de consumo de recursos en motorWarp ademas del movimiento en el tablero
 ->TODO: preguntar si botones para cargar recursos estan siempre activos o solo en ocaciones?
 ->TODO: cambiar vista de tablero a boton para mostrarlo y que se abra una nueva ventanita re bonita fachera re sexy como yo
 
-->TODO: chequeaPosicionActual() está arrojando excepciones que fueron creadas para ser arrojadas por las misiones.
-->TODO: Los métodos del double dispatch de combate son los que tienen que tirar la expecion de nave destruída. NO quien llame a estos métodos.
 ->TODO: Capa de persistencia DAO

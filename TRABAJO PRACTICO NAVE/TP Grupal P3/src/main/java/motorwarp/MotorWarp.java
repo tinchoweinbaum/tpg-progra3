@@ -1,5 +1,6 @@
 package motorwarp;
 import bitacora.*;
+import destinoytablero.Observable;
 import exceptions.*;
 import asistentes.Asistente;
 
@@ -13,6 +14,7 @@ public class MotorWarp {
     public static final int SALTO_WARP = 2;
     public static final int ENFRIAMIENTO = 3;
     public static final int SALTO_CORTO = 4;
+
     private State estadoActual;
     private ArrayList<RegistroMotor> registrosTransiciones = new  ArrayList<>();
     private final Asistente asistente; // el motor NO puede tener una referencia al asistente, evitar a toda costa la doble referencia asistente <--> motor
@@ -73,7 +75,7 @@ public class MotorWarp {
 
         if (tipoSalto == SALTO_WARP)  // SALTO_WARP = 2
             try {
-                if (this.getEnergia() >= 5) {     // Verifico que tenga con recursos
+                if (asistente.getNave().getEnergia() >= 5) {     // Verifico que tenga con recursos
                     this.saltoWarp();
                     estadoActual.preparaSalto(SALTO_WARP);
                 }
@@ -83,7 +85,7 @@ public class MotorWarp {
         else
             if (tipoSalto == SALTO_CORTO) // SALTO_CORTO = 4
                 try {
-                    if (getCombustible() >= 2) {  // Verifico que tenga con recursos
+                    if (asistente.getNave().getCombustible() >= 2) {  // Verifico que tenga con recursos
                         this.saltar();
                         estadoActual.preparaSalto(SALTO_CORTO);
                     }
@@ -93,7 +95,7 @@ public class MotorWarp {
     }
 
     public void saltar ()  {
-        consumeCombustible(2);
+        //consumeCombustible(2);
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO CORTO", this.estadoActual));
         //Salto en el tablero
         //Sistema.esperar(500);
@@ -112,16 +114,16 @@ public class MotorWarp {
     * @throws EstadoInvalidoException No se puede pasar del estado actual(disponible, saltoWarp o enfriamiento) -/-> saltoWarp.
     */
     public void saltoWarp() {
-        this.consumeEnergia(5);
+        //this.consumeEnergia(5);
         // Salto doble en el tablero
         estadoActual.saltoWarp();
         this.registrosTransiciones.add(new RegistroMotor("CAMBIO DE ESTADO MOTOR A: SALTO WARP", this.estadoActual));
         //Sistema.esperar(500); // Espera medio segundo para que no haya race condition al agregar elementos a la bitácora.
-        if (getDesgaste() + 3 <= getDesgasteMaximo()) {
-            aumentaDesgaste(3);
-        }
-        else
-            System.out.println("Se supero el nivel de desgaste -- GAME OVER --");
+//        if (getDesgaste() + 3 <= getDesgasteMaximo()) {
+//            aumentaDesgaste(3);
+//        }
+//        else
+//            System.out.println("Se supero el nivel de desgaste -- GAME OVER --");
     }
     
     /**

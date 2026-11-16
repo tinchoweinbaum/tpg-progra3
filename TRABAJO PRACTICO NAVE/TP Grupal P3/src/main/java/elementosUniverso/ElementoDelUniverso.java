@@ -6,12 +6,16 @@ import exceptions.CantEnergiaInvalidaException;
 import exceptions.NaveDestruidaException;
 
 public abstract class ElementoDelUniverso {
-    private String nombre;
 
-    public ElementoDelUniverso(String nombre) {
-        this.nombre = nombre;
+    public ElementoDelUniverso() {
     }
 
-    // mét0do abstracto para despacho polimórfico desde asistente, evita switch gigante.
     public abstract void interactuaConNave(Asistente ac) throws NaveDestruidaException, CantCombustibleInvalidaException, CantEnergiaInvalidaException;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        return getClass() != o.getClass();
+    }
 }

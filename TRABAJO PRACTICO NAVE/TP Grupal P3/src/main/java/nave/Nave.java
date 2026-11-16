@@ -1,8 +1,7 @@
 package nave;
 import java.util.ArrayList;
 
-import bitacora.RegistroCombate;
-import bitacora.RegistroRecursos;
+import bitacora.*;
 import exceptions.*;
 import tripulantes.*;
 
@@ -32,23 +31,18 @@ public abstract class Nave{
         this.name = name;
     }
 
-    // Los metodos de combate devuelven objetos de tipo RegistroComabte para que el asistente que los llama los pueda agregar a su bitacora.
-//    public abstract RegistroCombate atacar(Nave nave);
-//
-//    public abstract RegistroCombate atacadoPorCombate();
-//
-//    public abstract RegistroCombate atacadoPorCarguero();
-//
-//    public abstract RegistroCombate atacadoPorExplorador();
+    public Tripulante getCapitan() {
+        return capitan;
+    }
 
-//creo que tendrai que ser int para ver que se hace en cada caso 1-muerte 2-victoria 3- pacto de paz
-    public abstract int atacar(Nave nave);
+    public abstract RegistroCombate atacar(Nave nave) throws NaveDestruidaException;
 
-    // ESTOS MÉTODOS TIENEN QUE TIRAR LA EXCEPECIÓN DE NaveDestruidaException. NO interactuaConNave();
-    // LA EXCEPECIÓN TIENE QUE SUBIR HASTA DONDE SEA NECESARIO PARA QUE SE TERMINE EL JUEGO. PERO SE TIENE QUE ORIGINAR ACÁ.
-    public abstract int atacadoPorCombate();
-    public abstract int atacadoPorCarguero();
-    public abstract int atacadoPorExplorador();
+    public abstract RegistroCombate atacadoPorCombate() throws NaveDestruidaException;
+
+    public abstract RegistroCombate atacadoPorCarguero()throws NaveDestruidaException;
+
+    public abstract RegistroCombate atacadoPorExplorador()throws NaveDestruidaException;
+
 
     public float getCombustible() {
         return this.combustible;
@@ -57,51 +51,12 @@ public abstract class Nave{
     /**
      * Metodo para establecer una cantidad de combustible a la nave, usado únicamente en los constructores de las subclases concretas de nave.<br>
      * <b>pre:</b> valorNuevo >= 0 && valorNuevo <= 100
-     * <b>post:</b> Se establece la cantidad de combustible y se registra en la bitacora.
-     * 
+     *
      * @param valorNuevo Es la cantidad de combustible que voy a agregar
      */
-    protected void setCombustible(float valorNuevo){
+    public void setCombustible(float valorNuevo){
         assert valorNuevo >= 0 && valorNuevo <= MAX_COMBUSTIBLE: "Cantidad de combustible inválida para setCombustible.";
         this.combustible = valorNuevo;
-    }
-
-    /**
-     * Cargar combustible a la nave.<br>
-     * <b> Pre: </b>cantCarga > 0.<br>
-     * <b>Post: </b>Se carga la cantidad de combustible indicada a la nave.
-     *
-     * @param cantCarga Cantidad de combustible a cargar.
-     * @return Objeto de tipo {@code RegistroRecursos} para la bitácora del asistente.
-     * @throws exceptions.CantCombustibleInvalidaException excepcion que se lanza al querer cargar mas combustible del permitido
-     */
-    public RegistroRecursos cargaCombustible(float cantCarga) throws CantCombustibleInvalidaException{
-        assert cantCarga > 0: "Se debe cargar un número positivo de combustible";
-
-        if (this.getCombustible() + cantCarga > MAX_COMBUSTIBLE)
-            throw new CantCombustibleInvalidaException("La carga supera la capacidad máxima del tanque.");
-        if (cantCarga<=0)
-            throw new CantCombustibleInvalidaException("No puede realizarse una carga negativa");
-
-        this.combustible += cantCarga;
-        return new RegistroRecursos("COMBUSTIBLE",cantCarga,this.combustible);
-    }
-
-    /**
-     * Depende de quien llame a esta función en la 2da entrega la excepción no tiene senitdo, se checkearía antes si hay combustible o no.
-     * Consumir combustible de la nave.
-     * @param cantConsumida Cantidad de combustible a consumir
-     * @return Objeto de tipo {@code RegistroRecursos} para agregar a la bitácora de la nave.
-     * @throws CantCombustibleInvalidaException cuando se intenta consumir una cantidad de combustible mayor a la que se tiene.
-     */
-    public RegistroRecursos consumeCombustible(float cantConsumida) throws CantCombustibleInvalidaException{
-        assert cantConsumida > 0: "Se debe consumir un número positivo de combustible";
-
-        if (this.combustible - cantConsumida < 0)
-            throw new CantCombustibleInvalidaException("No se puede consumir " + cantConsumida + " de combustible, no hay suficiente.");
-
-        this.combustible -= cantConsumida;
-        return new RegistroRecursos("COMBUSTIBLE", -cantConsumida, this.combustible);
     }
 
     public float getEnergia() {
@@ -111,90 +66,26 @@ public abstract class Nave{
     /**
      * Metodo para establecer una cantidad de energia a la nave, usado únicamente en los constructores de las subclases concretas de nave<br>
      * <b>Pre:</b> valorNuevo >= 0 && valorNuevo <= 10<br>
-     * <b>Post:</b> Se establece la cantidad de energia y se registra en la bitacora<br>
      * @param valorNuevo Valor de energía a establecer
      */
-    protected void setEnergia(float valorNuevo) {
+    public void setEnergia(float valorNuevo) {
         assert valorNuevo >= 0 && valorNuevo <= MAX_ENERGIA: "Valor inválido de energía para setEnergía";
         this.energia = valorNuevo;
-    }
-
-    public RegistroRecursos cargaEnergia(float cantCarga) throws CantEnergiaInvalidaException {
-        assert cantCarga > 0: "Se debe cargar un número positivo de combustible";
-
-        if (this.energia + cantCarga > MAX_ENERGIA)
-            throw new CantEnergiaInvalidaException("La carga supera la capacidad máxima de energia.");
-        if (cantCarga<=0)
-            throw new CantEnergiaInvalidaException("No puede realizarse una carga negativa");
-
-        this.energia += cantCarga;
-        return new RegistroRecursos("ENERGIA", cantCarga, this.energia);
-    }
-
-    public RegistroRecursos consumeEnergia(float cantConsumida) throws CantEnergiaInvalidaException{
-        assert cantConsumida > 0: "Se debe consumir una cantidad positiva de energía";
-
-        if(this.energia - cantConsumida < 0)
-            throw new CantEnergiaInvalidaException("No se puede consumir " + cantConsumida + " de energía, la nave no tiene suficiente.");
-
-        this.energia -= cantConsumida;
-        return new RegistroRecursos("ENERGIA", -cantConsumida, this.energia);
     }
 
     /**
      * Metodo para establecer una cantidad de desgaste a la nave, usado únicamente en los constructores de las subclases concretas de nave<br>
      * <b>pre:</b> valorNuevo >= 0 && valorNuevo <= 100 <br>
-     * <b>post:</b> Se establece la cantidad de desgaste y se registra en la bitacora<br>
      * @param valorNuevo Cantidad de desgaste a establecer.
      */
-    protected void setDesgaste(float valorNuevo) {
+    public void setDesgaste(float valorNuevo) {
         assert valorNuevo >= 0 && valorNuevo <= MAX_DESGASTE: "Valor inválido para setDesgaste.";
         this.desgaste = valorNuevo;
     }
 
-    public RegistroRecursos aumentaDesgaste(float cantAumentada) throws CantDesgasteInvalidaException{
-        assert cantAumentada > 0: "Se debe sumar una cantidad positiva de desgaste";
-
-        if (this.desgaste + cantAumentada > MAX_DESGASTE)
-            throw new CantDesgasteInvalidaException("No se puede aumentar el desgaste, superaría el máximo de 100.");
-        if (cantAumentada<0)
-            throw new CantDesgasteInvalidaException("No puede utilizarse un valor negativo");
-
-        this.desgaste += cantAumentada;
-        return new RegistroRecursos("DESGASTE", cantAumentada, this.desgaste);
-    }
-
-    public RegistroRecursos reparaDesgaste(float cantReparada) throws CantDesgasteInvalidaException{
-        assert cantReparada > 0: "Se debe reparar una cantidad positiva de desgaste";
-
-        if (this.desgaste - cantReparada < 0)
-            throw new CantDesgasteInvalidaException("No se puede tener menos de 0 de desgaste.");
-
-        this.desgaste -= cantReparada;
-        return new RegistroRecursos("DESGASTE", -cantReparada, this.desgaste);
-    }
 
     public float getDesgaste() {
         return this.desgaste;
-    }
-
-    public float getMaxDesgaste(){
-        return MAX_DESGASTE;
-    }
-
-    /**
-     *
-     * Agrega una lista completa de tripulantes iterando sobre ellos.<br>
-     * <b>Pre:</b>  tripulantes != null
-     * <b>Post:</b> Se añade cada tripulante de la lista a la tripulación.
-     * 
-     * @param tripulantes La lista de tripulantes que se desea agregar.
-     * @throws exceptions.ErrorAgregarTripulacionException devuelve una excepcion debido a que no se puedo agregar un tripulante
-     */
-    public void agregaTripulante(ArrayList<Tripulante> tripulantes) throws ErrorAgregarTripulacionException{
-        for (Tripulante t : tripulantes) {
-            this.agregaTripulante(t);
-        }
     }
 
     /**
@@ -220,31 +111,12 @@ public abstract class Nave{
         this.tripulantes.add(tripulante);
     }
 
-    /**
-     * Devuelve true si se pudo eliminar el tripulante, false si no.<br>
-     * <b>Post: </b>Se elimina el tripulante de la tripulación si este existe, si es el capitán se deja en null la referencia al capitán de la nave.
-     * @param tripulante Referencia al objeto tripulante a eliminar.
-     * @return Devuelve si el tripulante se puedo elimiar o no
-     */
-    
-    public boolean eliminaTripulante(Tripulante tripulante) {
-        boolean eliminado = this.tripulantes.remove(tripulante);
-        if (eliminado && tripulante.equals(this.capitan)) {
-            this.capitan = null;
-        }
-        return eliminado;
-    }
-
     public ArrayList<Tripulante> getTripulacion(){
         return this.tripulantes;
     }
 
-    public int getCantTripulantes() {
-        return tripulantes.size();
-    }
 
-    public Tripulante getCapitan() {
-        return this.capitan;
+    public void eliminaTripulante(Tripulante auxTrip) {
+        this.tripulantes.remove(auxTrip);
     }
-
 }
