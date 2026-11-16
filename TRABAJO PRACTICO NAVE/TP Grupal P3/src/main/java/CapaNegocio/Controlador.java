@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
 import java.util.List;
+import java.util.Random;
 
 //ESTE VA A CONECTARSE CON EL ENLAZADOR
 public class Controlador implements DocumentListener, ActionListener , Observador {
@@ -280,6 +281,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
             }
             if (mAct != null) {
+                agregaTripulantePrueba();  //despues borrar
                 ejecucionMision();
                 mAct.agregarObservador(this);
                 vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
@@ -298,23 +300,32 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         }
     }
 
+    private void agregaTripulantePrueba() {
+        try {
+            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+            asistente.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
+        } catch (ErrorCreacionPersonajeException e) {
+            //
+        }
+    }
+
     private void creaTablero(){
         try{
-            elementosUni.add(ElementoDelUniverso.ASTEROIDE);
-            elementosUni.add(ElementoDelUniverso.ASTEROIDE);
-            elementosUni.add(ElementoDelUniverso.ASTEROIDE);
-            elementosUni.add(ElementoDelUniverso.NAVE_CARGUERA);
-            elementosUni.add(ElementoDelUniverso.NAVE_CARGUERA);
-            elementosUni.add(ElementoDelUniverso.NAVE_CARGUERA);
-            elementosUni.add(ElementoDelUniverso.NAVE_COMBATE);
-            elementosUni.add(ElementoDelUniverso.NAVE_COMBATE);
-            elementosUni.add(ElementoDelUniverso.NAVE_EXPLORADORA);
-            elementosUni.add(ElementoDelUniverso.NAVE_EXPLORADORA);
-            elementosUni.add(ElementoDelUniverso.ESTACION_CARGA);
-            elementosUni.add(ElementoDelUniverso.ESTACION_CARGA);
+            iniciaElementosUni();
             tablero = new Tablero(20,20,elementosUni);
         } catch (CantidadDeElementosSuperaCasillaException | DimensionesDeTableroInconsistentesException e) {
             ventanaEmergente(e.getMessage(),"");
+        }
+    }
+
+    private void iniciaElementosUni() {
+        ArrayList<ElementoDelUniverso> auxList = new ArrayList<>(List.of(ElementoDelUniverso.values()));
+        Random aleatorio = new Random();
+        elementosUni.clear();
+        for (int i=0; i<300; i++){
+            elementosUni.add(auxList.get(aleatorio.nextInt(auxList.size())));
         }
     }
 
@@ -327,6 +338,14 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaMain.getBotonMisiones().setEnabled(false);
         vistaMain.getBotonTripulacion().setEnabled(false);
         vistaMain.getBotonVisorParalelo().setEnabled(false);
+    }
+
+    private void finMision(){
+        vistaMain.getBotonBorraCrearNave().setEnabled(true);
+        vistaMain.getBotonMisiones().setEnabled(true);
+        vistaMain.getBotonTripulacion().setEnabled(true);
+        vistaMain.getBotonVisorParalelo().setEnabled(true);
+        vistaMain.setTitle("PANEL PRINCIPAL");
     }
 
     private void actualizaVisorTripulantes(){
@@ -453,13 +472,14 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     @Override
     public void actualizar(String mensaje) {
-        if (mensaje.equals("FIN_MISION"))
+        if (mensaje.equals("FIN_MISION")){
+            actualizaBitacora();
+            finMision();
+        }else if (mensaje.equals("GAME_OVER")){
+            ventanaEmergente("GAME OVER","ERROR");
             vistaMain.getBotonBorraCrearNave().setEnabled(true);
-        if (mensaje.equals("BITACORA"))
-            actualizaBitacora();
-        else {
-            asistente.getBitacorasNave().agregarRegistro(new RegistroBitacora(mensaje));
-            actualizaBitacora();
         }
+
     }
+
 }

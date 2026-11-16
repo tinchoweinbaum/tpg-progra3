@@ -28,7 +28,7 @@ public class RegistroBitacora implements Comparable<RegistroBitacora>{
         assert fechaRegistro != null : "La fecha no puede ser nula";
         assert descripcionRegistro != null && !descripcionRegistro.trim().isEmpty() : "Descripción inválida";
         
-        this.fechaRegistro = fechaRegistro;
+        this.fechaRegistro = Date.from(fechaRegistro.toInstant().plusMillis(5000));
         this.descripcionRegistro = descripcionRegistro;
         
         assert invarianteRegistro(): "El registro no es valido";

@@ -55,7 +55,7 @@ public class VistaBitacora extends JFrame implements IVista {
 	@Override
 	public void arranca() {
 		pack();
-		setSize(700, 250);
+		setSize(800, 250);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}

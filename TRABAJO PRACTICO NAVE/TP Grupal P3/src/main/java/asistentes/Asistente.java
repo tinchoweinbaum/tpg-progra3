@@ -14,6 +14,7 @@ public class Asistente {
     private final Bitacora bitacorasNave;
     private final MotorWarp motor;
     private final Tablero tablero;
+    private final Destino destino;
 
     private boolean invariant() {
         return this.nave != null && this.bitacorasNave != null && this.motor != null;
@@ -36,6 +37,7 @@ public class Asistente {
         this.tablero = tablero;
         this.bitacorasNave = new Bitacora();
         this.motor = new MotorWarp(this);
+        this.destino = new Destino(getTablero());
         
         assert invariant(): "Fallo en crear la bitacora y/o motorWarp";
     }
@@ -356,46 +358,65 @@ public class Asistente {
                 }
                 case NAVE_COMBATE ->  {
                     switch (getNave().atacadoPorCombate()){
-                        case -1 -> throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE DE COMBATE");
+                        case -1 -> {
+                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - LA NAVE ESTA SIENDO ASEDIADA"));
+                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE DE COMBATE");
+                        }
                         case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - PACTO DE PAZ REALIZADO"));
                         case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE DE COMBATE - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
                     }
                 }
                 case ESTACION_CARGA -> {
-                    getBitacorasNave().agregarRegistro(new RegistroBitacora("LLEGADA A ESTACION DE CARGA"));
                     int opcion = rand.nextInt(2)+1;
+                    getBitacorasNave().agregarRegistro(new RegistroBitacora("LLEGADA A ESTACION DE CARGA - INTENTANDO REABASTECER " + ((opcion==1) ? "COMBUSTIBLE" : "ENERGIA")));
                     float carga = rand.nextInt(50)+1;
                     switch (opcion) {
                         case 1 -> {
-                            if (getNave().getCombustible()+carga > Nave.MAX_COMBUSTIBLE)
-                                cargaComustibleNaveFull();
-                            else
-                                cargaCombustibleNave(carga);
+                            if (getNave().getCombustible()<Nave.MAX_COMBUSTIBLE)
+                                if (getNave().getCombustible()+carga > Nave.MAX_COMBUSTIBLE)
+                                    cargaComustibleNaveFull();
+                                else
+                                    cargaCombustibleNave(carga);
                         }
                         case 2 -> {
-                            if (getNave().getEnergia()+carga > Nave.MAX_ENERGIA)
-                                cargaEnergiaNaveFull();
-                            else
-                                cargaEnergiaNave(carga);
+                            if (getNave().getEnergia()<Nave.MAX_ENERGIA)
+                                if (getNave().getEnergia()+carga > Nave.MAX_ENERGIA)
+                                    cargaEnergiaNaveFull();
+                                else
+                                    cargaEnergiaNave(carga);
                         }
                     }
                 }
                 case NAVE_CARGUERA -> {
                     switch (getNave().atacadoPorCarguero()){
-                        case -1 -> throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE CARGUERA");
+                        case -1 -> {
+                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - LA NAVE ESTA SIENDO ASEDIADA"));
+                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE CARGUERA");
+                        }
                         case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - PACTO DE PAZ REALIZADO"));
                         case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE CARGUERA - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
                     }
                 }
                 case NAVE_EXPLORADORA -> {
                     switch (getNave().atacadoPorExplorador()){
-                        case -1 -> throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE EXPLORADORA");
+                        case -1 -> {
+                            getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - LA NAVE ESTA SIENDO ASEDIADA"));
+                            throw new NaveDestruidaException("LA NAVE PERDIO EL ENFRENTAMIENTO FRENTE A UNA NAVE EXPLORADORA");
+                        }
                         case 0 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - PACTO DE PAZ REALIZADO"));
                         case 1 -> getBitacorasNave().agregarRegistro(new RegistroCombate("IMPACTO CON NAVE EXPLORADORA - EL OPONENTE NO PUDO CON TU EQUIPO Y RESULTASTE VENCEDOR"));
                     }
                 }
+                default -> {
+                    getBitacorasNave().agregarRegistro(new RegistroBitacora("RADAR DETECTO EN LA POSICION DE LA NAVE: " + actual));
+                }
             }
 
+    }
+
+    public void darTurnosTablero(int i){
+        for(int j=0;j<i;j++)
+            destino.turnoDestino();
     }
 
     private boolean analizaAvanceRadarCortoAlcance(Posicion pos){
@@ -418,7 +439,7 @@ public class Asistente {
         }
     }
 
-    public void mueveNave() throws CantCombustibleInvalidaException, CombustibleInsuficienteException {
+    public void mueveNave() throws CantEnergiaInvalidaException, CombustibleInsuficienteException, CantCombustibleInvalidaException {
         Posicion nuevaPos =null;
         int Xnave = getTablero().getPosicionNave().getX();
         int Ynave = getTablero().getPosicionNave().getY();
@@ -444,19 +465,27 @@ public class Asistente {
                 nuevaPos = new Posicion(0,-1);
         }
         if (orientacionX !=0 || orientacionY!=0){
-            if (!analizaAvanceRadarCortoAlcance(nuevaPos) && getMotor().getEstadoActual().getIdEstado()==MotorWarp.DISPONIBLE && getNave().getCombustible()>5){
-                getNave().consumeCombustible(5);
-                getBitacorasNave().agregarRegistro(new RegistroBitacora("SALTO WARP"));
+            if (!estaFuera(nuevaPos) && !analizaAvanceRadarCortoAlcance(nuevaPos) && getMotor().getEstadoActual().getIdEstado()==MotorWarp.DISPONIBLE && getNave().getEnergia()>5){
+                getNave().consumeEnergia(5);
+                nuevaPos = new Posicion(nuevaPos.getX()*2,nuevaPos.getY()*2);
+                //aca tendria que manejar turnos, primero habria que ver como actualizamos el motor para ver como nos comnuicamos aca
                 //getMotor().saltoWarp();
             }else{
                 if (getNave().getCombustible() < 2)
                     throw new CombustibleInsuficienteException("NAVE SIN COMBUSTIBLE SUFICIENTE PARA MOVERSE");
                 getNave().consumeCombustible(2);
-                getBitacorasNave().agregarRegistro(new RegistroBitacora("SALTO NORMAL"));
                 //getMotor().saltar();
             }
             getTablero().moverNave(new Posicion(getTablero().getPosicionNave().getX() + nuevaPos.getX(),getTablero().getPosicionNave().getY() + nuevaPos.getY()));
         }
+    }
+
+    private boolean estaFuera(Posicion posicion) {
+        int x = getTablero().getPosicionNave().getX() + posicion.getX()*2;
+        int y = getTablero().getPosicionNave().getY() + posicion.getY()*2;
+        if (getTablero().getX()<x || getTablero().getY()<y)
+            return true;
+        return false;
     }
 
 

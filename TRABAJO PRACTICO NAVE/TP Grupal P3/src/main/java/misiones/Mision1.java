@@ -1,8 +1,8 @@
 package misiones;
 
 import asistentes.Asistente;
+import bitacora.RegistroBitacora;
 import bitacora.RegistroError;
-import destinoytablero.Posicion;
 import exceptions.*;
 
 import java.util.Random;
@@ -40,7 +40,6 @@ public class Mision1 extends Mision{
             if (combustibleSOS>0 && ac.getNave().getCombustible()<=combustibleSOS)
                 throw new CombustibleInsuficienteException("No alcanza la reserva de combustible para realizar el salvataje");
         } catch (Exception e) {
-            notificarObservadores("MISION");
             estadoActual = ESTADO_FALLIDO;;
         }
     }
@@ -48,16 +47,24 @@ public class Mision1 extends Mision{
 
     @Override
     protected void cerrar(Asistente ac) {
-        try {
-            if (energiaSOS>0)
-                ac.getNave().consumeEnergia(energiaSOS);
-            if (combustibleSOS>0)
-                ac.getNave().consumeCombustible(combustibleSOS);
-        } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {
-            ac.getBitacorasNave().agregarRegistro(new RegistroError("ERROR INESPERADO",e));
-        }
-        finally {
-            notificarObservadores("BITACORA");
-        }
+        if(estadoActual.equals(ESTADO_ACTIVA))
+            try {
+                String texto = "";
+                if (energiaSOS>0){
+                    ac.getNave().consumeEnergia(energiaSOS);
+                    texto+= String.valueOf(energiaSOS) + " PUNTOS DE ENERGIA";
+                }
+                if (combustibleSOS>0){
+                    ac.getNave().consumeCombustible(combustibleSOS);
+                    texto+= String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
+                }
+
+                ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
+            } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {
+                ac.getBitacorasNave().agregarRegistro(new RegistroError("No pudo realizarse la asistencia por recursos insuficientes",e));
+            }
+        notificarObservadores("FIN_MISION");
     }
+
+
 }

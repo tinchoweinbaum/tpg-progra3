@@ -63,7 +63,11 @@ public class Bitacora {
         //Si la busqueda binaria no encuentra un elemento devuelve su presunta posicion - 1
         if (pos < 0){ // Si no lo encuentra, lo que idealmente pasaria siempre, calculamos el indice en base al retorno
             indiceInsercion = -pos-1;
-        } else { // Si por algun motivo la fecha es exacta, insertamos uno al lado del otro, sin importar el orden
+        } else {
+            // Avanza hasta pasar todos los registros que tengan exactamente la misma fecha
+            while (pos < this.registros.size() && this.registros.get(pos).compareTo(registro) == 0) {
+                pos++;
+            }
             indiceInsercion = pos;
         }
         this.registros.add(indiceInsercion, registro);
