@@ -1,17 +1,16 @@
 package motorwarp;
+import asistentes.Asistente;
+import destinoytablero.Posicion;
+import destinoytablero.Tablero;
+import exceptions.CantCombustibleInvalidaException;
+import exceptions.CantEnergiaInvalidaException;
 import exceptions.EstadoInvalidoException;
+import exceptions.NaveDestruidaException;
 
 
 public class SaltoWarp implements State {
     
     private MotorWarp motor;
-    private final int ID = MotorWarp.SALTO_WARP;
-
-    public int getIdEstado(){
-        return ID;
-    }
-    
-    
     
     public SaltoWarp(MotorWarp motor){
         this.motor = motor;
@@ -23,24 +22,23 @@ public class SaltoWarp implements State {
     }
     
     @Override
-    public void preparaSalto(int tipoSalto) throws EstadoInvalidoException{
+    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException{
         throw new EstadoInvalidoException("El motor ya preparo el salto warp");
     }
 
     @Override
-    public void saltoWarp() throws EstadoInvalidoException{
+    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException{
         throw new EstadoInvalidoException("Ya se ha realizado el salto warp");
     }
     
-    //De salto a enfriamiento para la 2da parte
     @Override
-    public void enfriamiento(){
+    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
         motor.setEstado(new Enfriamiento(motor));
-        //da turno a tablero, se mueven fichas || thread sleep
-        //pasa a estado dispnbe
+        motor.notificarObservadores("MOTOR_ENFRIANDO");
+        ac.darTurnosTablero(1);
+        motor.getEstadoActual().disponible();
     }
 
-    //Despues lo imprime cuando se printean los registros de motor
     @Override
     public String toString(){
         return "EN SALTO WARP";

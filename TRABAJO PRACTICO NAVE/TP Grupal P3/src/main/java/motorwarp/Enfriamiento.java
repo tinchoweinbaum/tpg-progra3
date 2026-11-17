@@ -1,15 +1,13 @@
 package motorwarp;
+import asistentes.Asistente;
+import destinoytablero.Posicion;
+import destinoytablero.Tablero;
 import exceptions.EstadoInvalidoException;
 
 
 public class Enfriamiento implements State {
     
     private MotorWarp motor;
-    private final int ID = MotorWarp.ENFRIAMIENTO;
-
-    public int getIdEstado(){
-        return ID;
-    }
 
     public Enfriamiento (MotorWarp motor){
         this.motor = motor;
@@ -18,21 +16,22 @@ public class Enfriamiento implements State {
     @Override
     public void disponible(){
         motor.setEstado(new Disponible(motor));
+        motor.notificarObservadores("MOTOR_DISPONIBLE");
     }
     
     @Override
-    public void preparaSalto(int tipoSalto) throws EstadoInvalidoException {
+    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException {
         throw new EstadoInvalidoException("El motor ya preparo el salto warp");
     }
 
     
     @Override
-    public void saltoWarp() throws EstadoInvalidoException{
+    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException{
         throw new EstadoInvalidoException("Ya se ha realizado el salto warp");
     }
     
     @Override
-    public void enfriamiento() throws EstadoInvalidoException{
+    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException{
         throw new EstadoInvalidoException("Ya se ha enfriado el motor");
     }
 

@@ -49,16 +49,6 @@ public class Enlazador implements IAsistente,IVisor{
     }
 
     @Override
-    public void saltar() {
-
-    }
-
-    @Override
-    public void saltarWarp() {
-
-    }
-
-    @Override
     public void cargaCombustibleNave(float cantCarga) throws CantCombustibleInvalidaException {
         getAsistente().cargaCombustibleNave(cantCarga);
     }
@@ -115,8 +105,8 @@ public class Enlazador implements IAsistente,IVisor{
     }
 
     @Override
-    public void darTurnosTablero() {
-        getAsistente().darTurnosTablero();
+    public void darTurnosTablero(int i) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+        getAsistente().darTurnosTablero(i);
     }
 
     @Override

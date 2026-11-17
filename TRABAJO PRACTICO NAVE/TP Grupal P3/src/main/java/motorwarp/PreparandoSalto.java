@@ -1,15 +1,12 @@
 package motorwarp;
-import exceptions.EstadoInvalidoException;
+import asistentes.Asistente;
+import destinoytablero.*;
+import exceptions.*;
 
 
 public class PreparandoSalto implements State {
     
     private final MotorWarp motor;
-    private final int ID = MotorWarp.PREPARANDO_SALTO;
-
-    public int getIdEstado(){
-        return ID;
-    }
 
     public PreparandoSalto (MotorWarp motor){
         this.motor = motor;
@@ -21,25 +18,23 @@ public class PreparandoSalto implements State {
     }
     
     @Override
-    public void preparaSalto(int tipoSalto) throws EstadoInvalidoException{
-        if (tipoSalto == 4) // SALTO_CORTO = 4;
-            motor.setEstado(new PreparandoSalto(motor)); // Me quedo en preparandoSalto
-        else
-            if (tipoSalto == 2) // SALTO_WARP = 2;
-                this.saltoWarp(); // Paso al estado saltoWarp
-            else
-                throw new EstadoInvalidoException("El motor ya esta preparando el salto");
+    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException{
+        throw new EstadoInvalidoException("El motor ya esta preparandose");
     }
 
     @Override
-    public void saltoWarp(){
+    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws NaveDestruidaException, CantEnergiaInvalidaException, CantCombustibleInvalidaException {
         motor.setEstado(new SaltoWarp(motor));
-        //mueve nave en el tablero
-        //pasa a estado enfriamiento
+        motor.notificarObservadores("MOTOR_SALTANDO");
+        ac.consumeEnergiaNave(MotorWarp.CONSUMO_ENERGIA_SALTO_WARP);
+        int x = tablero.getPosicionNave().getX() + direccion.getX();
+        int y = tablero.getPosicionNave().getY() + direccion.getY();
+        tablero.moverNave(new Posicion(x,y));
+        motor.getEstadoActual().enfriamiento(tablero,ac,direccion);
     }
     
     @Override
-    public void enfriamiento() throws EstadoInvalidoException{
+    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException{
         throw new EstadoInvalidoException("El motor no está disponible");
     }
 

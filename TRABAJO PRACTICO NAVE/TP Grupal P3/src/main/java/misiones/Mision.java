@@ -94,6 +94,7 @@ public abstract class Mision extends Observable{
 
             posicionObjetivo = ac.getTablero().obtenerObjetivo();
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("OBJETIVO UBICADO EN ["+posicionObjetivo.getX() + "][" +  posicionObjetivo.getY() + "]"));
+            System.out.println("OBJETIVO UBICADO EN ["+posicionObjetivo.getX() + "][" +  posicionObjetivo.getY() + "]");
         }catch (MisionImposibleException e){
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("No puede realizarse la mision " + getNombre() + "(" + getDescripcion() + ") - " + e.getMessage()));
             this.estadoActual = ESTADO_FALLIDO;
@@ -117,12 +118,13 @@ public abstract class Mision extends Observable{
                     Thread.sleep(2000);
                     ac.chequeaPosicionActual();
                     ac.mueveNave();
-                    if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY()) {
-                        encontro = true;
-                    }
+                    System.out.println("EN:" + String.valueOf(ac.getTablero().getPosicionNave().getX()) + "," + String.valueOf(ac.getTablero().getPosicionNave().getY()));
                     if (ac.getNave().getCombustible()==0 || ac.getNave().getEnergia()==0 || ac.getNave().getDesgaste()==100)
                         throw new NaveDestruidaException("LA NAVE NO LOGRO SOBREVIVIR AL UNIVERSO");
-                    ac.darTurnosTablero();
+                    if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY())
+                        encontro = true;
+                    else
+                        ac.darTurnosTablero(1);
                 }
                 this.acumuladoPerdidaCombustible = ac.getNave().getCombustible()-estadoCombustibleInicial;
                 this.acumuladoIncrementoDesgaste = ac.getNave().getDesgaste()-estadoDesgasteInicial;

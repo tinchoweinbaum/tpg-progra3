@@ -112,8 +112,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.INICIO_SESION)) {
             //metodo para chequear si existen datos en db
-            //metodo para rescatar el usuario ( que sera el capitan de la nave) y usarlo
-            //capitanAct = usuarioRecuperado;
             //podria ponerse en un try catch si se recupera el objeto y sino tira una vista emergente
             vistaInicioSesion.dispose();
             ventanaEmergente("INICIO DE SESION EXITOSO","");
@@ -202,7 +200,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaCrearNave.CREAR_NAVE)){
             try{
                 comienzaPartida();
-                actualizaVisorMotor();
+                actualizaVisorMotor(0);
             }catch (TipoNaveInvalidoException | ErrorAgregarTripulacionException | ErrorCreacionPersonajeException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
                 resetGame();
@@ -306,6 +304,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         try{
             iniciaElementosUni();
             tablero = new Tablero(20,20,elementosUni);
+            tablero.agregarObservador(this);
+
         } catch (CantidadDeElementosSuperaCasillaException | DimensionesDeTableroInconsistentesException e) {
             ventanaEmergente(e.getMessage(),"");
         }
@@ -407,12 +407,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaCrearNave.arranca();
     }
 
-    //TIENE QUE SER OBSERVER - OBSERVABLE XDXD
-    //el visro es observer de hilo del motor , ver motor como runnable , lo que observa es justamente el motor que el motor llama a notifcar visor
-    private void actualizaVisorMotor(){
+    private void actualizaVisorMotor(int i){
         String estado = "";
         Color color = null;
-        switch(enlazador.getMotor().getEstadoActual().getIdEstado()){
+        switch(i){
             case MotorWarp.DISPONIBLE:
                 estado = "DISPONIBLE";
                 color = new Color(46, 139, 87);
@@ -432,6 +430,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         }
         vistaRecursos.getBarraEstado().setString(estado);
         vistaRecursos.getBarraEstado().setForeground(color);
+        vistaRecursos.getBarraEstado().repaint();
+
     }
 
     private Tripulante asignaCapitan() throws ErrorCreacionPersonajeException , NumberFormatException {
@@ -471,8 +471,17 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (mensaje.equals("FIN_MISION")) {
             actualizaBitacora();
             finMision();
-        }else if(mensaje.equals("HOLA")){
-            ventanaEmergente("FFF","");
+        }else if(mensaje.equals("ACTUALIZACION_VISTA_TABLERO")){
+//            actualizacionMapa();
+            System.out.println("ACTUALIZO VISTA TABLERO");
+        }else if(mensaje.equals("MOTOR_DISPONIBLE")){
+            actualizaVisorMotor(MotorWarp.DISPONIBLE);
+        }else if(mensaje.equals("MOTOR_PREPARANDO")){
+            actualizaVisorMotor(MotorWarp.PREPARANDO_SALTO);
+        }else if(mensaje.equals("MOTOR_SALTANDO")){
+            actualizaVisorMotor(MotorWarp.SALTO_WARP);
+        }else if(mensaje.equals("MOTOR_ENFRIANDO")){
+            actualizaVisorMotor(MotorWarp.ENFRIAMIENTO);
         }else if (mensaje.equals("GAME_OVER")){
             ventanaEmergente("GAME OVER","ERROR");
             vistaMain.getBotonBorraCrearNave().setEnabled(true);

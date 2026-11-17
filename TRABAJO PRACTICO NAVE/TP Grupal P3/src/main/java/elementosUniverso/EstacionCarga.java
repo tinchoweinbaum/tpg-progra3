@@ -20,14 +20,16 @@ public class EstacionCarga extends ElementoDelUniverso {
     public void interactuaConNave(Asistente ac) throws CantCombustibleInvalidaException, CantEnergiaInvalidaException {
         ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("LLEGADA A ESTACION DE CARGA - INTENTANDO REABASTECER COMBUSTIBLE Y ENERGÍA"));
 
-        if(ac.getNave().getCombustible() + RECARGA_COMBUSTIBLE <= Nave.MAX_COMBUSTIBLE)
-            ac.cargaCombustibleNave(RECARGA_COMBUSTIBLE);
-        else
-            ac.cargaCombustibleNaveFull();
+        if (ac.getNave().getCombustible()!=Nave.MAX_COMBUSTIBLE)
+            if(ac.getNave().getCombustible() + RECARGA_COMBUSTIBLE <= Nave.MAX_COMBUSTIBLE)
+                ac.cargaCombustibleNave(RECARGA_COMBUSTIBLE);
+            else
+                ac.cargaCombustibleNaveFull();
 
-        if(ac.getNave().getEnergia() + RECARGA_ENERGIA <= Nave.MAX_ENERGIA)
-            ac.cargaEnergiaNave(RECARGA_ENERGIA);
-        else
-            ac.cargaEnergiaNaveFull();
+        if (ac.getNave().getEnergia()!=Nave.MAX_ENERGIA)
+            if(ac.getNave().getEnergia() + RECARGA_ENERGIA <= Nave.MAX_ENERGIA)
+                ac.cargaEnergiaNave(RECARGA_ENERGIA);
+            else
+                ac.cargaEnergiaNaveFull();
     }
 }

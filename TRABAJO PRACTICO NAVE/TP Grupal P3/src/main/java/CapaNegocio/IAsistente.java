@@ -16,10 +16,6 @@ public interface IAsistente {
     MotorWarp getMotor();
     Bitacora getBitacorasNave();
 
-    // Operaciones de salto y motor
-    void saltar();
-    void saltarWarp();
-
     // Gestión de combustible
     void cargaCombustibleNave(float cantCarga) throws CantCombustibleInvalidaException;
     void consumeCombustibleNave(float cantConsumida) throws CantCombustibleInvalidaException, NaveDestruidaException;
@@ -40,6 +36,6 @@ public interface IAsistente {
 
     // Tablero y movimiento
     void chequeaPosicionActual() throws NaveDestruidaException, CantCombustibleInvalidaException, CantEnergiaInvalidaException;
-    void darTurnosTablero() throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException;
+    void darTurnosTablero(int i) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException;
     void mueveNave() throws CantEnergiaInvalidaException, CombustibleInsuficienteException, CantCombustibleInvalidaException, NaveDestruidaException;
 }

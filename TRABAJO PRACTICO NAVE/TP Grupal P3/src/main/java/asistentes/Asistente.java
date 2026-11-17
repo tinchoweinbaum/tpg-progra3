@@ -8,7 +8,6 @@ import motorwarp.*;
 import bitacora.*;
 import exceptions.*;
 import tripulantes.Tripulante;
-import java.util.Random;
 
 public class Asistente implements IAsistente {
     public static int tick = 0;
@@ -39,7 +38,7 @@ public class Asistente implements IAsistente {
         this.nave = nave;
         this.tablero = tablero;
         this.bitacorasNave = new Bitacora();
-        this.motor = new MotorWarp(this);
+        this.motor = new MotorWarp();
         this.destino = new Destino(getTablero());
         
         assert invariant(): "Fallo en crear la bitacora y/o motorWarp";
@@ -56,25 +55,6 @@ public class Asistente implements IAsistente {
     public MotorWarp getMotor() {
         return motor;
     }
-
-    
-
-    /**
-     * Metodo para probar el ciclo de salto y que quede registrado.
-     * <b>pre:</b> Se ejecuta el salto y se guarda cada cambio de estado en bitacora
-     */
-    public void saltar(){
-        this.motor.prepararSalto(2); // 2 -> SALTO_WARP = 2
-    }
-
-    public void saltarWarp(){
-        this.motor.prepararSalto(4); // SALTO_NORMAL = 4;
-    }
-
-    /**
-     * Actualiza la bitacora con los cambios de estado del motor luego de saltar.
-     */
-
 
     public Bitacora getBitacorasNave() {
         return bitacorasNave;
@@ -262,16 +242,24 @@ public class Asistente implements IAsistente {
             actual.interactuaConNave(this);
     }
 
-    public void darTurnosTablero() throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
-        destino.turnoDestino();
-        chequeaPosicionActual();
+    public void darTurnosTablero(int i) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+        try {
+            for (int j = 0; j < i; j++) {
+                destino.turnoDestino();
+                getTablero().notificarObservadores("ACTUALIZACION_VISTA_TABLERO");
+                Thread.sleep(1500);
+                chequeaPosicionActual();
+            }
+        }catch (InterruptedException e) {
+            getBitacorasNave().agregarRegistro(new RegistroError("ERROR DESCONOCIDO",e));
+        }
     }
 
     private boolean puedeSaltarNormal(Posicion pos){
         int x = pos.getX() + 1;
         int y = pos.getY() + 1;
         ElementoDelUniverso[][] radarCortoAlcance = getTablero().observarAlrededores();
-        return radarCortoAlcance[x][y] == null || radarCortoAlcance[x][y].equals(new EstacionCarga());
+        return radarCortoAlcance[x][y] == null || radarCortoAlcance[x][y].equals(new EstacionCarga()) || (getTablero().getObjetivo().getX() == x && getTablero().getObjetivo().getY() == y);
     }
 
     public void mueveNave() throws CantEnergiaInvalidaException, CantCombustibleInvalidaException, NaveDestruidaException {
@@ -303,12 +291,12 @@ public class Asistente implements IAsistente {
             if (!saltoFuera(nuevaPos) && !puedeSaltarNormal(nuevaPos) &&getNave().getEnergia()>MotorWarp.CONSUMO_ENERGIA_SALTO_WARP){
                 consumeEnergiaNave(MotorWarp.CONSUMO_ENERGIA_SALTO_WARP);
                 nuevaPos = new Posicion(nuevaPos.getX()*2,nuevaPos.getY()*2);
-                //getBitacora().agregaRegistro(getMotor().saltoWarp(getTablero(),this,nuevaPos));
+                getMotor().saltoWarp(getTablero(),this,nuevaPos);
+                getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO EL SALTO WARP - SE AVANZARON DOS CASILLEROS"));
             }else{
                 consumeCombustibleNave(2);
-                //getBitacora().agregarRegistro(getMotor().saltar(getTablero(),nuevaPos));
+                getBitacorasNave().agregarRegistro(getMotor().saltar(getTablero(),nuevaPos));
             }
-            getTablero().moverNave(new Posicion(Xnave + nuevaPos.getX(),Ynave + nuevaPos.getY()));
         }
     }
 
