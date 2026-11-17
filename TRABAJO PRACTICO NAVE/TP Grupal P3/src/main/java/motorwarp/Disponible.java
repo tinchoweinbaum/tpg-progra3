@@ -2,10 +2,7 @@ package motorwarp;
 import asistentes.Asistente;
 import destinoytablero.Posicion;
 import destinoytablero.Tablero;
-import exceptions.CantCombustibleInvalidaException;
-import exceptions.CantEnergiaInvalidaException;
-import exceptions.EstadoInvalidoException;
-import exceptions.NaveDestruidaException;
+import exceptions.*;
 
 public class Disponible implements State {
 
@@ -21,7 +18,7 @@ public class Disponible implements State {
     }
 
     @Override
-    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException, CantDesgasteInvalidaException {
         motor.setEstado(new PreparandoSalto(motor));
         motor.notificarObservadores("MOTOR_PREPARANDO");
         ac.darTurnosTablero(2);

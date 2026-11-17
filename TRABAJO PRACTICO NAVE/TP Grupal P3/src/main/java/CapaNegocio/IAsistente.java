@@ -6,7 +6,6 @@ import motorwarp.MotorWarp;
 import bitacora.Bitacora;
 import exceptions.*;
 import tripulantes.Tripulante;
-import java.util.ArrayList;
 
 public interface IAsistente {
 
@@ -37,5 +36,5 @@ public interface IAsistente {
     // Tablero y movimiento
     void chequeaPosicionActual() throws NaveDestruidaException, CantCombustibleInvalidaException, CantEnergiaInvalidaException;
     void darTurnosTablero(int i) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException;
-    void mueveNave() throws CantEnergiaInvalidaException, CombustibleInsuficienteException, CantCombustibleInvalidaException, NaveDestruidaException;
+    void mueveNave() throws CantEnergiaInvalidaException, CombustibleInsuficienteException, CantCombustibleInvalidaException, NaveDestruidaException, CantDesgasteInvalidaException;
 }

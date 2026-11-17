@@ -2,10 +2,7 @@ package motorwarp;
 import asistentes.Asistente;
 import destinoytablero.Posicion;
 import destinoytablero.Tablero;
-import exceptions.CantCombustibleInvalidaException;
-import exceptions.CantEnergiaInvalidaException;
-import exceptions.EstadoInvalidoException;
-import exceptions.NaveDestruidaException;
+import exceptions.*;
 
 
 public class SaltoWarp implements State {
@@ -32,10 +29,11 @@ public class SaltoWarp implements State {
     }
     
     @Override
-    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException, CantDesgasteInvalidaException {
         motor.setEstado(new Enfriamiento(motor));
         motor.notificarObservadores("MOTOR_ENFRIANDO");
         ac.darTurnosTablero(1);
+        ac.aumentaDesgasteNave(MotorWarp.CONSUMO_DESGASTE_SALTO_WARP);
         motor.getEstadoActual().disponible();
     }
 

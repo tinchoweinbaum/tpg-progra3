@@ -124,6 +124,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         panelPrincipal.add(barraDesgaste, gbc_barraDesgaste);
 
         btnMantenimiento = new JButton("Realizar Mantenimiento");
+        btnMantenimiento.setEnabled(false);
         btnMantenimiento.setActionCommand(MANTENIMIENTO);
         btnMantenimiento.setFont(fuenteBotones);
         GridBagConstraints gbc_btnMantenimiento = new GridBagConstraints();
@@ -158,6 +159,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         panelPrincipal.add(barraCombustible, gbc_barraCombustible);
 
         txtCantidadCombustible = new JTextField();
+        txtCantidadCombustible.setEnabled(false);
         txtCantidadCombustible.setFont(fuenteControles);
         txtCantidadCombustible.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_txtCombustible = new GridBagConstraints();
@@ -168,6 +170,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         panelPrincipal.add(txtCantidadCombustible, gbc_txtCombustible);
 
         btnCargarCombustible = new JButton("Cargar");
+        btnCargarCombustible.setEnabled(false);
         btnCargarCombustible.setActionCommand(CARGAR_COMBUSTIBLE);
         btnCargarCombustible.setFont(fuenteBotones);
         GridBagConstraints gbc_btnCargarComb = new GridBagConstraints();
@@ -178,6 +181,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         panelPrincipal.add(btnCargarCombustible, gbc_btnCargarComb);
 
         btnLlenarCombustible = new JButton("Llenar");
+        btnLlenarCombustible.setEnabled(false);
         btnLlenarCombustible.setActionCommand(LLENAR_COMBUSTIBLE);
         btnLlenarCombustible.setFont(fuenteBotones);
         GridBagConstraints gbc_btnLlenarComb = new GridBagConstraints();
@@ -210,6 +214,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         gbc_barraEnergia.gridy = 4;
         panelPrincipal.add(barraEnergia, gbc_barraEnergia);
         txtCantidadEnergia = new JTextField();
+        txtCantidadEnergia.setEnabled(false);
         txtCantidadEnergia.setFont(fuenteControles);
         txtCantidadEnergia.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_txtEnergia = new GridBagConstraints();
@@ -219,6 +224,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         gbc_txtEnergia.gridy = 4;
         panelPrincipal.add(txtCantidadEnergia, gbc_txtEnergia);
         btnCargarEnergia = new JButton("Cargar");
+        btnCargarEnergia.setEnabled(false);
         btnCargarEnergia.setActionCommand(CARGAR_ENERGIA);
         btnCargarEnergia.setFont(fuenteBotones);
         GridBagConstraints gbc_btnCargarEnergia = new GridBagConstraints();
@@ -228,6 +234,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
         gbc_btnCargarEnergia.gridy = 4;
         panelPrincipal.add(btnCargarEnergia, gbc_btnCargarEnergia);
         btnLlenarEnergia = new JButton("Llenar");
+        btnLlenarEnergia.setEnabled(false);
         btnLlenarEnergia.setActionCommand(LLENAR_ENERGIA);
         btnLlenarEnergia.setFont(fuenteBotones);
         GridBagConstraints gbc_btnLlenarEnergia = new GridBagConstraints();

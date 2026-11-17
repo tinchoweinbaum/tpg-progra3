@@ -23,9 +23,14 @@ public class PreparandoSalto implements State {
     }
 
     @Override
-    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws NaveDestruidaException, CantEnergiaInvalidaException, CantCombustibleInvalidaException {
+    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws NaveDestruidaException, CantEnergiaInvalidaException, CantCombustibleInvalidaException, CantDesgasteInvalidaException {
         motor.setEstado(new SaltoWarp(motor));
         motor.notificarObservadores("MOTOR_SALTANDO");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            motor.getEstadoActual().enfriamiento(tablero,ac,direccion);
+        }
         ac.consumeEnergiaNave(MotorWarp.CONSUMO_ENERGIA_SALTO_WARP);
         int x = tablero.getPosicionNave().getX() + direccion.getX();
         int y = tablero.getPosicionNave().getY() + direccion.getY();

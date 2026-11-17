@@ -1,5 +1,7 @@
 package bitacora;
 
+import destinoytablero.Observable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  * -La lista siempre esta ordenada por fecha
  */
 
-public class Bitacora {
+public class Bitacora extends Observable {
     private List<RegistroBitacora> registros;
 
     
@@ -71,7 +73,8 @@ public class Bitacora {
             indiceInsercion = pos;
         }
         this.registros.add(indiceInsercion, registro);
-        
+        notificarObservadores("BITACORA");
+
         assert invariant();
     }
 

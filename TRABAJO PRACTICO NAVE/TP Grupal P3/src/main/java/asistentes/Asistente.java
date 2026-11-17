@@ -259,10 +259,17 @@ public class Asistente implements IAsistente {
         int x = pos.getX() + 1;
         int y = pos.getY() + 1;
         ElementoDelUniverso[][] radarCortoAlcance = getTablero().observarAlrededores();
-        return radarCortoAlcance[x][y] == null || radarCortoAlcance[x][y].equals(new EstacionCarga()) || (getTablero().getObjetivo().getX() == x && getTablero().getObjetivo().getY() == y);
+        ElementoDelUniverso actual = radarCortoAlcance[x][y];
+        return actual == null || actual.equals(new EstacionCarga()) || siguienteEsObj(pos);
     }
 
-    public void mueveNave() throws CantEnergiaInvalidaException, CantCombustibleInvalidaException, NaveDestruidaException {
+    private boolean siguienteEsObj(Posicion pos){
+        int xNuevo = getTablero().getPosicionNave().getX() + pos.getX();
+        int yNuevo = getTablero().getPosicionNave().getY() + pos.getY();
+        return (xNuevo == getTablero().getObjetivo().getX() && yNuevo == getTablero().getObjetivo().getY());
+    }
+
+    public void mueveNave() throws CantEnergiaInvalidaException, CantCombustibleInvalidaException, NaveDestruidaException, CantDesgasteInvalidaException {
         Posicion nuevaPos =null;
         int Xnave = getTablero().getPosicionNave().getX();
         int Ynave = getTablero().getPosicionNave().getY();
@@ -294,17 +301,17 @@ public class Asistente implements IAsistente {
                 getMotor().saltoWarp(getTablero(),this,nuevaPos);
                 getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO EL SALTO WARP - SE AVANZARON DOS CASILLEROS"));
             }else{
-                consumeCombustibleNave(2);
+                consumeCombustibleNave(MotorWarp.CONSUMO_COMBUSTIBLE_SALTO);
                 getBitacorasNave().agregarRegistro(getMotor().saltar(getTablero(),nuevaPos));
             }
         }
     }
 
     private boolean saltoFuera(Posicion posicion) {
-        int x = getTablero().getPosicionNave().getX() + posicion.getX()*2;
-        int y = getTablero().getPosicionNave().getY() + posicion.getY()*2;
+        int xNueva = getTablero().getPosicionNave().getX() + posicion.getX()*2;
+        int yNueva = getTablero().getPosicionNave().getY() + posicion.getY()*2;
 
-        return getTablero().getX() < x || getTablero().getY() < y;
+        return getTablero().getX() < xNueva || getTablero().getY() < yNueva || xNueva<0 || yNueva<0;
     }
 
 }

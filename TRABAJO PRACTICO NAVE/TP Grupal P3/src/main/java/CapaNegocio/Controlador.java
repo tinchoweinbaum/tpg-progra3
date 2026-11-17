@@ -20,8 +20,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Random;
 
@@ -272,7 +272,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 ejecucionMision();
                 mAct.agregarObservador(this);
                 vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
-                mAct.ejecutarMision(enlazador.getAsistente());
+                misionBackGround(mAct);
             }
         }
 
@@ -285,6 +285,18 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             case BotonesMain.ACCESO_RECURSOS -> vistaRecursos.arranca();
             case BotonesMain.RESET_GAME -> resetGame();
         }
+    }
+
+    private void misionBackGround(Mision mAct) {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+            // Ejecutas tu método grande tal cual lo tienes hoy
+            mAct.ejecutarMision(enlazador.getAsistente());
+            return null;
+            }
+        };
+        worker.execute();
     }
 
     private void agregaTripulantePrueba() {
@@ -337,6 +349,13 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaMain.getBotonMisiones().setEnabled(false);
         vistaMain.getBotonTripulacion().setEnabled(false);
         vistaMain.getBotonVisorParalelo().setEnabled(false);
+        vistaRecursos.getBtnMantenimiento().setEnabled(false);
+        vistaRecursos.getTxtCantidadCombustible().setEnabled(false);
+        vistaRecursos.getBtnCargarCombustible().setEnabled(false);
+        vistaRecursos.getBtnLlenarCombustible().setEnabled(false);
+        vistaRecursos.getTxtCantidadEnergia().setEnabled(false);
+        vistaRecursos.getBtnCargarEnergia().setEnabled(false);
+        vistaRecursos.getBtnLlenarEnergia().setEnabled(false);
     }
 
     private void finMision(){
@@ -378,6 +397,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaCrearNave.dispose();
         ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
         setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo()));
+        enlazador.getBitacorasNave().agregarObservador(this);
+        enlazador.getMotor().agregarObservador(this);
         actualizaRecursosNave();
         actualizaBitacora();
         actualizaVisorTripulantes();
@@ -430,8 +451,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         }
         vistaRecursos.getBarraEstado().setString(estado);
         vistaRecursos.getBarraEstado().setForeground(color);
-        vistaRecursos.getBarraEstado().repaint();
-
     }
 
     private Tripulante asignaCapitan() throws ErrorCreacionPersonajeException , NumberFormatException {
@@ -447,13 +466,26 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaRecursos.getBarraEnergia().setValue((int)enlazador.getNave().getEnergia());
     }
 
-    private void actualizaBitacora(){
-        List<RegistroBitacora> bitacoras = enlazador.getBitacorasNave().getRegistros();
-        vistaBitacora.getAreaConsola().setText("Registro de bitacoras de " + (enlazador.getNave().getName()).toUpperCase() + "\nCapitaneada por " + (enlazador.getNave().getCapitan().getNombre()).toUpperCase());
-        for (RegistroBitacora bitacora : bitacoras)
-            vistaBitacora.getAreaConsola().setText(vistaBitacora.getAreaConsola().getText() + "\n" + bitacora.toString());
+    private void actualizaBitacora() {
+        // Creamos una copia instantánea para evitar ConcurrentModificationException
+        List<RegistroBitacora> bitacoras = new ArrayList<>(enlazador.getBitacorasNave().getRegistros());
 
+        // Usamos StringBuilder para armar el texto rápido y en memoria
+        StringBuilder sb = new StringBuilder();
+        sb.append("Registro de bitacoras de ")
+                .append(enlazador.getNave().getName().toUpperCase())
+                .append("\nCapitaneada por ")
+                .append(enlazador.getNave().getCapitan().getNombre().toUpperCase());
+
+        for (RegistroBitacora bitacora : bitacoras) {
+            sb.append("\n").append(bitacora.toString());
+        }
+
+        // Actualizamos el componente visual una sola vez
+        vistaBitacora.getAreaConsola().setText(sb.toString());
+        vistaBitacora.getAreaConsola().setCaretPosition(vistaBitacora.getAreaConsola().getDocument().getLength());
     }
+
 
     public void ventanaEmergente(String mensaje,String icono) {
         VistaExcepcion ventana = new VistaExcepcion();
@@ -465,28 +497,56 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         ventana.arranca();
     }
 
+    private void puedeBitacora(){
+        if (SwingUtilities.isEventDispatchThread()) {
+            actualizaBitacora();
+            return;
+        }
+
+        // Si venimos del hilo secundario, frenamos el sistema hasta que la UI termine de pintar
+        try {
+            SwingUtilities.invokeAndWait(() -> {
+                actualizaBitacora();
+            });
+        } catch (Exception e) {
+            ventanaEmergente("ERROR DESCONOCIDO","");
+        }
+    }
+
 
     @Override
     public void actualizar(String mensaje) {
-        if (mensaje.equals("FIN_MISION")) {
-            actualizaBitacora();
-            finMision();
-        }else if(mensaje.equals("ACTUALIZACION_VISTA_TABLERO")){
-//            actualizacionMapa();
-            System.out.println("ACTUALIZO VISTA TABLERO");
-        }else if(mensaje.equals("MOTOR_DISPONIBLE")){
-            actualizaVisorMotor(MotorWarp.DISPONIBLE);
-        }else if(mensaje.equals("MOTOR_PREPARANDO")){
-            actualizaVisorMotor(MotorWarp.PREPARANDO_SALTO);
-        }else if(mensaje.equals("MOTOR_SALTANDO")){
-            actualizaVisorMotor(MotorWarp.SALTO_WARP);
-        }else if(mensaje.equals("MOTOR_ENFRIANDO")){
-            actualizaVisorMotor(MotorWarp.ENFRIAMIENTO);
-        }else if (mensaje.equals("GAME_OVER")){
-            ventanaEmergente("GAME OVER","ERROR");
-            vistaMain.getBotonBorraCrearNave().setEnabled(true);
-        }
-
+        SwingUtilities.invokeLater(() -> {
+            switch (mensaje) {
+                case "FIN_MISION":
+                    finMision();
+                    break;
+                case "ACTUALIZACION_VISTA_TABLERO":
+                    // actualizacionMapa();
+                    System.out.println("ACTUALIZO VISTA TABLERO");
+                    break;
+                case "MOTOR_DISPONIBLE":
+                    actualizaVisorMotor(MotorWarp.DISPONIBLE);
+                    break;
+                case "MOTOR_PREPARANDO":
+                    actualizaVisorMotor(MotorWarp.PREPARANDO_SALTO);
+                    break;
+                case "MOTOR_SALTANDO":
+                    actualizaVisorMotor(MotorWarp.SALTO_WARP);
+                    break;
+                case "MOTOR_ENFRIANDO":
+                    actualizaVisorMotor(MotorWarp.ENFRIAMIENTO);
+                    break;
+                case "BITACORA":
+                    actualizaBitacora();
+                    actualizaRecursosNave();
+                    break;
+                case "GAME_OVER":
+                    ventanaEmergente("GAME OVER", "ERROR");
+                    vistaMain.getBotonBorraCrearNave().setEnabled(true);
+                    break;
+            }
+        });
     }
 
 }

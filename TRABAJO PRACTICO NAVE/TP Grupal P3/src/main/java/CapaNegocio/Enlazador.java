@@ -110,7 +110,7 @@ public class Enlazador implements IAsistente,IVisor{
     }
 
     @Override
-    public void mueveNave() throws CantEnergiaInvalidaException, CantCombustibleInvalidaException, NaveDestruidaException {
+    public void mueveNave() throws CantEnergiaInvalidaException, CantCombustibleInvalidaException, NaveDestruidaException, CantDesgasteInvalidaException {
         getAsistente().mueveNave();
     }
 

@@ -13,6 +13,7 @@ public class MotorWarp extends Observable implements State{
 
     public static final int CONSUMO_ENERGIA_SALTO_WARP = 5;
     public static final int CONSUMO_COMBUSTIBLE_SALTO = 2;
+    public static final int CONSUMO_DESGASTE_SALTO_WARP = 3;
 
     private State estadoActual;
     
@@ -56,7 +57,7 @@ public class MotorWarp extends Observable implements State{
     * 
     * @throws EstadoInvalidoException No se puede pasar del estado actual(preparaSalto, saltoWarp o enfriamiento) -/-> prepararSalto.
     */
-    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException, CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+    public void prepararSalto(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException, CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException, CantDesgasteInvalidaException {
         estadoActual.prepararSalto(tablero, ac, direccion);
     }
 
@@ -73,7 +74,7 @@ public class MotorWarp extends Observable implements State{
     *
     * @throws EstadoInvalidoException No se puede pasar del estado actual(disponible, saltoWarp o enfriamiento) -/-> saltoWarp.
     */
-    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException, NaveDestruidaException, CantEnergiaInvalidaException, CantCombustibleInvalidaException {
+    public void saltando(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException, NaveDestruidaException, CantEnergiaInvalidaException, CantCombustibleInvalidaException, CantDesgasteInvalidaException {
         estadoActual.saltando(tablero, ac, direccion);
     }
 
@@ -89,11 +90,11 @@ public class MotorWarp extends Observable implements State{
     *
     * @throws EstadoInvalidoException No se puede pasar del estado actual(disponible, preparaSalto o enfriamiento) -/-> enfriamiento.
     */
-    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException, CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+    public void enfriamiento(Tablero tablero, Asistente ac, Posicion direccion) throws EstadoInvalidoException, CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException, CantDesgasteInvalidaException {
         estadoActual.enfriamiento(tablero, ac, direccion);
     }
 
-    public void saltoWarp(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException {
+    public void saltoWarp(Tablero tablero, Asistente ac, Posicion direccion) throws CantCombustibleInvalidaException, NaveDestruidaException, CantEnergiaInvalidaException, CantDesgasteInvalidaException {
         estadoActual.prepararSalto(tablero,ac,direccion);
     }
 
