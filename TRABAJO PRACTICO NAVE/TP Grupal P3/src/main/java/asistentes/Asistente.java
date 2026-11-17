@@ -10,7 +10,6 @@ import exceptions.*;
 import tripulantes.Tripulante;
 
 public class Asistente implements IAsistente {
-    public static int tick = 0;
 
     private final Nave nave;
     private final Bitacora bitacorasNave;
@@ -54,6 +53,10 @@ public class Asistente implements IAsistente {
 
     public MotorWarp getMotor() {
         return motor;
+    }
+
+    public Destino getDestino() {
+        return destino;
     }
 
     public Bitacora getBitacorasNave() {
@@ -308,10 +311,28 @@ public class Asistente implements IAsistente {
     }
 
     private boolean saltoFuera(Posicion posicion) {
-        int xNueva = getTablero().getPosicionNave().getX() + posicion.getX()*2;
-        int yNueva = getTablero().getPosicionNave().getY() + posicion.getY()*2;
+        int xAct = getTablero().getPosicionNave().getX();
+        int yAct = getTablero().getPosicionNave().getY();
+        int xNueva = xAct + posicion.getX()*2;
+        int yNueva = yAct + posicion.getY()*2;
 
-        return getTablero().getX() < xNueva || getTablero().getY() < yNueva || xNueva<0 || yNueva<0;
+        if (getTablero().getX() <= xNueva || getTablero().getY() <= yNueva || xNueva < 0 || yNueva < 0)
+            return true;
+
+        if (getTablero().getObjetivo() != null) {
+            int xObj = getTablero().getObjetivo().getX();
+            int yObj = getTablero().getObjetivo().getY();
+
+            // El punto medio del salto de 2 casillas es (xAct + posicion.getX(), yAct + posicion.getY())
+            int xMedio = xAct + posicion.getX();
+            int yMedio = yAct + posicion.getY();
+
+            if (xMedio == xObj && yMedio == yObj) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

@@ -36,6 +36,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     private VistaMisiones vistaMisiones;
     private VistaEstadoNave vistaRecursos;
     private VistaCrearTripulante vistaCrearTripulante;
+    private VistaMapa vistaMapa;
     private Tablero tablero;
     private ArrayList<ElementoDelUniverso> elementosUni = new ArrayList<>();
 
@@ -272,6 +273,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             case BotonesMain.ACCESO_TRIPULACION -> vistaTripulacion.arranca();
             case BotonesMain.ACCESO_VISOR_PARALELO -> vistaGeneradores.arranca();
             case BotonesMain.ACCESO_RECURSOS -> vistaRecursos.arranca();
+            case BotonesMain.ACCESO_MAPA -> {
+                vistaMapa.arranca();
+                actualizacionVistaMapa();
+            }
             case BotonesMain.RESET_GAME -> resetGame();
         }
     }
@@ -305,6 +310,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             iniciaElementosUni();
             tablero = new Tablero(20,20,elementosUni);
             tablero.agregarObservador(this);
+            vistaMapa = new VistaMapa(tablero.getX(),tablero.getY());
+            vistaMapa.setControlador(this);
         } catch (CantidadDeElementosSuperaCasillaException | DimensionesDeTableroInconsistentesException e) {
             ventanaEmergente(e.getMessage(),"");
         }
@@ -314,7 +321,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         Random aleatorio = new Random();
         elementosUni.clear();
         ElementoDelUniverso aux = null;
-        for (int i=0; i<300; i++){
+        for (int i=0; i<70; i++){
             int opcion = aleatorio.nextInt(5)+1;//cant de elementos
             switch (opcion){
                 case 1 -> aux = new Asteroide();
@@ -352,6 +359,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaMain.getBotonTripulacion().setEnabled(true);
         vistaMain.getBotonVisorParalelo().setEnabled(true);
         vistaMain.setTitle("PANEL PRINCIPAL");
+        actualizacionVistaMapa();
     }
 
     private void actualizaVisorTripulantes(){
@@ -391,8 +399,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo()));
         enlazador.getBitacorasNave().agregarObservador(this);
         enlazador.getMotor().agregarObservador(this);
+        enlazador.getAsistente().getDestino().turnoDestino();
 
         //ARREGLO VISTAS
+        actualizacionVistaMapa();
         finVistaMision();
         actualizaVistaRecursosNave();
         actualizaVistaBitacora();
@@ -404,6 +414,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     public void actualizaVisorParalelo(String text){
         vistaGeneradores.getAreaConsolaMini().append("\n#"+text+"\n@------------");
+        vistaGeneradores.getAreaConsolaMini().setCaretPosition(vistaGeneradores.getAreaConsolaMini().getDocument().getLength());
     }
 
     private Visor iniciaUniversoParalelo(){
@@ -521,8 +532,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                     finVistaMision();
                     break;
                 case "ACTUALIZACION_VISTA_TABLERO":
-                    // actualizacionMapa();
-                    System.out.println("ACTUALIZO VISTA TABLERO");
+                    actualizacionVistaMapa();
                     break;
                 case "MOTOR_DISPONIBLE":
                     actualizaVisorMotor(MotorWarp.DISPONIBLE);
@@ -549,12 +559,46 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         });
     }
 
+    private void actualizacionVistaMapa() {
+        for (int i = 0; i < enlazador.getTablero().getX(); i++) {
+            for (int j = 0; j < enlazador.getTablero().getX(); j++) {
+                vistaMapa.getBotonCelda(i,j).actualizarIcono(null);
+            }
+        }
+        ElementoDelUniverso[][] tableroAux = enlazador.getTablero().verTablero();
+        ElementoDelUniverso actual;
+        for (int i = 0; i < enlazador.getTablero().getX(); i++) {
+            for (int j = 0; j < enlazador.getTablero().getY(); j++) {
+                String rutaActual = "";
+                actual = tableroAux[i][j];
+                if (actual != null){
+                    if (actual.equals(new Asteroide()))
+                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/asteroide.png";
+                    if (actual.equals(new EstacionCarga()))
+                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/estacionEspacial.png";
+                    if (actual.equals(new ElementoNaveExploradora()))
+                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveExploradora.png";
+                    if (actual.equals(new ElementoNaveCombate()))
+                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCombate.png";
+                    if (actual.equals(new ElementoNaveCarguera()))
+                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCarguera.png";
+                }
+                if (enlazador.getTablero().getObjetivo()!=null && i == enlazador.getTablero().getObjetivo().getX() && j == enlazador.getTablero().getObjetivo().getY())
+                    rutaActual = "src/main/java/CapaPresentacion/iconosFolder/objetivo.png";
+                if (i == enlazador.getTablero().getPosicionNave().getX() && j == enlazador.getTablero().getPosicionNave().getY())
+                    rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveUser.png";
+                vistaMapa.getBotonCelda(i,j).actualizarIcono(rutaActual);
+            }
+        }
+    }
+
     private void vistasJuegoPerdido() {
         enlazador.getNave().setCombustible(0);
         enlazador.getNave().setEnergia(0);
         enlazador.getNave().setDesgaste(Nave.MAX_DESGASTE);
         actualizaVistaRecursosNave();
         actualizaVisorMotor(5);
+        actualizacionVistaMapa();
     }
 
 }

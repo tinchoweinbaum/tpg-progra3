@@ -133,8 +133,9 @@ public abstract class Mision extends Observable{
                 causaError = e.getMessage();
                 notificarObservadores("GAME_OVER");
             } catch (Exception e) {
-                ac.getBitacorasNave().agregarRegistro(new RegistroMision((e.getMessage() + " - ESTADO INOPERANTE"),this));
                 estadoActual=ESTADO_FALLIDO;
+                causaError = e.getMessage();
+                notificarObservadores("FIN_MISION");
             }
         }
     }
@@ -152,7 +153,7 @@ public abstract class Mision extends Observable{
             ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("ENERGIA", this.acumuladoPerdidaEnergia, ac.getNave().getEnergia()));
             ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("DESGASTE", this.acumuladoIncrementoDesgaste, ac.getNave().getDesgaste()));
         }else if(this.estadoActual.equals(ESTADO_FALLIDO)){
-            ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION FALLIDA",this));
+            ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION FALLIDA - MOTIVO: " + causaError,this));
         }else{
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("BITACORA REALIZADA DESDE CENTRO DE MANDO TERRESTRE - Nave conocida como '" + ac.getNave().getName() + "' ha sido destruida en accion.\nMOTIVO: " + causaError));
         }

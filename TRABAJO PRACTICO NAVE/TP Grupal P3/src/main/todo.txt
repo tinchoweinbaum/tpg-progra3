@@ -3,6 +3,4 @@
 
 ->TODO: una vez hacido el motor, completar misiones 1 y 2
 
-->TODO: cambiar vista de tablero a boton para mostrarlo y que se abra una nueva ventanita re bonita fachera re sexy como yo
-
 ->TODO: Capa de persistencia DAO

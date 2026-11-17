@@ -58,7 +58,6 @@ public class Mision1 extends Mision{
                     ac.consumeCombustibleNave(combustibleSOS);
                     texto+= String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
                 }
-
                 ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
                 notificarObservadores("FIN_MISION");
             } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {

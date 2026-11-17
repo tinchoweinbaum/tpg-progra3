@@ -3,9 +3,12 @@ package CapaPresentacion;
 import CapaNegocio.Controlador;
 
 import java.awt.GridLayout;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -13,7 +16,6 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import javax.swing.border.TitledBorder;
 
 public class BotonesMain extends JFrame implements IVista {
 	public final static String RESET_GAME = "RESET_GAME";
@@ -22,6 +24,7 @@ public class BotonesMain extends JFrame implements IVista {
 	public final static String ACCESO_TRIPULACION = "ACCESO_TRIPULACION";
 	public final static String ACCESO_BITACORA = "ACCESO_BITACORA";
 	public final static String ACCESO_RECURSOS = "ACCESO_RECURSOS";
+	public final static String ACCESO_MAPA = "ACCESO_MAPA";
 
 	private JPanel panelPrincipal;
 	private JPanel panelDatos; // <--- Declarado como atributo para acceder desde los métodos de refresco
@@ -33,6 +36,7 @@ public class BotonesMain extends JFrame implements IVista {
 	private JButton botonTripulacion = new JButton("Ver Tripulantes");
 	private JButton botonBitacora = new JButton("Ver Bitacora");
 	private JButton botonRecursos = new JButton("Ver Recursos de la Nave");
+	private JButton botonMapa = new JButton("Abre Mapa");
 
 	public BotonesMain() {
 		setTitle("PANEL PRINCIPAL");
@@ -45,9 +49,9 @@ public class BotonesMain extends JFrame implements IVista {
 
 		// 1. Layout maestro del panel principal
 		GridBagLayout gbl_panelPrincipal = new GridBagLayout();
-		gbl_panelPrincipal.columnWidths = new int[] {370, 250}; // Ajustado para dar más margen a la sección izquierda
+		gbl_panelPrincipal.columnWidths = new int[] {370, 260}; // Dos columnas: izquierda controles, derecha referencias
 		gbl_panelPrincipal.rowHeights = new int[] {60, 220};
-		gbl_panelPrincipal.columnWeights = new double[]{1.0, 1.0};
+		gbl_panelPrincipal.columnWeights = new double[]{1.0, 0.8};
 		gbl_panelPrincipal.rowWeights = new double[]{0.0, 1.0};
 		panelPrincipal.setLayout(gbl_panelPrincipal);
 
@@ -118,6 +122,9 @@ public class BotonesMain extends JFrame implements IVista {
 		botonRecursos.setActionCommand(ACCESO_RECURSOS);
 		panelBotones.add(botonRecursos);
 
+		botonMapa.setActionCommand(ACCESO_MAPA);
+		panelBotones.add(botonMapa);
+
 		GridBagConstraints gbc_panelBotones = new GridBagConstraints();
 		gbc_panelBotones.fill = GridBagConstraints.BOTH;
 		gbc_panelBotones.insets = new Insets(0, 0, 0, 8);
@@ -126,17 +133,40 @@ public class BotonesMain extends JFrame implements IVista {
 		panelPrincipal.add(panelBotones, gbc_panelBotones);
 
 		// --------------------------------------------------------------------
-		// PANEL MATRIZ: Lado Derecho
+		// PANEL ELEMENTOS UNIVERSO: Lado Derecho (7 elementos con icono + texto)
 		// --------------------------------------------------------------------
-		JPanel panelMatriz = new JPanel();
-		panelMatriz.setBorder(new TitledBorder(null, "Mapa del Universo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		JPanel panelElementos = new JPanel();
+		panelElementos.setBorder(new TitledBorder(null, "Tipos de Elementos Universo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelElementos.setLayout(new GridLayout(7, 1, 2, 4));
 
-		GridBagConstraints gbc_panelMatriz = new GridBagConstraints();
-		gbc_panelMatriz.fill = GridBagConstraints.BOTH;
-		gbc_panelMatriz.gridheight = 2;
-		gbc_panelMatriz.gridx = 1;
-		gbc_panelMatriz.gridy = 0;
-		panelPrincipal.add(panelMatriz, gbc_panelMatriz);
+		panelElementos.add(crearItemElemento("Tu Nave", "src/main/java/CapaPresentacion/iconosFolder/naveUser.png"));
+		panelElementos.add(crearItemElemento("Objetivo / Destino", "src/main/java/CapaPresentacion/iconosFolder/objetivo.png"));
+		panelElementos.add(crearItemElemento("Estacion de Carga", "src/main/java/CapaPresentacion/iconosFolder/estacionEspacial.png"));
+		panelElementos.add(crearItemElemento("Asteroide", "src/main/java/CapaPresentacion/iconosFolder/asteroide.png"));
+		panelElementos.add(crearItemElemento("Nave Exploradora", "src/main/java/CapaPresentacion/iconosFolder/naveExploradora.png"));
+		panelElementos.add(crearItemElemento("Nave de Combate", "src/main/java/CapaPresentacion/iconosFolder/naveCombate.png"));
+		panelElementos.add(crearItemElemento("Nave Carguera", "src/main/java/CapaPresentacion/iconosFolder/naveCarga.png"));
+
+		GridBagConstraints gbc_panelElementos = new GridBagConstraints();
+		gbc_panelElementos.fill = GridBagConstraints.BOTH;
+		gbc_panelElementos.gridheight = 2;
+		gbc_panelElementos.gridx = 1;
+		gbc_panelElementos.gridy = 0;
+		panelPrincipal.add(panelElementos, gbc_panelElementos);
+	}
+
+	/**
+	 * Crea cada fila de referencia con su icono escalado a 24x24 y su etiqueta alineada a la izquierda.
+	 */
+	private JLabel crearItemElemento(String texto, String rutaIcono) {
+		ImageIcon iconoOriginal = new ImageIcon(rutaIcono);
+		Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+
+		JLabel lblItem = new JLabel(texto, new ImageIcon(imagenEscalada), SwingConstants.LEFT);
+		lblItem.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblItem.setIconTextGap(10); // Espacio horizontal entre el icono y el texto
+		lblItem.setBorder(new EmptyBorder(0, 8, 0, 5)); // Margen interno izquierdo para que no quede pegado al borde
+		return lblItem;
 	}
 
 	@Override
@@ -155,6 +185,7 @@ public class BotonesMain extends JFrame implements IVista {
 		getBotonTripulacion().addActionListener(controlador);
 		getBotonBorraCrearNave().addActionListener(controlador);
 		getBotonRecursos().addActionListener(controlador);
+		getBotonMapa().addActionListener(controlador);
 	}
 
 	// --------------------------------------------------------------------
@@ -192,5 +223,8 @@ public class BotonesMain extends JFrame implements IVista {
 		return botonRecursos;
 	}
 
+	public JButton getBotonMapa() {
+		return botonMapa;
+	}
 
 }
