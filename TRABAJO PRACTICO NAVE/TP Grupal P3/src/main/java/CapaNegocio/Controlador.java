@@ -135,7 +135,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_COMBUSTIBLE))
             try{
                 enlazador.cargaCombustibleNave(Float.parseFloat(vistaRecursos.getTxtCantidadCombustible().getText()));
-                actualizaRecursosNave();
                 ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
             } catch (CantCombustibleInvalidaException e) {
                 ventanaEmergente(e.getMessage(),"ERROR");
@@ -143,13 +142,11 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 ventanaEmergente("Formato Invalido","ERROR");
             }finally{
                 vistaRecursos.getTxtCantidadCombustible().setText("");
-                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_ENERGIA))
             try {
                 enlazador.cargaEnergiaNave(Float.parseFloat(vistaRecursos.getTxtCantidadEnergia().getText()));
-                actualizaRecursosNave();
                 ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
             }catch (CantEnergiaInvalidaException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
@@ -158,40 +155,33 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             }
             finally {
                 vistaRecursos.getTxtCantidadEnergia().setText("");
-                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.LLENAR_COMBUSTIBLE))
             try{
                 enlazador.cargaCombustibleNaveFull();
-                actualizaRecursosNave();
                 vistaRecursos.getTxtCantidadCombustible().setText("");
                 ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
             } catch (CantCombustibleInvalidaException e) {
                 ventanaEmergente(e.getMessage(),"ERROR");
             }finally {
                 vistaRecursos.getTxtCantidadCombustible().setText("");
-                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.LLENAR_ENERGIA))
             try {
                 enlazador.cargaEnergiaNaveFull();
-                actualizaRecursosNave();
                 vistaRecursos.getTxtCantidadEnergia().setText("");
                 ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
             }catch (CantEnergiaInvalidaException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
             }finally {
                 vistaRecursos.getTxtCantidadEnergia().setText("");
-                actualizaBitacora();
             }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.MANTENIMIENTO))
             try {
                 enlazador.reparaDesgasteNaveFull();
-                actualizaBitacora();
-                actualizaRecursosNave();
                 ventanaEmergente("MANTENIMIENTO EXITOSO","");
             }catch (CantDesgasteInvalidaException e) {
                 ventanaEmergente(e.getMessage(),"ERROR");
@@ -247,12 +237,12 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         }
 
         if (actionEvent.getActionCommand().equals(VistaGeneradores.PRODUCE_BATERIA)){
-            vistaGeneradores.getAreaConsolaMini().append("\n-INGRESO UNA NUEVA NAVE PRODUCTORA-");
+            vistaGeneradores.getAreaConsolaMini().append("\n \n-INGRESO UNA NUEVA NAVE PRODUCTORA-");
             enlazador.nuevaGeneradora();
         }
 
         if (actionEvent.getActionCommand().equals(VistaGeneradores.PRODUCE_NAVE)){
-            vistaGeneradores.getAreaConsolaMini().append("\n-INGRESO UNA NUEVA NAVE CONSUMIDORA-");
+            vistaGeneradores.getAreaConsolaMini().append("\n \n-INGRESO UNA NUEVA NAVE CONSUMIDORA-");
             enlazador.nuevaConsumidora();
         }
 
@@ -269,9 +259,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             }
             if (mAct != null) {
                 agregaTripulantePrueba();  //despues borrar
-                ejecucionMision();
+                ejecucionMisionVista(mAct);
                 mAct.agregarObservador(this);
-                vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
                 misionBackGround(mAct);
             }
         }
@@ -291,7 +280,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
-            // Ejecutas tu método grande tal cual lo tienes hoy
             mAct.ejecutarMision(enlazador.getAsistente());
             return null;
             }
@@ -317,7 +305,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             iniciaElementosUni();
             tablero = new Tablero(20,20,elementosUni);
             tablero.agregarObservador(this);
-
         } catch (CantidadDeElementosSuperaCasillaException | DimensionesDeTableroInconsistentesException e) {
             ventanaEmergente(e.getMessage(),"");
         }
@@ -340,7 +327,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         }
     }
 
-    private void ejecucionMision(){
+    private void ejecucionMisionVista(Mision mAct){
+        vistaMain.setTitle("PROCESANDO... " + mAct.getNombre() + " " + mAct.getDescripcion());
         vistaGeneradores.dispose();
         vistaTripulacion.dispose();
         vistaCrearTripulante.dispose();
@@ -358,7 +346,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaRecursos.getBtnLlenarEnergia().setEnabled(false);
     }
 
-    private void finMision(){
+    private void finVistaMision(){
         vistaMain.getBotonBorraCrearNave().setEnabled(true);
         vistaMain.getBotonMisiones().setEnabled(true);
         vistaMain.getBotonTripulacion().setEnabled(true);
@@ -372,6 +360,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             vistaTripulacion.getModeloLista().addElement(t);
     }
 
+
     private Tripulante agregaTripulante() throws ErrorCreacionPersonajeException {
         String nombre = vistaCrearTripulante.getTxtNombreTripulante().getText();
         String origen = (String) vistaCrearTripulante.getComboOrigenTripulante().getSelectedItem();
@@ -381,6 +370,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     }
 
     private void comienzaPartida() throws NumberFormatException, TipoNaveInvalidoException, ErrorAgregarTripulacionException, ErrorCreacionPersonajeException {
+        //CREACION NAVE
         Nave nave = null;
         if (vistaCrearNave.getRadioCarguera().isSelected()){
             nave = FactoryNaves.getTipo(FactoryNaves.TIPO_CARGUERO);
@@ -391,16 +381,21 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (vistaCrearNave.getRadioExploradora().isSelected()){
             nave = FactoryNaves.getTipo(FactoryNaves.TIPO_EXPLORADORA);
         }
-        creaTablero();
         nave.setName(vistaCrearNave.getTxtNombreNave().getText());
         nave.agregaTripulante(asignaCapitan());
         vistaCrearNave.dispose();
         ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
+
+        //TABLERO;ASISTENTE;ENLAZADOR;VISOR PARALELO
+        creaTablero();
         setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo()));
         enlazador.getBitacorasNave().agregarObservador(this);
         enlazador.getMotor().agregarObservador(this);
-        actualizaRecursosNave();
-        actualizaBitacora();
+
+        //ARREGLO VISTAS
+        finVistaMision();
+        actualizaVistaRecursosNave();
+        actualizaVistaBitacora();
         actualizaVisorTripulantes();
         vistaMain.getLblCapitan().setText("Capitan "+ enlazador.getNave().getCapitan().getNombre());
         vistaMain.getLblNombreNave().setText((enlazador.getNave().getName()).toUpperCase());
@@ -408,7 +403,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     }
 
     public void actualizaVisorParalelo(String text){
-        vistaGeneradores.getAreaConsolaMini().append("\n#"+text+"\n@-@-@-@-@-@-@");
+        vistaGeneradores.getAreaConsolaMini().append("\n#"+text+"\n@------------");
     }
 
     private Visor iniciaUniversoParalelo(){
@@ -448,6 +443,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 estado = "ENFRIANDO MOTOR";
                 color = new Color(95, 158, 160);
                 break;
+            default:
+                estado = "MOTOR DESTRUIDO";
+                color = new Color(122, 7, 0);
+                break;
         }
         vistaRecursos.getBarraEstado().setString(estado);
         vistaRecursos.getBarraEstado().setForeground(color);
@@ -460,13 +459,13 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         return FactoryPeople.creaPersonaje(FactoryPeople.CAPITAN, origen, nombre, antiguedad);
     }
 
-    private void actualizaRecursosNave(){
+    private void actualizaVistaRecursosNave(){
         vistaRecursos.getBarraCombustible().setValue((int)enlazador.getNave().getCombustible());
         vistaRecursos.getBarraDesgaste().setValue((int)enlazador.getNave().getDesgaste());
         vistaRecursos.getBarraEnergia().setValue((int)enlazador.getNave().getEnergia());
     }
 
-    private void actualizaBitacora() {
+    private void actualizaVistaBitacora() {
         // Creamos una copia instantánea para evitar ConcurrentModificationException
         List<RegistroBitacora> bitacoras = new ArrayList<>(enlazador.getBitacorasNave().getRegistros());
 
@@ -499,14 +498,14 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     private void puedeBitacora(){
         if (SwingUtilities.isEventDispatchThread()) {
-            actualizaBitacora();
+            actualizaVistaBitacora();
             return;
         }
 
         // Si venimos del hilo secundario, frenamos el sistema hasta que la UI termine de pintar
         try {
             SwingUtilities.invokeAndWait(() -> {
-                actualizaBitacora();
+                actualizaVistaBitacora();
             });
         } catch (Exception e) {
             ventanaEmergente("ERROR DESCONOCIDO","");
@@ -519,7 +518,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         SwingUtilities.invokeLater(() -> {
             switch (mensaje) {
                 case "FIN_MISION":
-                    finMision();
+                    finVistaMision();
                     break;
                 case "ACTUALIZACION_VISTA_TABLERO":
                     // actualizacionMapa();
@@ -538,15 +537,24 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                     actualizaVisorMotor(MotorWarp.ENFRIAMIENTO);
                     break;
                 case "BITACORA":
-                    actualizaBitacora();
-                    actualizaRecursosNave();
+                    puedeBitacora();
+                    actualizaVistaRecursosNave();
                     break;
                 case "GAME_OVER":
                     ventanaEmergente("GAME OVER", "ERROR");
+                    vistasJuegoPerdido();
                     vistaMain.getBotonBorraCrearNave().setEnabled(true);
                     break;
             }
         });
+    }
+
+    private void vistasJuegoPerdido() {
+        enlazador.getNave().setCombustible(0);
+        enlazador.getNave().setEnergia(0);
+        enlazador.getNave().setDesgaste(Nave.MAX_DESGASTE);
+        actualizaVistaRecursosNave();
+        actualizaVisorMotor(5);
     }
 
 }

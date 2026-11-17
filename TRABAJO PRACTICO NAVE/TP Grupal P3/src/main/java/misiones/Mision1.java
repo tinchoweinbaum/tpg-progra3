@@ -60,12 +60,12 @@ public class Mision1 extends Mision{
                 }
 
                 ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
+                notificarObservadores("FIN_MISION");
             } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {
                 ac.getBitacorasNave().agregarRegistro(new RegistroError("No pudo realizarse la asistencia por recursos insuficientes",e));
             } catch (NaveDestruidaException e) {
                 // ver esto!!!
             }
-        notificarObservadores("FIN_MISION");
     }
 
 
