@@ -6,11 +6,15 @@ import destinoytablero.Tablero;
 import exceptions.*;
 import motorwarp.MotorWarp;
 import nave.Nave;
+import persistencia.Usuario;
+import persistencia.UsuariosDAO;
 import tripulantes.Tripulante;
 import visorParalelo.Visor;
 
+import java.util.ArrayList;
+
 //CONTENDRA AL ASISTENTE (por la nave) EL VISOR (por el universo paralelo) Y A LA BASE DE DATOS(para los usuarios)
-public class Enlazador implements IAsistente,IVisor{
+public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
 
     private final Asistente asistente;
     private final Visor visor;
@@ -28,6 +32,7 @@ public class Enlazador implements IAsistente,IVisor{
         return visor;
     }
 
+    // --- Delegación de métodos al asistente ---
     @Override
     public Tablero getTablero() {
         return getAsistente().getTablero();
@@ -114,6 +119,7 @@ public class Enlazador implements IAsistente,IVisor{
         getAsistente().mueveNave();
     }
 
+    // --- Delegación de métodos al visor paralelo ---
     @Override
     public void actualizaBitacoraParalela(String text) {
         getVisor().actualizaBitacoraParalela(text);
@@ -142,5 +148,23 @@ public class Enlazador implements IAsistente,IVisor{
     @Override
     public void cambiarTope(int t) {
         getVisor().cambiarTope(t);
+    }
+
+    // --- Delegación de métodos al DAO ---
+
+
+    @Override
+    public Usuario buscarPorUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Usuario> getUsuarios() {
+        return null;
+    }
+
+    @Override
+    public void registrarUsuario(Usuario usuario) {
+
     }
 }

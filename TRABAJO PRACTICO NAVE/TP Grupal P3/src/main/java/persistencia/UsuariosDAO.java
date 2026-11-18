@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Acá va a haber unícamente operaciones atómicas.
  */
 public interface UsuariosDAO {
-    public Usuario buscarPorUsername(Usuario usuario);
+    public Usuario buscarPorUsername(String username);
     public ArrayList<Usuario> getUsuarios();
     public void registrarUsuario(Usuario usuario);
 }

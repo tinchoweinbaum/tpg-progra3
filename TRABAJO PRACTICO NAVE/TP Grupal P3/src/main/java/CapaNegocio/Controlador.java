@@ -13,6 +13,7 @@ import misiones.Mision3;
 import motorwarp.MotorWarp;
 import nave.*;
 import persistencia.Usuario;
+import persistencia.UsuariosDAO;
 import tripulantes.*;
 import visorParalelo.Visor;
 
@@ -22,6 +23,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     private ArrayList<ElementoDelUniverso> elementosUni = new ArrayList<>();
 
     private Enlazador enlazador;
+
+    private UsuariosDAO dao;
 
     public Controlador(VistaInicioSesion vista) {
         this.vistaInicioSesion = vista;
@@ -114,14 +118,25 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     public void actionPerformed(ActionEvent actionEvent) {
 
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.INICIO_SESION)) {
-            //metodo para chequear si existen datos en db
-            //podria ponerse en un try catch si se recupera el objeto y sino tira una vista emergente
+            // No se tiene que encargar el modelo de esto???? va  acá en el controller???
+            String username = vistaInicioSesion.getTextUsuario().getText();
+            String pass = vistaInicioSesion.getPasswordField().getText();
+
+            Usuario usuarioRecuperado = dao.buscarPorUsername(username);
+
+            if(usuarioRecuperado == null){
+                ventanaEmergente("No se encontró el usuario ingresado, intente de nuevo.", "ERROR");
+                return;
+            }
+
+            // --- Sesión iniciada ---
             vistaInicioSesion.dispose();
             ventanaEmergente("INICIO DE SESION EXITOSO");
             vistaCrearNave.arranca();
         }
 
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.ACCESO_REGISTRO)) {
+            // Checkeo en dao si ya existe un usuario con el username ingresado.
             vistaInicioSesion.dispose();
             vistaRegistro.arranca();
         }

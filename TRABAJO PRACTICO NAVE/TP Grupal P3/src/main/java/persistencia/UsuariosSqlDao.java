@@ -24,7 +24,7 @@ public class UsuariosSqlDao implements UsuariosDAO{
     }
 
     @Override
-    public Usuario buscarPorUsername(Usuario usuario) {
+    public Usuario buscarPorUsername(String username) {
         return null;
     }
 

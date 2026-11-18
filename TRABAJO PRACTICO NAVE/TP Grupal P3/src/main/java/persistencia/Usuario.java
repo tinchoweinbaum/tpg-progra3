@@ -1,6 +1,6 @@
 package persistencia;
 
-// dto???? no tiene comportamiento de por si esta clase.
+// No se crea una clase UsuarioDTO porque el objeto Usuario ya es P.O.J.O
 public class Usuario {
     private String username;
     private String contra;
@@ -24,13 +24,5 @@ public class Usuario {
 
     public void setContra(String contra) {
         this.contra = contra;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "username='" + username + '\'' +
-                ", contra='" + contra + '\'' +
-                '}';
     }
 }
