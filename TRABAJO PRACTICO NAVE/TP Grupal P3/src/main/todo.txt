@@ -1,6 +1,7 @@
 
 ->TODO: terminar interfaz asistente y comenzar interfaz DAO - enlazador las implemente y delega
 
-->TODO: una vez hacido el motor, completar misiones 1 y 2
-
 ->TODO: Capa de persistencia DAO
+
+->TODO: preguntar por objetivo en mision 3, como trabajamos para que lo tome
+--TODO: como objetivo de tablero, puse provicionalmente una estacion espacil dianmica

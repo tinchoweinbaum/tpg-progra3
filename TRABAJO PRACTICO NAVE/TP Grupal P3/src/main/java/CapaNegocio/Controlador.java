@@ -8,6 +8,8 @@ import elementosUniverso.*;
 import exceptions.*;
 import misiones.Mision;
 import misiones.Mision1;
+import misiones.Mision2;
+import misiones.Mision3;
 import motorwarp.MotorWarp;
 import nave.*;
 import persistencia.Usuario;
@@ -115,7 +117,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             //metodo para chequear si existen datos en db
             //podria ponerse en un try catch si se recupera el objeto y sino tira una vista emergente
             vistaInicioSesion.dispose();
-            ventanaEmergente("INICIO DE SESION EXITOSO","");
+            ventanaEmergente("INICIO DE SESION EXITOSO");
             vistaCrearNave.arranca();
         }
 
@@ -129,14 +131,14 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             //metodo para rescatar el usuario ( que sera el capitan de la nave) y usarlo
 
             vistaRegistro.dispose();
-            ventanaEmergente("REGISTRO EXITOSO","");
+            ventanaEmergente("REGISTRO EXITOSO");
             vistaCrearNave.arranca();
         }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_COMBUSTIBLE))
             try{
                 enlazador.cargaCombustibleNave(Float.parseFloat(vistaRecursos.getTxtCantidadCombustible().getText()));
-                ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
+                ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA");
             } catch (CantCombustibleInvalidaException e) {
                 ventanaEmergente(e.getMessage(),"ERROR");
             } catch (NumberFormatException e) {
@@ -148,7 +150,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_ENERGIA))
             try {
                 enlazador.cargaEnergiaNave(Float.parseFloat(vistaRecursos.getTxtCantidadEnergia().getText()));
-                ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
+                ventanaEmergente("CARGA DE ENERGIA EXITOSA");
             }catch (CantEnergiaInvalidaException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
             } catch (NumberFormatException e) {
@@ -162,7 +164,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             try{
                 enlazador.cargaCombustibleNaveFull();
                 vistaRecursos.getTxtCantidadCombustible().setText("");
-                ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA","");
+                ventanaEmergente("CARGA DE COMBUSTIBLE EXITOSA");
             } catch (CantCombustibleInvalidaException e) {
                 ventanaEmergente(e.getMessage(),"ERROR");
             }finally {
@@ -173,7 +175,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             try {
                 enlazador.cargaEnergiaNaveFull();
                 vistaRecursos.getTxtCantidadEnergia().setText("");
-                ventanaEmergente("CARGA DE ENERGIA EXITOSA","");
+                ventanaEmergente("CARGA DE ENERGIA EXITOSA");
             }catch (CantEnergiaInvalidaException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
             }finally {
@@ -183,7 +185,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.MANTENIMIENTO))
             try {
                 enlazador.reparaDesgasteNaveFull();
-                ventanaEmergente("MANTENIMIENTO EXITOSO","");
+                ventanaEmergente("MANTENIMIENTO EXITOSO");
             }catch (CantDesgasteInvalidaException e) {
                 ventanaEmergente(e.getMessage(),"ERROR");
             }
@@ -211,7 +213,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaCrearTripulante.CREAR_TRIPULANTE)){
             try {
                 enlazador.getNave().agregaTripulante(agregaTripulante());
-                ventanaEmergente("SE AGREGO CORRECTAMENTE EL TRIPULANTE","");
+                ventanaEmergente("SE AGREGO CORRECTAMENTE EL TRIPULANTE");
             }catch(ErrorCreacionPersonajeException | ErrorAgregarTripulacionException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
             }
@@ -229,7 +231,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                     ventanaEmergente("FIN DEL JUEGO - LA NAVE NO TIENE CAPITAN","ERROR");
                     resetGame();
                 }else{
-                    ventanaEmergente("TRIPULANTE DESPEDIDO", "");
+                    ventanaEmergente("TRIPULANTE DESPEDIDO");
                     actualizaVisorTripulantes();
                 }
             }else{
@@ -251,12 +253,15 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             Mision mAct = null;
             if (vistaMisiones.getRadioOne().isSelected()){
                 mAct = new Mision1();
+                enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("LOCALIZANDO SEÑAL DE AUXILIO..."));
             }
             if (vistaMisiones.getRadioTwo().isSelected()){
-
+                mAct = new Mision2();
+                enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("BUSCANDO COORDENADAS DEL TESORO..."));
             }
             if (vistaMisiones.getRadioThree().isSelected()){
-
+                mAct = new Mision3();
+                enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("LOCALIZANDO UBICACION DE ESTACION ESPACIAL..."));
             }
             if (mAct != null) {
                 agregaTripulantePrueba();  //despues borrar
@@ -313,7 +318,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             vistaMapa = new VistaMapa(tablero.getX(),tablero.getY());
             vistaMapa.setControlador(this);
         } catch (CantidadDeElementosSuperaCasillaException | DimensionesDeTableroInconsistentesException e) {
-            ventanaEmergente(e.getMessage(),"");
+            ventanaEmergente(e.getMessage());
         }
     }
 
@@ -344,13 +349,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaMain.getBotonMisiones().setEnabled(false);
         vistaMain.getBotonTripulacion().setEnabled(false);
         vistaMain.getBotonVisorParalelo().setEnabled(false);
-        vistaRecursos.getBtnMantenimiento().setEnabled(false);
-        vistaRecursos.getTxtCantidadCombustible().setEnabled(false);
-        vistaRecursos.getBtnCargarCombustible().setEnabled(false);
-        vistaRecursos.getBtnLlenarCombustible().setEnabled(false);
-        vistaRecursos.getTxtCantidadEnergia().setEnabled(false);
-        vistaRecursos.getBtnCargarEnergia().setEnabled(false);
-        vistaRecursos.getBtnLlenarEnergia().setEnabled(false);
+        switchRecursosNave(false);
     }
 
     private void finVistaMision(){
@@ -392,7 +391,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         nave.setName(vistaCrearNave.getTxtNombreNave().getText());
         nave.agregaTripulante(asignaCapitan());
         vistaCrearNave.dispose();
-        ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE","");
+        ventanaEmergente("NAVE ASIGNADA CORRECTAMENTE");
 
         //TABLERO;ASISTENTE;ENLAZADOR;VISOR PARALELO
         creaTablero();
@@ -402,6 +401,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         enlazador.getAsistente().getDestino().turnoDestino();
 
         //ARREGLO VISTAS
+        switchRecursosNave(false);
         actualizacionVistaMapa();
         finVistaMision();
         actualizaVistaRecursosNave();
@@ -496,8 +496,11 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaBitacora.getAreaConsola().setCaretPosition(vistaBitacora.getAreaConsola().getDocument().getLength());
     }
 
+    private void ventanaEmergente(String mensaje){
+        this.ventanaEmergente(mensaje,"");
+    }
 
-    public void ventanaEmergente(String mensaje,String icono) {
+    private void ventanaEmergente(String mensaje,String icono) {
         VistaExcepcion ventana = new VistaExcepcion();
         if (icono.equals("ERROR"))
             ventana.getLblIcono().setIcon(UIManager.getIcon("OptionPane.warningIcon"));
@@ -519,7 +522,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 actualizaVistaBitacora();
             });
         } catch (Exception e) {
-            ventanaEmergente("ERROR DESCONOCIDO","");
+            ventanaEmergente("ERROR DESCONOCIDO");
         }
     }
 
@@ -529,6 +532,11 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         SwingUtilities.invokeLater(() -> {
             switch (mensaje) {
                 case "FIN_MISION":
+                    finVistaMision();
+                    break;
+                case "FIN_MISION_BASE":
+                    ventanaEmergente("PUEDES REALIZAR EL MANTENIMIENTO DE LA NAVE");
+                    switchRecursosNave(true);
                     finVistaMision();
                     break;
                 case "ACTUALIZACION_VISTA_TABLERO":
@@ -553,10 +561,19 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 case "GAME_OVER":
                     ventanaEmergente("GAME OVER", "ERROR");
                     vistasJuegoPerdido();
-                    vistaMain.getBotonBorraCrearNave().setEnabled(true);
                     break;
             }
         });
+    }
+
+    private void switchRecursosNave(boolean estado) {
+        vistaRecursos.getBtnMantenimiento().setEnabled(estado);
+        vistaRecursos.getTxtCantidadCombustible().setEnabled(estado);
+        vistaRecursos.getBtnCargarCombustible().setEnabled(estado);
+        vistaRecursos.getBtnLlenarCombustible().setEnabled(estado);
+        vistaRecursos.getTxtCantidadEnergia().setEnabled(estado);
+        vistaRecursos.getBtnCargarEnergia().setEnabled(estado);
+        vistaRecursos.getBtnLlenarEnergia().setEnabled(estado);
     }
 
     private void actualizacionVistaMapa() {
@@ -599,6 +616,13 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         actualizaVistaRecursosNave();
         actualizaVisorMotor(5);
         actualizacionVistaMapa();
+        vistaMain.getBotonBorraCrearNave().setEnabled(true);
+        vistaMain.getBotonVisorParalelo().setEnabled(false);
+        vistaMain.getBotonTripulacion().setEnabled(false);
+        vistaMain.getBotonRecursos().setEnabled(false);
+        vistaMain.getBotonBitacora().setEnabled(false);
+        vistaMain.getBotonMisiones().setEnabled(false);
+        vistaMain.getBotonMapa().setEnabled(false);
     }
 
 }

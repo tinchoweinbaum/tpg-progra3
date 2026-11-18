@@ -195,14 +195,15 @@ public class Asistente implements IAsistente {
         assert cantConsumida > 0 : "La cantidad de energia consumida debe de ser mayor que cero";
         assert invariant();       
         
-        if (cantConsumida<=0)
+        if (cantConsumida<0)
             throw new CantEnergiaInvalidaException("Monto Invalido");
 
         if (getNave().getEnergia()-cantConsumida<=0)
             throw new NaveDestruidaException("Las reservas de Energia se agotaron");
 
         getNave().setEnergia(getNave().getEnergia()-cantConsumida);
-        getBitacorasNave().agregarRegistro(new RegistroRecursos("ENERGIA",-cantConsumida,getNave().getEnergia()));
+        if (cantConsumida>0)
+            getBitacorasNave().agregarRegistro(new RegistroRecursos("ENERGIA",-cantConsumida,getNave().getEnergia()));
         
         assert invariant();
     }

@@ -87,7 +87,7 @@ public abstract class Mision extends Observable{
             if (this.getCombustibleRequerido() >= nave.getCombustible())
                 throw new CombustibleInsuficienteException("Combustible insuficiente para realizar la mision");
 
-            if (this.getDesgasteRequerido() + nave.getDesgaste() >= 100)
+            if (this.getDesgasteRequerido() + nave.getDesgaste() >= Nave.MAX_DESGASTE)
                 throw new ExcesoDesgasteException("Demasiado desgaste en la nave para realizar la mision");
 
             if (this.energiaRequerida >= nave.getEnergia())

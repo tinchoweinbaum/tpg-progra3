@@ -2,7 +2,6 @@ package misiones;
 
 import asistentes.Asistente;
 import bitacora.RegistroBitacora;
-import bitacora.RegistroError;
 import exceptions.*;
 
 import java.util.Random;
@@ -39,32 +38,28 @@ public class Mision1 extends Mision{
 
             if (combustibleSOS>0 && ac.getNave().getCombustible()<=combustibleSOS)
                 throw new CombustibleInsuficienteException("No alcanza la reserva de combustible para realizar el salvataje");
-        } catch (Exception e) {
+        } catch (EnergiaInsuficienteException | CombustibleInsuficienteException e) {
             estadoActual = ESTADO_FALLIDO;;
+            causaError = e.getMessage();
         }
     }
 
 
     @Override
     protected void cerrar(Asistente ac) {
-        if(estadoActual.equals(ESTADO_ACTIVA))
-            try {
-                String texto = "";
-                if (energiaSOS>0){
-                    ac.consumeEnergiaNave(energiaSOS);
-                    texto+= String.valueOf(energiaSOS) + " PUNTOS DE ENERGIA";
-                }
-                if (combustibleSOS>0){
-                    ac.consumeCombustibleNave(combustibleSOS);
-                    texto+= String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
-                }
-                ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
-                notificarObservadores("FIN_MISION");
-            } catch (CantEnergiaInvalidaException | CantCombustibleInvalidaException e) {
-                ac.getBitacorasNave().agregarRegistro(new RegistroError("No pudo realizarse la asistencia por recursos insuficientes",e));
-            } catch (NaveDestruidaException e) {
-                // ver esto!!!
+        if(estadoActual.equals(ESTADO_ACTIVA)) {
+            String texto = "";
+            if (energiaSOS > 0) {
+                ac.getNave().setEnergia(ac.getNave().getEnergia()-energiaSOS);
+                texto += String.valueOf(energiaSOS) + " PUNTOS DE ENERGIA";
             }
+            if (combustibleSOS > 0) {
+                ac.getNave().setCombustible(ac.getNave().getCombustible()-combustibleSOS);
+                texto += String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
+            }
+            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
+        }
+        notificarObservadores("FIN_MISION");
     }
 
 
