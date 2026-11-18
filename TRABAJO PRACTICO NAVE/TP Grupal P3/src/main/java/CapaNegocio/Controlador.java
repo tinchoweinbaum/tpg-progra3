@@ -576,35 +576,69 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaRecursos.getBtnLlenarEnergia().setEnabled(estado);
     }
 
+    /**
+     * Actualiza el mapa con imágenes de los elementos y colores que los representan para verlos facilmente.
+     */
     private void actualizacionVistaMapa() {
         for (int i = 0; i < enlazador.getTablero().getX(); i++) {
-            for (int j = 0; j < enlazador.getTablero().getX(); j++) {
-                vistaMapa.getBotonCelda(i,j).actualizarIcono(null);
+            for (int j = 0; j < enlazador.getTablero().getY(); j++) { // Ojo: tenías getX() aquí en tu código original
+                vistaMapa.getBotonCelda(i, j).actualizarIcono(null);
             }
         }
+
+        // Definición de colores personalizados (R, G, B)
+        Color colorRojizoEnemigo = new Color(235, 105, 105);
+        Color colorVerdosoEstacion = new Color(144, 238, 144);
+        Color colorVerdeObjetivo = new Color(46, 184, 92);
+
         ElementoDelUniverso[][] tableroAux = enlazador.getTablero().verTablero();
         ElementoDelUniverso actual;
+
         for (int i = 0; i < enlazador.getTablero().getX(); i++) {
             for (int j = 0; j < enlazador.getTablero().getY(); j++) {
                 String rutaActual = "";
                 actual = tableroAux[i][j];
-                if (actual != null){
-                    if (actual.equals(new Asteroide()))
+
+                if (actual != null) {
+                    vistaMapa.getBotonCelda(i, j).setBackground(null);
+                    if (actual.equals(new Asteroide())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/asteroide.png";
-                    if (actual.equals(new EstacionCarga()))
+                        vistaMapa.getBotonCelda(i, j).setBackground(Color.ORANGE);
+                    }
+                    if (actual.equals(new EstacionCarga())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/estacionEspacial.png";
-                    if (actual.equals(new ElementoNaveExploradora()))
+                        vistaMapa.getBotonCelda(i, j).setBackground(colorVerdosoEstacion);
+                    }
+                    if (actual.equals(new ElementoNaveExploradora())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveExploradora.png";
-                    if (actual.equals(new ElementoNaveCombate()))
+                        vistaMapa.getBotonCelda(i, j).setBackground(colorRojizoEnemigo);
+                    }
+                    if (actual.equals(new ElementoNaveCombate())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCombate.png";
-                    if (actual.equals(new ElementoNaveCarguera()))
-                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCarguera.png";
+                        vistaMapa.getBotonCelda(i, j).setBackground(colorRojizoEnemigo);
+                    }
+                    if (actual.equals(new ElementoNaveCarguera())) {
+                        rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCarga.png";
+                        vistaMapa.getBotonCelda(i, j).setBackground(colorRojizoEnemigo);
+                    }
+                } else {
+                    vistaMapa.getBotonCelda(i, j).setBackground(null);
                 }
-                if (enlazador.getTablero().getObjetivo()!=null && i == enlazador.getTablero().getObjetivo().getX() && j == enlazador.getTablero().getObjetivo().getY())
+
+                if (enlazador.getTablero().getObjetivo() != null
+                        && i == enlazador.getTablero().getObjetivo().getX()
+                        && j == enlazador.getTablero().getObjetivo().getY()) {
                     rutaActual = "src/main/java/CapaPresentacion/iconosFolder/objetivo.png";
-                if (i == enlazador.getTablero().getPosicionNave().getX() && j == enlazador.getTablero().getPosicionNave().getY())
+                    vistaMapa.getBotonCelda(i, j).setBackground(colorVerdeObjetivo);
+                }
+
+                if (i == enlazador.getTablero().getPosicionNave().getX()
+                        && j == enlazador.getTablero().getPosicionNave().getY()) {
                     rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveUser.png";
-                vistaMapa.getBotonCelda(i,j).actualizarIcono(rutaActual);
+                    vistaMapa.getBotonCelda(i, j).setBackground(Color.CYAN);
+                }
+
+                vistaMapa.getBotonCelda(i, j).actualizarIcono(rutaActual);
             }
         }
     }

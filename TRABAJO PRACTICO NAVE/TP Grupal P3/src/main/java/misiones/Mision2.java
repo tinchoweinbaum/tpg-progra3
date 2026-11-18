@@ -19,7 +19,7 @@ public class Mision2 extends Mision{
     protected void cerrar(Asistente ac) {
         if (getEstadoActual().equals(Mision.ESTADO_ACTIVA)){
             int gemas = rand.nextInt(20,100);
-            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("LA NAVE REALIZO UNA RECOLECCION DE " + gemas + " gemas"));
+            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("LA NAVE REALIZO UNA RECOLECCION DE " + gemas + " GEMAS"));
         }
         notificarObservadores("FIN_MISION");
     }

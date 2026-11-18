@@ -6,6 +6,9 @@ import exceptions.*;
 
 import java.util.Random;
 
+/**
+ * M-01: Intercepción y asistencia.
+ */
 public class Mision1 extends Mision{
 
     private Random rand = new Random();
@@ -33,7 +36,7 @@ public class Mision1 extends Mision{
     public void ejecutar(Asistente ac){
         super.ejecutar(ac);
         try{
-            if (energiaSOS>0 && ac.getNave().getEnergia()<=energiaSOS)//agregar que cambie estado
+            if (energiaSOS > 0 && ac.getNave().getEnergia() <= energiaSOS)//agregar que cambie estado
                 throw new EnergiaInsuficienteException("No alcanza la reserva de energia para realizar el salvataje");
 
             if (combustibleSOS>0 && ac.getNave().getCombustible()<=combustibleSOS)
@@ -50,11 +53,11 @@ public class Mision1 extends Mision{
         if(estadoActual.equals(ESTADO_ACTIVA)) {
             String texto = "";
             if (energiaSOS > 0) {
-                ac.getNave().setEnergia(ac.getNave().getEnergia()-energiaSOS);
-                texto += String.valueOf(energiaSOS) + " PUNTOS DE ENERGIA";
+                ac.getNave().setEnergia(ac.getNave().getEnergia() - energiaSOS);
+                texto += String.valueOf(energiaSOS) + " UNIDADES DE ENERGIA";
             }
             if (combustibleSOS > 0) {
-                ac.getNave().setCombustible(ac.getNave().getCombustible()-combustibleSOS);
+                ac.getNave().setCombustible(ac.getNave().getCombustible() - combustibleSOS);
                 texto += String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
             }
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));

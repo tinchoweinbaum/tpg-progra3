@@ -34,7 +34,7 @@ public class MotorWarp extends Observable implements State{
     * Solo puede ser de enfriamiento --> disponible.
     * 
     * <b>pre:</b> (Exito) El estado actual debe ser enfriamiento
-    *             (Fracaso) El estado actual tiene que ser cualquiera de los restantes excepto enfriamiento.
+    *             (Fracaso) El estado actual tiene que ser distinto a enfriamiento.
     * 
     * <b>post:</b> (Exito) Se actualiza el estado actual a disponible.
     *              (Fracaso) Se genera una excepcion debido a la invalidez de cambio de estado. 

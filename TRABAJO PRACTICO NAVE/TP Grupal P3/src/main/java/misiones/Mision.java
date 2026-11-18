@@ -103,40 +103,42 @@ public abstract class Mision extends Observable{
     }
 
     protected void ejecutar(Asistente ac) {
-        if(estadoActual.equals(ESTADO_ACTIVA)){
-            float estadoCombustibleInicial = ac.getNave().getCombustible();
-            float estadoEnergiaInicial = ac.getNave().getEnergia();
-            float estadoDesgasteInicial = ac.getNave().getDesgaste();
-            boolean encontro = false;
-            try {
-                ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("REQUERIMIENTOS MINIMOS DE MISION CONSUMIDOS"));
-                ac.consumeCombustibleNave(this.combustibleRequerido);
-                ac.consumeEnergiaNave(this.energiaRequerida);
-                ac.aumentaDesgasteNave(this.desgasteRequerido);
-                while (estadoActual.equals(ESTADO_ACTIVA) && !encontro) {
-                    Thread.sleep(2000);
-                    ac.chequeaPosicionActual();
-                    ac.mueveNave();
-                    if (ac.getNave().getCombustible()==0 || ac.getNave().getEnergia()==0 || ac.getNave().getDesgaste()==100){
-                        throw new NaveDestruidaException("LA NAVE NO LOGRO SOBREVIVIR AL UNIVERSO");
-                    }
-                    if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY())
-                        encontro = true;
-                    else
-                        ac.darTurnosTablero(1);
+        if (!estadoActual.equals(ESTADO_ACTIVA))
+            return;
+
+        float estadoCombustibleInicial = ac.getNave().getCombustible();
+        float estadoEnergiaInicial = ac.getNave().getEnergia();
+        float estadoDesgasteInicial = ac.getNave().getDesgaste();
+        boolean encontro = false;
+        try {
+            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("REQUERIMIENTOS MINIMOS DE MISION CONSUMIDOS"));
+            ac.consumeCombustibleNave(this.combustibleRequerido);
+            ac.consumeEnergiaNave(this.energiaRequerida);
+            ac.aumentaDesgasteNave(this.desgasteRequerido);
+
+            while (estadoActual.equals(ESTADO_ACTIVA) && !encontro) {
+                Thread.sleep(2000);
+                ac.chequeaPosicionActual();
+                ac.mueveNave();
+                if (ac.getNave().getCombustible()==0 || ac.getNave().getEnergia()==0 || ac.getNave().getDesgaste()==100){
+                    throw new NaveDestruidaException("LA NAVE NO LOGRO SOBREVIVIR AL UNIVERSO");
                 }
-                this.acumuladoPerdidaCombustible = ac.getNave().getCombustible()-estadoCombustibleInicial;
-                this.acumuladoIncrementoDesgaste = ac.getNave().getDesgaste()-estadoDesgasteInicial;
-                this.acumuladoPerdidaEnergia = ac.getNave().getEnergia()-estadoEnergiaInicial;
-            }catch (NaveDestruidaException e) {
-                estadoActual=ESTADO_NAVE_DESTRUIDA;
-                causaError = e.getMessage();
-                notificarObservadores("GAME_OVER");
-            } catch (Exception e) {
-                estadoActual=ESTADO_FALLIDO;
-                causaError = e.getMessage();
-                notificarObservadores("FIN_MISION");
+                if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY())
+                    encontro = true;
+                else
+                    ac.darTurnosTablero(1);
             }
+            this.acumuladoPerdidaCombustible = ac.getNave().getCombustible() - estadoCombustibleInicial;
+            this.acumuladoIncrementoDesgaste = ac.getNave().getDesgaste() - estadoDesgasteInicial;
+            this.acumuladoPerdidaEnergia = ac.getNave().getEnergia() - estadoEnergiaInicial;
+        }catch (NaveDestruidaException e) { // No me gusta que se arroja y se catchea la excepeción en el mismo lugar. Y el mensaje de la excepeción se ignora.
+            estadoActual=ESTADO_NAVE_DESTRUIDA;
+            causaError = e.getMessage();
+            notificarObservadores("GAME_OVER");
+        } catch (Exception e) {
+            estadoActual=ESTADO_FALLIDO;
+            causaError = e.getMessage();
+            notificarObservadores("FIN_MISION");
         }
     }
 
@@ -155,7 +157,7 @@ public abstract class Mision extends Observable{
         }else if(this.estadoActual.equals(ESTADO_FALLIDO)){
             ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION FALLIDA - MOTIVO: " + causaError,this));
         }else{
-            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("BITACORA REALIZADA DESDE CENTRO DE MANDO TERRESTRE - Nave conocida como '" + ac.getNave().getName() + "' ha sido destruida en accion.\nMOTIVO: " + causaError));
+            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("BITÁCORA EMITIDA DESDE CENTRO DE MANDO TERRESTRE - La nave conocida como '" + ac.getNave().getName() + "' ha sido destruída en acción.\nMOTIVO: " + causaError));
         }
     }
 

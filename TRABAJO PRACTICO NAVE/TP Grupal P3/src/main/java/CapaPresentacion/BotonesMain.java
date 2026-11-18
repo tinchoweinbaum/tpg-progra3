@@ -36,7 +36,7 @@ public class BotonesMain extends JFrame implements IVista {
 	private JButton botonTripulacion = new JButton("Ver Tripulantes");
 	private JButton botonBitacora = new JButton("Ver Bitacora");
 	private JButton botonRecursos = new JButton("Ver Recursos de la Nave");
-	private JButton botonMapa = new JButton("Abre Mapa");
+	private JButton botonMapa = new JButton("Ver Mapa");
 
 	public BotonesMain() {
 		setTitle("PANEL PRINCIPAL");

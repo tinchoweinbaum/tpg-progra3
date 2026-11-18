@@ -21,8 +21,6 @@ public class Main {
         vistaInicioSesion.setControlador(controlador);
         vistaInicioSesion.arranca();
 
-
-
 //        UsuariosDAO sqlDao = new UsuariosSqlDao();
 //        sqlDao.registrarUsuario(new Usuario("usuario", "12345"));
 //        System.out.print(sqlDao.getUsuarios());

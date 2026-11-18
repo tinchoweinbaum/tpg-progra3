@@ -24,6 +24,7 @@ public class Destino {
     public Destino(Tablero tablero){
         this.tablero = tablero;
     }
+
     /**
      * Selecciona sin repetir la mitad entera de los elementos y realiza un intento
      * de movimiento a una de sus ocho vecinas por cada seleccionado.

@@ -276,8 +276,6 @@ public class Tablero extends Observable {
         return alrededores;
     }
 
-    
-
     /**
      * Consulta el objetivo actual sin volver a elegirlo.
      * <p><b>Precondiciones:</b> ninguna.</p>
