@@ -5,3 +5,5 @@
 
 ->TODO: preguntar por objetivo en mision 3, como trabajamos para que lo tome
 --TODO: como objetivo de tablero, puse provicionalmente una estacion espacil dianmica
+--TODO: podrian actualizar el repositorio, (ya lo hicieron para los observers) y que haya un metodo setObjetivoOrigen
+--TODO: para que el objetivo pase a ser el centro del tablero
