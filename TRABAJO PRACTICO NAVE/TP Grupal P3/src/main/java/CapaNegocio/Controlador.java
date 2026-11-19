@@ -267,16 +267,25 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         if (actionEvent.getActionCommand().equals(VistaMisiones.SELECCIONA_MISION)){
             Mision mAct = null;
             if (vistaMisiones.getRadioOne().isSelected()){
-                mAct = new Mision1();
+                mAct = new Mision1(enlazador.getTablero().obtenerObjetivo());
                 enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("LOCALIZANDO SEÑAL DE AUXILIO..."));
             }
             if (vistaMisiones.getRadioTwo().isSelected()){
-                mAct = new Mision2();
+                mAct = new Mision2(enlazador.getTablero().obtenerObjetivo());
                 enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("BUSCANDO COORDENADAS DEL TESORO..."));
             }
             if (vistaMisiones.getRadioThree().isSelected()){
-                mAct = new Mision3();
-                enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("LOCALIZANDO UBICACION DE ESTACION ESPACIAL..."));
+                if(enlazador.getTablero().getPosicionNave().getY()!=enlazador.getTablero().getY()/2 && enlazador.getTablero().getPosicionNave().getX()!=enlazador.getTablero().getX()/2){
+                    int xOrigen = enlazador.getTablero().getX()/2;
+                    int yOrigen = enlazador.getTablero().getY()/2;
+                    Posicion objetivoCentro = enlazador.getTablero().obtenerObjetivo();
+                    enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("LOCALIZANDO ESTACION ESPACIAL..."));
+                    while (objetivoCentro.getX() != xOrigen || objetivoCentro.getY() != yOrigen)
+                        objetivoCentro = enlazador.getTablero().obtenerObjetivo();
+                    mAct = new Mision3(objetivoCentro);
+                }else{
+                    ventanaEmergente("TU NAVE SE VE BASTANTE BIEN - REALIZA UNA MISION Y VUELVE MAS TARDE");
+                }
             }
             if (mAct != null) {
                 agregaTripulantePrueba();  //despues borrar
@@ -360,6 +369,11 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaTripulacion.dispose();
         vistaCrearTripulante.dispose();
         vistaMisiones.dispose();
+        if (!vistaBitacora.isShowing())
+            vistaBitacora.arranca();
+        if (!vistaRecursos.isShowing())
+            vistaRecursos.arranca();
+        vistaMapa.arranca();
         vistaMain.getBotonBorraCrearNave().setEnabled(false);
         vistaMain.getBotonMisiones().setEnabled(false);
         vistaMain.getBotonTripulacion().setEnabled(false);
@@ -418,10 +432,19 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         //ARREGLO VISTAS
         switchRecursosNave(false);
         actualizacionVistaMapa();
-        finVistaMision();
         actualizaVistaRecursosNave();
         actualizaVistaBitacora();
         actualizaVisorTripulantes();
+        vistaMainReactivada();
+    }
+
+    private void vistaMainReactivada() {
+        vistaMain.getBotonMisiones().setEnabled(true);
+        vistaMain.getBotonBitacora().setEnabled(true);
+        vistaMain.getBotonTripulacion().setEnabled(true);
+        vistaMain.getBotonVisorParalelo().setEnabled(true);
+        vistaMain.getBotonRecursos().setEnabled(true);
+        vistaMain.getBotonMapa().setEnabled(true);
         vistaMain.getLblCapitan().setText("Capitan "+ enlazador.getNave().getCapitan().getNombre());
         vistaMain.getLblNombreNave().setText((enlazador.getNave().getName()).toUpperCase());
         vistaMain.arranca();
@@ -596,7 +619,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
      */
     private void actualizacionVistaMapa() {
         for (int i = 0; i < enlazador.getTablero().getX(); i++) {
-            for (int j = 0; j < enlazador.getTablero().getY(); j++) { // Ojo: tenías getX() aquí en tu código original
+            for (int j = 0; j < enlazador.getTablero().getY(); j++) {
                 vistaMapa.getBotonCelda(i, j).actualizarIcono(null);
             }
         }
@@ -619,22 +642,27 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                     if (actual.equals(new Asteroide())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/asteroide.png";
                         vistaMapa.getBotonCelda(i, j).setBackground(Color.ORANGE);
+                        vistaMapa.getBotonCelda(i, j).setToolTipText("ASTEROIDE");
                     }
                     if (actual.equals(new EstacionCarga())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/estacionEspacial.png";
                         vistaMapa.getBotonCelda(i, j).setBackground(colorVerdosoEstacion);
+                        vistaMapa.getBotonCelda(i, j).setToolTipText("ESTACION DE CARGA");
                     }
                     if (actual.equals(new ElementoNaveExploradora())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveExploradora.png";
                         vistaMapa.getBotonCelda(i, j).setBackground(colorRojizoEnemigo);
+                        vistaMapa.getBotonCelda(i, j).setToolTipText("NAVE EXPLORADORA");
                     }
                     if (actual.equals(new ElementoNaveCombate())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCombate.png";
                         vistaMapa.getBotonCelda(i, j).setBackground(colorRojizoEnemigo);
+                        vistaMapa.getBotonCelda(i, j).setToolTipText("NAVE DE COMBATE");
                     }
                     if (actual.equals(new ElementoNaveCarguera())) {
                         rutaActual = "src/main/java/CapaPresentacion/iconosFolder/naveCarga.png";
                         vistaMapa.getBotonCelda(i, j).setBackground(colorRojizoEnemigo);
+                        vistaMapa.getBotonCelda(i, j).setToolTipText("NAVE DE CARGA");
                     }
                 } else {
                     vistaMapa.getBotonCelda(i, j).setBackground(null);
@@ -672,6 +700,13 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         vistaMain.getBotonBitacora().setEnabled(false);
         vistaMain.getBotonMisiones().setEnabled(false);
         vistaMain.getBotonMapa().setEnabled(false);
+
+        int xNave = enlazador.getTablero().getPosicionNave().getX();
+        int yNave = enlazador.getTablero().getPosicionNave().getY();
+
+        vistaMapa.getBotonCelda(xNave,yNave).setBackground(new Color(0,0,0));
+        vistaMapa.getBotonCelda(xNave,yNave).actualizarIcono("src/main/java/CapaPresentacion/iconosFolder/calavera.png");
+
     }
 
 }

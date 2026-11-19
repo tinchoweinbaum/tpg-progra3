@@ -2,6 +2,7 @@ package CapaNegocio;
 
 import asistentes.Asistente;
 import bitacora.Bitacora;
+import destinoytablero.Posicion;
 import destinoytablero.Tablero;
 import exceptions.*;
 import motorwarp.MotorWarp;
@@ -13,7 +14,6 @@ import visorParalelo.Visor;
 
 import java.util.ArrayList;
 
-//CONTENDRA AL ASISTENTE (por la nave) EL VISOR (por el universo paralelo) Y A LA BASE DE DATOS(para los usuarios)
 public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
 
     private final Asistente asistente;

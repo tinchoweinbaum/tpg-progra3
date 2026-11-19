@@ -32,7 +32,7 @@ public class NaveCombate extends Nave{
 
     @Override
     public RegistroCombate atacadoPorCarguero() throws NaveDestruidaException {
-        throw new NaveDestruidaException("TU NAVE FUE DESTRUÍDA EN COMBATE FRENTE A UNA NAVE CARGUERA.");
+        throw new NaveDestruidaException("LA NAVE NO PUDO CONTENER EL ATAQUE DE LA NAVE CARGUERA");
     }
 
     @Override

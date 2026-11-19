@@ -3,33 +3,39 @@ package CapaPresentacion;
 import CapaNegocio.Controlador;
 import tripulantes.FactoryPeople;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField; // <--- Importante para los campos de texto
-import javax.swing.JComboBox; // <--- Importante para el menú desplegable de orígenes
-import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
+import java.awt.Image;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 
 public class VistaCrearNave extends JFrame implements IVista {
 	public final static String CREAR_NAVE = "CREAR_NAVE";
 	private JPanel panelPrincipal;
 	private final ButtonGroup buttonGroupNaves = new ButtonGroup();
-	private JTextField txtNombreNave; // <--- Atributo encapsulado para el nombre de la nave
+	private JTextField txtNombreNave;
 	private JButton btnCrear = new JButton("Crear Nave");
 	private JRadioButton radioExploradora = new JRadioButton("Nave Exploradora");
 	private JRadioButton radioCarguera = new JRadioButton("Nave Carguera");
 	private JRadioButton radioCombate = new JRadioButton("Nave de Combate");
 
-	// Nuevos atributos encapsulados para los datos del Capitán
+	// Atributos encapsulados para los datos del Capitán
 	private JTextField txtNombreCapitan;
 	private JTextField txtAntiguedadCapitan;
 	private JComboBox<String> comboOrigenCapitan;
@@ -39,183 +45,193 @@ public class VistaCrearNave extends JFrame implements IVista {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 
-		// 1. Panel Principal con GridLayout de 1 fila y 2 columnas para extender al costado
-		panelPrincipal = new JPanel();
+		// Panel Principal con BorderLayout para separar formularios (CENTER) del botón (SOUTH)
+		panelPrincipal = new JPanel(new BorderLayout(10, 10));
+		panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		setContentPane(panelPrincipal);
-		panelPrincipal.setLayout(new GridLayout(1, 2, 10, 0));
 
-		// =========================================================================
-		// COLUMNA IZQUIERDA: SECCIÓN CREAR NAVE
-		// =========================================================================
-		JPanel panelNave = new JPanel();
-		panelPrincipal.add(panelNave);
-
-		// 2. GridBagLayout configurado con pesos horizontales para permitir el centrado real
-		GridBagLayout gbl_panelNave = new GridBagLayout();
-		gbl_panelNave.columnWidths = new int[] {0};
-		gbl_panelNave.rowHeights = new int[] {15, 30, 15, 80, 15, 40, 15, 30, 15};
-		gbl_panelNave.columnWeights = new double[]{1.0};
-		gbl_panelNave.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		panelNave.setLayout(gbl_panelNave);
+		// Contenedor central de 2 columnas (Izquierda: Nave, Derecha: Capitán)
+		JPanel panelCentral = new JPanel(new GridLayout(1, 2, 20, 0));
+		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 
 		Font fuenteTitulo = new Font("Tahoma", Font.BOLD, 14);
 		Font fuenteOpciones = new Font("Tahoma", Font.PLAIN, 13);
 		Font fuenteCampos = new Font("Tahoma", Font.BOLD, 12);
 		Font fuenteInputs = new Font("Tahoma", Font.PLAIN, 12);
 
-		// 3. TÍTULO NAVE (Fila 1) - Configurado al CENTRO
-		JLabel lblTitulo = new JLabel("SELECCIONAR TIPO DE NAVE");
+		// =========================================================================
+		// COLUMNA IZQUIERDA: ÍCONO + FORMULARIO NAVE
+		// =========================================================================
+		JPanel panelSeccionNave = new JPanel(new BorderLayout(10, 0));
+		panelSeccionNave.setBorder(BorderFactory.createTitledBorder("Datos de la Nave"));
+		panelCentral.add(panelSeccionNave);
+
+		// Ícono de Nave (A la izquierda del formulario)
+		// REEMPLAZÁ "nave.png" por el nombre exacto de tu archivo en iconosFolder
+		JLabel lblIconoNave = new JLabel(formatearImagen("naveUser.png", 64, 64));
+		lblIconoNave.setVerticalAlignment(SwingConstants.CENTER);
+		lblIconoNave.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
+		panelSeccionNave.add(lblIconoNave, BorderLayout.WEST);
+
+		// Formulario Nave
+		JPanel panelNave = new JPanel(new GridBagLayout());
+		panelSeccionNave.add(panelNave, BorderLayout.CENTER);
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		// Título Nave
+		JLabel lblTitulo = new JLabel("TIPO DE NAVE");
 		lblTitulo.setFont(fuenteTitulo);
-		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
-		gbc_lblTitulo.anchor = GridBagConstraints.CENTER;
-		gbc_lblTitulo.insets = new Insets(0, 10, 10, 10);
-		gbc_lblTitulo.gridx = 0;
-		gbc_lblTitulo.gridy = 1;
-		panelNave.add(lblTitulo, gbc_lblTitulo);
+		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridwidth = 2;
+		panelNave.add(lblTitulo, gbc);
 
-		// 4. PANEL DE CONTENEDOR RADIO BUTTONS (Fila 3) - Configurado al CENTRO
-		JPanel panelRadioButtons = new JPanel();
-		GridBagConstraints gbc_panelRadioButtons = new GridBagConstraints();
-		gbc_panelRadioButtons.anchor = GridBagConstraints.CENTER;
-		gbc_panelRadioButtons.insets = new Insets(0, 10, 10, 10);
-		gbc_panelRadioButtons.gridx = 0;
-		gbc_panelRadioButtons.gridy = 3;
-		panelNave.add(panelRadioButtons, gbc_panelRadioButtons);
-		panelRadioButtons.setLayout(new GridLayout(0, 1, 0, 5));
-
+		// Radio Buttons agrupados
+		JPanel panelRadioButtons = new JPanel(new GridLayout(0, 1, 0, 4));
 		radioExploradora.setFont(fuenteOpciones);
-		panelRadioButtons.add(radioExploradora);
-		buttonGroupNaves.add(radioExploradora);
-
 		radioCarguera.setFont(fuenteOpciones);
-		panelRadioButtons.add(radioCarguera);
-		buttonGroupNaves.add(radioCarguera);
-
 		radioCombate.setFont(fuenteOpciones);
-		panelRadioButtons.add(radioCombate);
+
+		buttonGroupNaves.add(radioExploradora);
+		buttonGroupNaves.add(radioCarguera);
 		buttonGroupNaves.add(radioCombate);
 
-		// 5. FILA 5: CAMPO DE TEXTO PARA NOMBRE DE LA NAVE
-		JPanel panelNombre = new JPanel();
-		panelNombre.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		panelRadioButtons.add(radioExploradora);
+		panelRadioButtons.add(radioCarguera);
+		panelRadioButtons.add(radioCombate);
 
+		gbc.gridy = 1;
+		gbc.insets = new Insets(5, 5, 12, 5);
+		panelNave.add(panelRadioButtons, gbc);
+
+		// Campo Nombre Nave
+		gbc.gridwidth = 1;
+		gbc.gridy = 2;
+		gbc.gridx = 0;
+		gbc.insets = new Insets(5, 5, 5, 5);
 		JLabel lblNombre = new JLabel("Nombre:");
 		lblNombre.setFont(fuenteCampos);
-		panelNombre.add(lblNombre);
-		txtNombreNave = new JTextField();
+		panelNave.add(lblNombre, gbc);
+
+		gbc.gridx = 1;
+		txtNombreNave = new JTextField(12);
 		txtNombreNave.setFont(fuenteInputs);
-		txtNombreNave.setColumns(12); // Tamaño ideal para nombres de naves estándar
-		panelNombre.add(txtNombreNave);
-
-		GridBagConstraints gbc_panelNombre = new GridBagConstraints();
-		gbc_panelNombre.anchor = GridBagConstraints.CENTER;
-		gbc_panelNombre.insets = new Insets(0, 15, 10, 15);
-		gbc_panelNombre.gridx = 0;
-		gbc_panelNombre.gridy = 5;
-		panelNave.add(panelNombre, gbc_panelNombre);
-
-		// 6. BOTÓN PRINCIPAL (Fila 7) - Configurado al CENTRO
-		btnCrear.setActionCommand(CREAR_NAVE);
-		btnCrear.setEnabled(false);
-		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 13));
-		GridBagConstraints gbc_btnCrear = new GridBagConstraints();
-		gbc_btnCrear.insets = new Insets(0, 10, 10, 10);
-		gbc_btnCrear.anchor = GridBagConstraints.CENTER;
-		gbc_btnCrear.gridx = 0;
-		gbc_btnCrear.gridy = 7;
-		panelNave.add(btnCrear, gbc_btnCrear);
+		panelNave.add(txtNombreNave, gbc);
 
 		// =========================================================================
-		// COLUMNA DERECHA: NUEVA SECCIÓN CREAR CAPITÁN
+		// COLUMNA DERECHA: ÍCONO + FORMULARIO CAPITÁN
 		// =========================================================================
-		JPanel panelCapitan = new JPanel();
-		panelPrincipal.add(panelCapitan);
+		JPanel panelSeccionCapitan = new JPanel(new BorderLayout(10, 0));
+		panelSeccionCapitan.setBorder(BorderFactory.createTitledBorder("Datos del Capitán"));
+		panelCentral.add(panelSeccionCapitan);
 
-		GridBagLayout gbl_panelCapitan = new GridBagLayout();
-		gbl_panelCapitan.columnWidths = new int[] {0};
-		gbl_panelCapitan.rowHeights = new int[] {15, 30, 15, 40, 10, 40, 10, 40, 15};
-		gbl_panelCapitan.columnWeights = new double[]{1.0};
-		gbl_panelCapitan.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		panelCapitan.setLayout(gbl_panelCapitan);
+		// Ícono de Capitán (A la izquierda del formulario)
+		// REEMPLAZÁ "capitan.png" por el nombre exacto de tu archivo en iconosFolder
+		JLabel lblIconoCapitan = new JLabel(formatearImagen("capitan.png", 64, 64));
+		lblIconoCapitan.setVerticalAlignment(SwingConstants.CENTER);
+		lblIconoCapitan.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
+		panelSeccionCapitan.add(lblIconoCapitan, BorderLayout.WEST);
 
-		// TÍTULO CAPITÁN (Fila 1)
-		JLabel lblTituloCapitan = new JLabel("DATOS DEL CAPITÁN");
+		// Formulario Capitán
+		JPanel panelCapitan = new JPanel(new GridBagLayout());
+		panelSeccionCapitan.add(panelCapitan, BorderLayout.CENTER);
+
+		GridBagConstraints gbcCap = new GridBagConstraints();
+		gbcCap.insets = new Insets(8, 5, 8, 5);
+		gbcCap.fill = GridBagConstraints.HORIZONTAL;
+
+		// Título Capitán
+		JLabel lblTituloCapitan = new JLabel("TRIPULACIÓN AL MANDO");
 		lblTituloCapitan.setFont(fuenteTitulo);
-		lblTituloCapitan.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblTituloCapitan = new GridBagConstraints();
-		gbc_lblTituloCapitan.anchor = GridBagConstraints.CENTER;
-		gbc_lblTituloCapitan.insets = new Insets(0, 10, 10, 10);
-		gbc_lblTituloCapitan.gridx = 0;
-		gbc_lblTituloCapitan.gridy = 1;
-		panelCapitan.add(lblTituloCapitan, gbc_lblTituloCapitan);
+		gbcCap.gridx = 0;
+		gbcCap.gridy = 0;
+		gbcCap.gridwidth = 2;
+		panelCapitan.add(lblTituloCapitan, gbcCap);
 
-		// CAMPO NOMBRE DEL CAPITÁN (Fila 3)
-		JPanel panelNombreCapitan = new JPanel();
-		panelNombreCapitan.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
-
+		// Campo Nombre Capitán
+		gbcCap.gridwidth = 1;
+		gbcCap.gridy = 1;
+		gbcCap.gridx = 0;
 		JLabel lblNombreCapitan = new JLabel("Nombre:");
 		lblNombreCapitan.setFont(fuenteCampos);
-		panelNombreCapitan.add(lblNombreCapitan);
+		panelCapitan.add(lblNombreCapitan, gbcCap);
 
-		txtNombreCapitan = new JTextField();
+		gbcCap.gridx = 1;
+		txtNombreCapitan = new JTextField(12);
 		txtNombreCapitan.setFont(fuenteInputs);
-		txtNombreCapitan.setColumns(12);
-		panelNombreCapitan.add(txtNombreCapitan);
+		panelCapitan.add(txtNombreCapitan, gbcCap);
 
-		GridBagConstraints gbc_panelNombreCapitan = new GridBagConstraints();
-		gbc_panelNombreCapitan.anchor = GridBagConstraints.CENTER;
-		gbc_panelNombreCapitan.insets = new Insets(0, 15, 5, 15);
-		gbc_panelNombreCapitan.gridx = 0;
-		gbc_panelNombreCapitan.gridy = 3;
-		panelCapitan.add(panelNombreCapitan, gbc_panelNombreCapitan);
-
-		// CAMPO ORIGEN DEL CAPITÁN - MENÚ DESPLEGABLE (Fila 5)
-		JPanel panelOrigenCapitan = new JPanel();
-		panelOrigenCapitan.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
-
+		// Campo Origen Capitán
+		gbcCap.gridy = 2;
+		gbcCap.gridx = 0;
 		JLabel lblOrigenCapitan = new JLabel("Origen:");
 		lblOrigenCapitan.setFont(fuenteCampos);
-		panelOrigenCapitan.add(lblOrigenCapitan);
+		panelCapitan.add(lblOrigenCapitan, gbcCap);
 
+		gbcCap.gridx = 1;
 		String[] origenes = {FactoryPeople.MARCIANO, FactoryPeople.TERRICOLA, FactoryPeople.VULCANO};
 		comboOrigenCapitan = new JComboBox<>(origenes);
 		comboOrigenCapitan.setFont(fuenteInputs);
-		panelOrigenCapitan.add(comboOrigenCapitan);
+		panelCapitan.add(comboOrigenCapitan, gbcCap);
 
-		GridBagConstraints gbc_panelOrigenCapitan = new GridBagConstraints();
-		gbc_panelOrigenCapitan.anchor = GridBagConstraints.CENTER;
-		gbc_panelOrigenCapitan.insets = new Insets(0, 15, 5, 15);
-		gbc_panelOrigenCapitan.gridx = 0;
-		gbc_panelOrigenCapitan.gridy = 5;
-		panelCapitan.add(panelOrigenCapitan, gbc_panelOrigenCapitan);
-
-		// CAMPO ANTIGÜEDAD DEL CAPITÁN (Fila 7)
-		JPanel panelAntiguedadCapitan = new JPanel();
-		panelAntiguedadCapitan.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
-
+		// Campo Antigüedad Capitán
+		gbcCap.gridy = 3;
+		gbcCap.gridx = 0;
 		JLabel lblAntiguedadCapitan = new JLabel("Antigüedad:");
 		lblAntiguedadCapitan.setFont(fuenteCampos);
-		panelAntiguedadCapitan.add(lblAntiguedadCapitan);
+		panelCapitan.add(lblAntiguedadCapitan, gbcCap);
 
-		txtAntiguedadCapitan = new JTextField();
+		gbcCap.gridx = 1;
+		txtAntiguedadCapitan = new JTextField(12);
 		txtAntiguedadCapitan.setFont(fuenteInputs);
-		txtAntiguedadCapitan.setColumns(8);
-		panelAntiguedadCapitan.add(txtAntiguedadCapitan);
+		panelCapitan.add(txtAntiguedadCapitan, gbcCap);
 
-		GridBagConstraints gbc_panelAntiguedadCapitan = new GridBagConstraints();
-		gbc_panelAntiguedadCapitan.anchor = GridBagConstraints.CENTER;
-		gbc_panelAntiguedadCapitan.insets = new Insets(0, 15, 10, 15);
-		gbc_panelAntiguedadCapitan.gridx = 0;
-		gbc_panelAntiguedadCapitan.gridy = 7;
-		panelCapitan.add(panelAntiguedadCapitan, gbc_panelAntiguedadCapitan);
+		// =========================================================================
+		// PANEL INFERIOR: BOTÓN CREAR CENTRADO
+		// =========================================================================
+		JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelBoton.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+
+		btnCrear.setActionCommand(CREAR_NAVE);
+		btnCrear.setEnabled(false);
+		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panelBoton.add(btnCrear);
+
+		panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
 	}
+
+	/**
+	 * Carga cualquier imagen (.png, .jpg, .jpeg, .gif) desde la carpeta del proyecto
+	 * y la formatea automáticamente al tamaño indicado sin usar getClass().
+	 */
+	private ImageIcon formatearImagen(String nombreArchivo, int ancho, int alto) {
+		try {
+			File archivo = new File("src/main/java/CapaPresentacion/iconosFolder/" + nombreArchivo);
+
+			if (!archivo.exists()) {
+				System.err.println("Archivo no encontrado: " + archivo.getPath());
+				return null;
+			}
+
+			Image imagenOriginal = ImageIO.read(archivo);
+			Image imagenFormateada = imagenOriginal.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+			return new ImageIcon(imagenFormateada);
+
+		} catch (Exception e) {
+			System.err.println("Error al procesar la imagen " + nombreArchivo + ": " + e.getMessage());
+			return null;
+		}
+	}
+
 
 	@Override
 	public void arranca() {
 		pack();
-		// CAMBIO: Aumentado el ancho de la ventana de 280 a 560 para alojar ambos paneles lado a lado
-		setSize(560, 330);
+		setSize(680, 320); // Ancho ajustado para acomodar los íconos cómodamente
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -259,6 +275,7 @@ public class VistaCrearNave extends JFrame implements IVista {
 	public JTextField getTxtAntiguedadCapitan() {
 		return txtAntiguedadCapitan;
 	}
+
 	public JComboBox getComboOrigenCapitan() {
 		return comboOrigenCapitan;
 	}

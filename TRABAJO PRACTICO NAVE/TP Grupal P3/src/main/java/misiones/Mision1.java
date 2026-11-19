@@ -2,6 +2,7 @@ package misiones;
 
 import asistentes.Asistente;
 import bitacora.RegistroBitacora;
+import destinoytablero.Posicion;
 import exceptions.*;
 
 import java.util.Random;
@@ -15,8 +16,8 @@ public class Mision1 extends Mision{
     private int energiaSOS = 0;
     private int combustibleSOS = 0;
 
-    public Mision1(){
-        super("M-01", "INTERCEPCION Y ASISTENCIA", 4, 5, 4);
+    public Mision1(Posicion objetivo){
+        super("M-01", "INTERCEPCION Y ASISTENCIA", 4, 5, 4,objetivo);
         deterRecursoSOS();
     }
 
@@ -61,8 +62,8 @@ public class Mision1 extends Mision{
                 texto += String.valueOf(combustibleSOS) + " LITROS DE COMBUSTIBLE";
             }
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO CORRECTAMENTE LA ASISTENCIA A LA NAVE EN CUESTION - SE ENTREGARON " + texto));
+            notificarObservadores("FIN_MISION");
         }
-        notificarObservadores("FIN_MISION");
     }
 
 

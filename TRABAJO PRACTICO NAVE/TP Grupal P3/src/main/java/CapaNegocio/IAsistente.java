@@ -1,5 +1,6 @@
 package CapaNegocio;
 
+import destinoytablero.Posicion;
 import destinoytablero.Tablero;
 import nave.Nave;
 import motorwarp.MotorWarp;

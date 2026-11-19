@@ -250,9 +250,9 @@ public class Asistente implements IAsistente {
         try {
             for (int j = 0; j < i; j++) {
                 destino.turnoDestino();
-                getTablero().notificarObservadores("ACTUALIZACION_VISTA_TABLERO");
-                Thread.sleep(1500);
                 chequeaPosicionActual();
+                Thread.sleep(1000);
+                getTablero().notificarObservadores("ACTUALIZACION_VISTA_TABLERO");
             }
         }catch (InterruptedException e) {
             getBitacorasNave().agregarRegistro(new RegistroError("ERROR DESCONOCIDO",e));
@@ -280,11 +280,11 @@ public class Asistente implements IAsistente {
         //si es negativo ,el objetivo esta a la derecha (mueve de a 1)
         //si es positivo , esta a la izuiqerda (mueve de a -1)
         //si es cero , estan en la misma linea
-        int orientacionX = getTablero().getPosicionNave().getX()-getTablero().getObjetivo().getX();
+        int orientacionX = getTablero().getPosicionNave().getX() - getTablero().getObjetivo().getX();
         //si es negativo ,el objetivo esta arriba (mueve de a 1)
         //si es positivo , esta abajo (mueve de a -1)
         //si es cero , estan en la misma linea
-        int orientacionY = getTablero().getPosicionNave().getY()-getTablero().getObjetivo().getY();
+        int orientacionY = getTablero().getPosicionNave().getY() - getTablero().getObjetivo().getY();
         //claramente si ambas dan cero es poreque llegue
         //primero muevo en X , luego en Y
         if (orientacionX != 0) {
@@ -300,7 +300,6 @@ public class Asistente implements IAsistente {
         }
         if (orientacionX !=0 || orientacionY!=0){
             if (!saltoFuera(nuevaPos) && !puedeSaltarNormal(nuevaPos) &&getNave().getEnergia()>MotorWarp.CONSUMO_ENERGIA_SALTO_WARP){
-                consumeEnergiaNave(MotorWarp.CONSUMO_ENERGIA_SALTO_WARP);
                 nuevaPos = new Posicion(nuevaPos.getX()*2,nuevaPos.getY()*2);
                 getMotor().saltoWarp(getTablero(),this,nuevaPos);
                 getBitacorasNave().agregarRegistro(new RegistroBitacora("SE REALIZO EL SALTO WARP - SE AVANZARON DOS CASILLEROS"));

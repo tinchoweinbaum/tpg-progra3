@@ -11,8 +11,8 @@ public class Mision2 extends Mision{
 
     private Random rand = new Random();
 
-    public Mision2() {
-        super("M-02", "RECOLECCION", 4, 10, 4);
+    public Mision2(Posicion objetivo) {
+        super("M-02", "RECOLECCION", 4, 10, 4,objetivo);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class Mision2 extends Mision{
         if (getEstadoActual().equals(Mision.ESTADO_ACTIVA)){
             int gemas = rand.nextInt(20,100);
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("LA NAVE REALIZO UNA RECOLECCION DE " + gemas + " GEMAS"));
+            notificarObservadores("FIN_MISION");
         }
-        notificarObservadores("FIN_MISION");
     }
 }

@@ -26,12 +26,13 @@ public abstract class Mision extends Observable{
     protected Posicion posicionObjetivo;
     protected String causaError;
 
-    public Mision(String nombre, String descripcion, float combustibleRequerido, float energiaRequerida, float desgasteRequerido) {
+    public Mision(String nombre, String descripcion, float combustibleRequerido, float energiaRequerida, float desgasteRequerido,Posicion posicionObjetivo) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.combustibleRequerido = combustibleRequerido;
         this.energiaRequerida = energiaRequerida;
         this.desgasteRequerido = desgasteRequerido;
+        this.posicionObjetivo = posicionObjetivo;
     }
 
     public String getNombre() {
@@ -44,6 +45,10 @@ public abstract class Mision extends Observable{
 
     public float getCombustibleRequerido() {
         return this.combustibleRequerido;
+    }
+
+    public Posicion getPosicionObjetivo() {
+        return this.posicionObjetivo;
     }
 
     public float getEnergiaRequerida() {
@@ -93,7 +98,6 @@ public abstract class Mision extends Observable{
             if (this.energiaRequerida >= nave.getEnergia())
                 throw new EnergiaInsuficienteException("Reserva de energia insuficiente para realizar la mision");
 
-            posicionObjetivo = ac.getTablero().obtenerObjetivo();
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("OBJETIVO UBICADO EN ["+posicionObjetivo.getX() + "][" +  posicionObjetivo.getY() + "]"));
         }catch (MisionImposibleException e){
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("No puede realizarse la mision " + getNombre() + "(" + getDescripcion() + ") - " + e.getMessage()));
@@ -123,9 +127,10 @@ public abstract class Mision extends Observable{
                 if (ac.getNave().getCombustible()==0 || ac.getNave().getEnergia()==0 || ac.getNave().getDesgaste()==100){
                     throw new NaveDestruidaException("LA NAVE NO LOGRO SOBREVIVIR AL UNIVERSO");
                 }
-                if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY())
+                if (ac.getTablero().getPosicionNave().getX()== posicionObjetivo.getX() && ac.getTablero().getPosicionNave().getY()==posicionObjetivo.getY()){
                     encontro = true;
-                else
+                    notificarObservadores("ACTUALIZACION_VISTA_TABLERO");
+                }else
                     ac.darTurnosTablero(1);
             }
             this.acumuladoPerdidaCombustible = ac.getNave().getCombustible() - estadoCombustibleInicial;
@@ -138,7 +143,7 @@ public abstract class Mision extends Observable{
         } catch (Exception e) {
             estadoActual=ESTADO_FALLIDO;
             causaError = e.getMessage();
-            notificarObservadores("FIN_MISION");
+            notificarObservadores("GAME_OVER");
         }
     }
 
@@ -149,13 +154,16 @@ public abstract class Mision extends Observable{
      * @param ac Asistente de la nave, validado y != NULL
      */
     protected void evaluar(Asistente ac) {
-        if (this.estadoActual.equals(ESTADO_ACTIVA)) {
-            ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION REALIZADA CON EXITO - DESGLOSE RECURSOS TOTALES", this));
-            ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("COMBUSTIBLE", this.acumuladoPerdidaCombustible, ac.getNave().getCombustible()));
-            ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("ENERGIA", this.acumuladoPerdidaEnergia, ac.getNave().getEnergia()));
+        if (!this.estadoActual.equals(ESTADO_NAVE_DESTRUIDA)) {
+            if (this.estadoActual.equals(ESTADO_ACTIVA))
+                ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION REALIZADA CON EXITO - VARIACION RECURSOS TOTALES", this));
+            else
+                ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION FALLIDA - MOTIVO: " + causaError + " - VARIACION RECURSOS TOTALES",this));
+            if(acumuladoPerdidaCombustible>0)
+                ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("COMBUSTIBLE", this.acumuladoPerdidaCombustible, ac.getNave().getCombustible()));
+            if(acumuladoPerdidaEnergia>0)
+                ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("ENERGIA", this.acumuladoPerdidaEnergia, ac.getNave().getEnergia()));
             ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("DESGASTE", this.acumuladoIncrementoDesgaste, ac.getNave().getDesgaste()));
-        }else if(this.estadoActual.equals(ESTADO_FALLIDO)){
-            ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION FALLIDA - MOTIVO: " + causaError,this));
         }else{
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("BITÁCORA EMITIDA DESDE CENTRO DE MANDO TERRESTRE - La nave conocida como '" + ac.getNave().getName() + "' ha sido destruída en acción.\nMOTIVO: " + causaError));
         }

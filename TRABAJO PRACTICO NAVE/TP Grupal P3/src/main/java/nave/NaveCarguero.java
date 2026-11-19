@@ -38,7 +38,7 @@ public class NaveCarguero extends Nave{
 
     @Override
     public RegistroCombate atacadoPorExplorador() throws NaveDestruidaException {
-        throw new NaveDestruidaException("Encuentro con nave Exploradora");
+        throw new NaveDestruidaException("LA NAVE NO PUDO CONTENER EL ATAQUE DE LA NAVE EXPLORADORA");
     }
 
 }
