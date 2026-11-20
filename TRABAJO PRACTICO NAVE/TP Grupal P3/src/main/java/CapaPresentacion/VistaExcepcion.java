@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -27,14 +26,13 @@ public class VistaExcepcion extends JDialog implements IVista {
     public VistaExcepcion() {
         setTitle("AVISO DEL SISTEMA");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setModal(true); // Bloquea la ventana de atrás hasta que el usuario cierre la alerta
+        setModal(true);
         setResizable(false);
 
         panelPrincipal = new JPanel();
         panelPrincipal.setBorder(new EmptyBorder(20, 25, 20, 25));
         setContentPane(panelPrincipal);
 
-        // 2 Columnas: Ícono nativo (izq) | Mensaje de error (der)
         GridBagLayout gbl = new GridBagLayout();
         gbl.columnWidths = new int[] {45, 250};
         gbl.rowHeights = new int[] {60, 40};
@@ -45,9 +43,6 @@ public class VistaExcepcion extends JDialog implements IVista {
         Font fuenteMensaje = new Font("Tahoma", Font.PLAIN, 13);
         Font fuenteBoton = new Font("Tahoma", Font.BOLD, 12);
 
-        // --------------------------------------------------------------------
-        // COLUMNA 0, FILA 0: ÍCONO PREDETERMINADO DEL SISTEMA
-        // --------------------------------------------------------------------
         lblIcono = new JLabel();
         lblIcono.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_lblIcono = new GridBagConstraints();
@@ -57,9 +52,6 @@ public class VistaExcepcion extends JDialog implements IVista {
         gbc_lblIcono.gridy = 0;
         panelPrincipal.add(lblIcono, gbc_lblIcono);
 
-        // --------------------------------------------------------------------
-        // COLUMNA 1, FILA 0: MENSAJE DE LA EXCEPCIÓN (Con salto de línea HTML)
-        // --------------------------------------------------------------------
         lblMensaje = new JLabel();
         lblMensaje.setFont(fuenteMensaje);
         lblMensaje.setHorizontalAlignment(SwingConstants.LEFT);
@@ -70,9 +62,6 @@ public class VistaExcepcion extends JDialog implements IVista {
         gbc_lblMensaje.gridy = 0;
         panelPrincipal.add(lblMensaje, gbc_lblMensaje);
 
-        // --------------------------------------------------------------------
-        // FILA 1: BOTÓN ACEPTAR (Centrado ocupando ambas columnas)
-        // --------------------------------------------------------------------
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setActionCommand(CERRAR_ALERTA);
         btnAceptar.addActionListener(e->dispose());
@@ -91,7 +80,7 @@ public class VistaExcepcion extends JDialog implements IVista {
     public void arranca() {
         pack();
         setLocationRelativeTo(null);
-        Toolkit.getDefaultToolkit().beep(); // Emite el sonido clásico de alerta de Windows
+        Toolkit.getDefaultToolkit().beep();
         setVisible(true);
     }
 

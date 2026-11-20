@@ -14,7 +14,6 @@ public class VistaMapa extends JFrame implements IVista {
     private int filas;
     private int columnas;
     private int tamanoIcono;
-
     private JPanel panelPrincipal;
     private JPanel panelMatriz;
     private ButtonsMapa[][] botonesMatriz;
@@ -23,7 +22,6 @@ public class VistaMapa extends JFrame implements IVista {
         this.filas = x;
         this.columnas = y;
 
-        // Calculamos el tamaño óptimo del icono según las dimensiones de la matriz
         int anchoCelda = 560 / this.columnas;
         int altoCelda = 440 / this.filas;
         this.tamanoIcono = Math.max(16, Math.min(anchoCelda, altoCelda) - 8);
@@ -36,7 +34,6 @@ public class VistaMapa extends JFrame implements IVista {
         panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
         setContentPane(panelPrincipal);
 
-        // 1. Layout maestro del panel principal
         GridBagLayout gbl_panelPrincipal = new GridBagLayout();
         gbl_panelPrincipal.columnWidths = new int[] {500};
         gbl_panelPrincipal.rowHeights = new int[] {420};
@@ -44,9 +41,6 @@ public class VistaMapa extends JFrame implements IVista {
         gbl_panelPrincipal.rowWeights = new double[]{1.0};
         panelPrincipal.setLayout(gbl_panelPrincipal);
 
-        // --------------------------------------------------------------------
-        // PANEL MATRIZ: Fila 0, Columna 0 (Grilla sin márgenes de x por y)
-        // --------------------------------------------------------------------
         panelMatriz = new JPanel();
         panelMatriz.setBorder(new TitledBorder(null, "Mapa del Universo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         panelMatriz.setLayout(new GridLayout(this.filas, this.columnas, 0, 0));
@@ -85,9 +79,6 @@ public class VistaMapa extends JFrame implements IVista {
         }
     }
 
-    // --------------------------------------------------------------------
-    // GETTERS COMPONENTES Y DIMENSIONES
-    // --------------------------------------------------------------------
     public ButtonsMapa[][] getBotonesMatriz() {
         return botonesMatriz;
     }

@@ -1,7 +1,6 @@
 package CapaPresentacion;
 
 import CapaNegocio.Controlador;
-
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,7 +28,6 @@ public class VistaMisiones extends JFrame implements IVista {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 
-		// 1. Panel Principal con GridLayout de 1 sola celda para expandir el panel interno
 		panelPrincipal = new JPanel();
 		setContentPane(panelPrincipal);
 		panelPrincipal.setLayout(new GridLayout(1, 1, 0, 0));
@@ -37,41 +35,38 @@ public class VistaMisiones extends JFrame implements IVista {
 		JPanel panel = new JPanel();
 		panelPrincipal.add(panel);
 		
-		// 2. GridBagLayout configurado con pesos horizontales para permitir el centrado real
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] {0};
-		gbl_panel.rowHeights = new int[] {20, 30, 20, 80, 20, 30, 20}; // Márgenes y alturas proporcionales
-		gbl_panel.columnWeights = new double[]{1.0}; // El peso 1.0 obliga a centrar respecto al ancho total
+		gbl_panel.rowHeights = new int[] {20, 30, 20, 80, 20, 30, 20};
+		gbl_panel.columnWeights = new double[]{1.0};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 		
 		Font fuenteTitulo = new Font("Tahoma", Font.BOLD, 14);
 		Font fuenteOpciones = new Font("Tahoma", Font.PLAIN, 13);
 		
-		// 3. TÍTULO (Fila 1) - Configurado al CENTRO
 		JLabel lblNewLabel = new JLabel("MISIONES DISPONIBLES");
 		lblNewLabel.setFont(fuenteTitulo);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.CENTER; // <--- Cambiado de WEST a CENTER
+		gbc_lblNewLabel.anchor = GridBagConstraints.CENTER;
 		gbc_lblNewLabel.insets = new Insets(0, 10, 10, 10);
-		gbc_lblNewLabel.gridx = 0; // Columna única
+		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 1;
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 		
-		// 4. PANEL DE CONTENEDOR RADIO BUTTONS (Fila 3) - Configurado al CENTRO
 		JPanel panelRadioButtons = new JPanel();
 		GridBagConstraints gbc_panelRadioButtons = new GridBagConstraints();
-		gbc_panelRadioButtons.anchor = GridBagConstraints.CENTER; // <--- Cambiado de NORTHWEST a CENTER
+		gbc_panelRadioButtons.anchor = GridBagConstraints.CENTER;
 		gbc_panelRadioButtons.insets = new Insets(0, 10, 10, 10);
 		gbc_panelRadioButtons.gridx = 0;
 		gbc_panelRadioButtons.gridy = 3;
 		panel.add(panelRadioButtons, gbc_panelRadioButtons);
-		panelRadioButtons.setLayout(new GridLayout(0, 1, 0, 5)); // 5px de separación vertical entre opciones
+		panelRadioButtons.setLayout(new GridLayout(0, 1, 0, 5));
 
 		radioOne.setFont(fuenteOpciones);
 		panelRadioButtons.add(radioOne);
-		buttonGroupMisiones.add(radioOne); // Agregado al grupo (Faltaba en tu código)
+		buttonGroupMisiones.add(radioOne);
 
 		radioTwo.setFont(fuenteOpciones);
 		panelRadioButtons.add(radioTwo);
@@ -80,15 +75,12 @@ public class VistaMisiones extends JFrame implements IVista {
 		radioThree.setFont(fuenteOpciones);
 		panelRadioButtons.add(radioThree);
 		buttonGroupMisiones.add(radioThree);
-		
-		
-		// 5. BOTÓN PRINCIPAL (Fila 5) - Configurado al CENTRO
 
 		btnNewButton.setActionCommand(SELECCIONA_MISION);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 10, 10, 10);
-		gbc_btnNewButton.anchor = GridBagConstraints.CENTER; // <--- Cambiado de WEST a CENTER
+		gbc_btnNewButton.anchor = GridBagConstraints.CENTER;
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 5;
 		panel.add(btnNewButton, gbc_btnNewButton);
@@ -97,7 +89,6 @@ public class VistaMisiones extends JFrame implements IVista {
 	@Override
 	public void arranca() {
 		pack();
-		// Le asignamos un tamaño mínimo cómodo para que se aprecie bien el centrado
 		setSize(300, 280);
 		setLocationRelativeTo(null);
 		setVisible(true);

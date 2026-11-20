@@ -20,12 +20,6 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
     private Visor visor;
     private final UsuariosDAO persistencia;
 
-    public Enlazador(Asistente asistente, Visor visor, UsuariosDAO persistencia){
-        this.asistente = asistente;
-        this.visor = visor;
-        this.persistencia = persistencia;
-    }
-
     /**
      * Constructor del enlazador que usa solamente persistencia para poder instanciarlo en el login, cuando no existen ni el asistente ni el visor.
      */

@@ -32,7 +32,6 @@ public class VistaGeneradores extends JFrame implements IVista {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		
-		// 1. Panel Principal con GridLayout de 1 sola celda para expandir el panel interno
 		panelPrincipal = new JPanel();
 		setContentPane(panelPrincipal);
 		panelPrincipal.setLayout(new GridLayout(1, 1, 0, 0));
@@ -40,18 +39,16 @@ public class VistaGeneradores extends JFrame implements IVista {
 		JPanel panel = new JPanel();
 		panelPrincipal.add(panel);
 		
-		// 2. GridBagLayout maestro configurado con DOS columnas principales
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {240, 240}; // Columna 0 (Controles) y Columna 1 (Consola lateral)
-		gbl_panel.rowHeights = new int[] {25, 40, 20, 80, 25}; // Alturas proporcionales para el lado izquierdo
-		gbl_panel.columnWeights = new double[]{1.0, 1.0}; // Ambas columnas se estiran equitativamente
+		gbl_panel.columnWidths = new int[] {240, 240};
+		gbl_panel.rowHeights = new int[] {25, 40, 20, 80, 25};
+		gbl_panel.columnWeights = new double[]{1.0, 1.0};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 		
 		Font fuenteTitulo = new Font("Tahoma", Font.BOLD, 14);
 		Font fuenteBotonesAccion = new Font("Tahoma", Font.BOLD, 13);
 		
-		// 3. TÍTULO (Columna 0, Fila 1) - Centrado en la sección de control
 		JLabel lblTitulo = new JLabel("GESTIÓN DE ENERGÍA");
 		lblTitulo.setFont(fuenteTitulo);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -62,7 +59,6 @@ public class VistaGeneradores extends JFrame implements IVista {
 		gbc_lblTitulo.gridy = 1;
 		panel.add(lblTitulo, gbc_lblTitulo);
 		
-		// 4. PANEL DE BOTONES (Columna 0, Fila 3) - Centrado en la sección de control
 		JPanel panelBotonesCreacion = new JPanel();
 		GridBagConstraints gbc_panelBotonesCreacion = new GridBagConstraints();
 		gbc_panelBotonesCreacion.anchor = GridBagConstraints.CENTER;
@@ -70,7 +66,7 @@ public class VistaGeneradores extends JFrame implements IVista {
 		gbc_panelBotonesCreacion.gridx = 0;
 		gbc_panelBotonesCreacion.gridy = 3;
 		panel.add(panelBotonesCreacion, gbc_panelBotonesCreacion);
-		panelBotonesCreacion.setLayout(new GridLayout(0, 1, 0, 12)); // 12px de separación vertical
+		panelBotonesCreacion.setLayout(new GridLayout(0, 1, 0, 12));
 
 		btnConsumidora.setActionCommand(PRODUCE_NAVE);
 		btnConsumidora.setFont(fuenteBotonesAccion);
@@ -79,17 +75,15 @@ public class VistaGeneradores extends JFrame implements IVista {
 		btnProductora.setFont(fuenteBotonesAccion);
 		panelBotonesCreacion.add(btnProductora);
 		
-		// 5. CONSOLA POWERSHELL LATERAL (Columna 1, Fila 0 a 4)
 		areaConsolaMini = new JTextArea();
 		areaConsolaMini.setEditable(false);
-		areaConsolaMini.setBackground(new Color(1, 36, 86)); // Azul PowerShell
+		areaConsolaMini.setBackground(new Color(1, 36, 86));
 		areaConsolaMini.setForeground(new Color(238, 238, 238)); 
 		areaConsolaMini.setFont(new Font("Consolas", Font.PLAIN, 11)); 
-		areaConsolaMini.setBorder(new EmptyBorder(10, 10, 10, 10)); // Margen interno cómodo para lectura larga
+		areaConsolaMini.setBorder(new EmptyBorder(10, 10, 10, 10));
 		areaConsolaMini.setLineWrap(true);
 		areaConsolaMini.setWrapStyleWord(true);
 		
-		// Texto inicial adaptado al formato vertical de consola
 		areaConsolaMini.setText("Doors PowerShell\nFAKE-OS [Visor Universo]\n\n" +
 				"[SISTEMA]: Panel activo.\n" +
 				"Red: Estable al 100%");
@@ -98,10 +92,10 @@ public class VistaGeneradores extends JFrame implements IVista {
 		scrollPaneMini.setBorder(null); 
 		
 		GridBagConstraints gbc_scrollPaneMini = new GridBagConstraints();
-		gbc_scrollPaneMini.insets = new Insets(15, 0, 15, 15); // Margen externo perimetral derecho
-		gbc_scrollPaneMini.fill = GridBagConstraints.BOTH; // <--- Se estira tanto a lo ancho como a lo alto
+		gbc_scrollPaneMini.insets = new Insets(15, 0, 15, 15);
+		gbc_scrollPaneMini.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneMini.gridheight = 5;
-		gbc_scrollPaneMini.gridx = 1; // Segunda columna
+		gbc_scrollPaneMini.gridx = 1;
 		gbc_scrollPaneMini.gridy = 0;
 		panel.add(scrollPaneMini, gbc_scrollPaneMini);
 	}
@@ -109,8 +103,7 @@ public class VistaGeneradores extends JFrame implements IVista {
 	@Override
 	public void arranca() {
 		pack();
-		// Cambiado a tamaño panorámico: 540 de ancho para acomodar ambas secciones una al lado de la otra
-		setSize(540, 260); 
+		setSize(540, 260);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}

@@ -29,24 +29,20 @@ public class VistaInicioSesion extends JFrame implements IVista {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		
-		// 1. Panel principal unificado con un GridBagLayout limpio
 		panelPrincipal = new JPanel();
-		panelPrincipal.setBorder(new EmptyBorder(25, 25, 25, 25)); // Margen perimetral idéntico
+		panelPrincipal.setBorder(new EmptyBorder(25, 25, 25, 25));
 		setContentPane(panelPrincipal);
 		
 		GridBagLayout gbl = new GridBagLayout();
-		gbl.columnWidths = new int[] {130, 200}; // Ancho idéntico de columnas para consistencia visual
-		gbl.rowHeights = new int[] {40, 40, 50};  // Alturas de fila proporcionales
+		gbl.columnWidths = new int[] {130, 200};
+		gbl.rowHeights = new int[] {40, 40, 50};
 		gbl.columnWeights = new double[]{0.0, 1.0};
 		gbl.rowWeights = new double[]{0.0, 0.0, 0.0};
 		panelPrincipal.setLayout(gbl);
 		
-		Font fuenteLabels = new Font("Tahoma", Font.BOLD, 14); // Misma tipografía elegante
+		Font fuenteLabels = new Font("Tahoma", Font.BOLD, 14);
 		Font fuenteInputs = new Font("Tahoma", Font.PLAIN, 14);
 		
-		// --------------------------------------------------------------------
-		// 2. FILA 0: USUARIO
-		// --------------------------------------------------------------------
 		JLabel labelName = new JLabel("USUARIO:");
 		labelName.setFont(fuenteLabels);
 		labelName.setHorizontalAlignment(SwingConstants.LEFT);
@@ -66,9 +62,6 @@ public class VistaInicioSesion extends JFrame implements IVista {
 		gbc_textField.gridy = 0;
 		panelPrincipal.add(textField, gbc_textField);
 		
-		// --------------------------------------------------------------------
-		// 3. FILA 1: CONTRASEÑA
-		// --------------------------------------------------------------------
 		JLabel labelPassword = new JLabel("CONTRASEÑA:");
 		labelPassword.setFont(fuenteLabels);
 		labelPassword.setHorizontalAlignment(SwingConstants.LEFT);
@@ -89,24 +82,20 @@ public class VistaInicioSesion extends JFrame implements IVista {
 		gbc_passwordField.gridy = 1;
 		panelPrincipal.add(passwordField, gbc_passwordField);
 		
-		// --------------------------------------------------------------------
-		// 4. FILA 2: CONTENEDOR DE BOTONES (Abarca ambas columnas, centrado)
-		// --------------------------------------------------------------------
 		JPanel panelBotones = new JPanel();
-		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0)); // Separación limpia de 15px entre botones
+		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
 		
 		btnNewButton.setActionCommand(INICIO_SESION);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setEnabled(false); // Mantiene tu estado inicial deshabilitado
+		btnNewButton.setEnabled(false);
 		panelBotones.add(btnNewButton);
 		btnNewButton_1.setActionCommand(ACCESO_REGISTRO);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelBotones.add(btnNewButton_1);
 		
-		// Ubicamos el contenedor de botones en la cuadrícula principal
 		GridBagConstraints gbc_panelBotones = new GridBagConstraints();
 		gbc_panelBotones.anchor = GridBagConstraints.CENTER;
-		gbc_panelBotones.gridwidth = 2; // Fusiona la columna 0 y 1
+		gbc_panelBotones.gridwidth = 2;
 		gbc_panelBotones.gridx = 0;
 		gbc_panelBotones.gridy = 2;
 		panelPrincipal.add(panelBotones, gbc_panelBotones);
@@ -115,7 +104,7 @@ public class VistaInicioSesion extends JFrame implements IVista {
 	@Override
 	public void arranca() {
 		pack();
-		setSize(420, 240); // Mismo tamaño exacto que la de registro para que no salte el tamaño de la ventana
+		setSize(420, 240);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}

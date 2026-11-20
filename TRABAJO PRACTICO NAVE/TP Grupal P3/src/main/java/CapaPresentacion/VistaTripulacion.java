@@ -2,8 +2,6 @@ package CapaPresentacion;
 
 import CapaNegocio.Controlador;
 import tripulantes.Tripulante;
-// import tripulantes.Tripulante; // <--- Importa tu clase Tripulante
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -28,8 +26,6 @@ public class VistaTripulacion extends JFrame implements IVista {
     private JButton botonAgregaTripulante;
     private JButton botonElimina;
     private JScrollPane scrollPane;
-
-    // Nuevos atributos para gestionar la lista (cambia String por Tripulante si usas objetos)
     private DefaultListModel<Tripulante> modeloLista;
     private JList<Tripulante> listaTripulantes;
 
@@ -45,7 +41,6 @@ public class VistaTripulacion extends JFrame implements IVista {
         panelPrincipal.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // 1. Panel de Botones (Superior)
         JPanel panelBotones = new JPanel();
         panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
@@ -65,18 +60,16 @@ public class VistaTripulacion extends JFrame implements IVista {
         gbc.insets = new Insets(0, 0, 15, 0);
         panelPrincipal.add(panelBotones, gbc);
 
-        // 2. Panel del Scroll (Inferior)
         JPanel panelScroll = new JPanel();
         panelScroll.setLayout(new BorderLayout(0, 0));
 
         scrollPane = new JScrollPane();
         scrollPane.setPreferredSize(new Dimension(400, 180));
 
-        // Inicialización del Modelo y la JList dentro del ScrollPane
         modeloLista = new DefaultListModel<>();
         listaTripulantes = new JList<>(modeloLista);
         listaTripulantes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        scrollPane.setViewportView(listaTripulantes); // <--- Conecta la lista con el scroll
+        scrollPane.setViewportView(listaTripulantes);
 
         panelScroll.add(scrollPane, BorderLayout.CENTER);
 

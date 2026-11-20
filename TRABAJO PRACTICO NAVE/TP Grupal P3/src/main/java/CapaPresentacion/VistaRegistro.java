@@ -29,7 +29,6 @@ public class VistaRegistro extends JFrame implements IVista {
 		panelPrincipal.setBorder(new EmptyBorder(25, 25, 25, 25));
 		setContentPane(panelPrincipal);
 
-		// 1. Ajustado a 3 filas reales (Usuario, Contraseña, Botón)
 		GridBagLayout gbl = new GridBagLayout();
 		gbl.columnWidths = new int[] {130, 200};
 		gbl.rowHeights = new int[] {40, 40, 45};
@@ -40,9 +39,6 @@ public class VistaRegistro extends JFrame implements IVista {
 		Font fuenteLabels = new Font("Tahoma", Font.BOLD, 14);
 		Font fuenteInputs = new Font("Tahoma", Font.PLAIN, 14);
 
-		// --------------------------------------------------------------------
-		// FILA 0: USUARIO
-		// --------------------------------------------------------------------
 		JLabel labelName = new JLabel("USUARIO:");
 		labelName.setFont(fuenteLabels);
 		labelName.setHorizontalAlignment(SwingConstants.LEFT);
@@ -62,15 +58,12 @@ public class VistaRegistro extends JFrame implements IVista {
 		gbc_textField.gridy = 0;
 		panelPrincipal.add(textField, gbc_textField);
 
-		// --------------------------------------------------------------------
-		// FILA 1: CONTRASEÑA
-		// --------------------------------------------------------------------
 		JLabel labelPassword = new JLabel("CONTRASEÑA:");
 		labelPassword.setFont(fuenteLabels);
 		labelPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_labelPassword = new GridBagConstraints();
 		gbc_labelPassword.anchor = GridBagConstraints.WEST;
-		gbc_labelPassword.insets = new Insets(0, 0, 20, 15); // Margen inferior antes del botón
+		gbc_labelPassword.insets = new Insets(0, 0, 20, 15);
 		gbc_labelPassword.gridx = 0;
 		gbc_labelPassword.gridy = 1;
 		panelPrincipal.add(labelPassword, gbc_labelPassword);
@@ -80,14 +73,11 @@ public class VistaRegistro extends JFrame implements IVista {
 		passwordField.setEchoChar('*');
 		GridBagConstraints gbc_passwordField = new GridBagConstraints();
 		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField.insets = new Insets(0, 0, 20, 0); // Margen inferior antes del botón
+		gbc_passwordField.insets = new Insets(0, 0, 20, 0);
 		gbc_passwordField.gridx = 1;
 		gbc_passwordField.gridy = 1;
 		panelPrincipal.add(passwordField, gbc_passwordField);
 
-		// --------------------------------------------------------------------
-		// FILA 2: BOTÓN REGISTRARSE
-		// --------------------------------------------------------------------
 		btnNewButton_1.setActionCommand(REGISTRO_USER);
 		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -95,13 +85,13 @@ public class VistaRegistro extends JFrame implements IVista {
 		gbc_btnNewButton_1.anchor = GridBagConstraints.CENTER;
 		gbc_btnNewButton_1.gridwidth = 2;
 		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 2; // <--- Vuelve a la fila 2 para eliminar el hueco
+		gbc_btnNewButton_1.gridy = 2;
 		panelPrincipal.add(btnNewButton_1, gbc_btnNewButton_1);
 	}
 
 	@Override
 	public void arranca() {
-		pack(); // Calcula el tamaño exacto según los componentes y márgenes
+		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}

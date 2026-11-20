@@ -35,7 +35,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 	private JRadioButton radioCarguera = new JRadioButton("Nave Carguera");
 	private JRadioButton radioCombate = new JRadioButton("Nave de Combate");
 
-	// Atributos encapsulados para los datos del Capitán
 	private JTextField txtNombreCapitan;
 	private JTextField txtAntiguedadCapitan;
 	private JComboBox<String> comboOrigenCapitan;
@@ -45,12 +44,10 @@ public class VistaCrearNave extends JFrame implements IVista {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 
-		// Panel Principal con BorderLayout para separar formularios (CENTER) del botón (SOUTH)
 		panelPrincipal = new JPanel(new BorderLayout(10, 10));
 		panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		setContentPane(panelPrincipal);
 
-		// Contenedor central de 2 columnas (Izquierda: Nave, Derecha: Capitán)
 		JPanel panelCentral = new JPanel(new GridLayout(1, 2, 20, 0));
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 
@@ -59,21 +56,15 @@ public class VistaCrearNave extends JFrame implements IVista {
 		Font fuenteCampos = new Font("Tahoma", Font.BOLD, 12);
 		Font fuenteInputs = new Font("Tahoma", Font.PLAIN, 12);
 
-		// =========================================================================
-		// COLUMNA IZQUIERDA: ÍCONO + FORMULARIO NAVE
-		// =========================================================================
 		JPanel panelSeccionNave = new JPanel(new BorderLayout(10, 0));
 		panelSeccionNave.setBorder(BorderFactory.createTitledBorder("Datos de la Nave"));
 		panelCentral.add(panelSeccionNave);
 
-		// Ícono de Nave (A la izquierda del formulario)
-		// REEMPLAZÁ "nave.png" por el nombre exacto de tu archivo en iconosFolder
 		JLabel lblIconoNave = new JLabel(formatearImagen("naveUser.png", 64, 64));
 		lblIconoNave.setVerticalAlignment(SwingConstants.CENTER);
 		lblIconoNave.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
 		panelSeccionNave.add(lblIconoNave, BorderLayout.WEST);
 
-		// Formulario Nave
 		JPanel panelNave = new JPanel(new GridBagLayout());
 		panelSeccionNave.add(panelNave, BorderLayout.CENTER);
 
@@ -81,7 +72,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		// Título Nave
 		JLabel lblTitulo = new JLabel("TIPO DE NAVE");
 		lblTitulo.setFont(fuenteTitulo);
 		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
@@ -90,7 +80,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		gbc.gridwidth = 2;
 		panelNave.add(lblTitulo, gbc);
 
-		// Radio Buttons agrupados
 		JPanel panelRadioButtons = new JPanel(new GridLayout(0, 1, 0, 4));
 		radioExploradora.setFont(fuenteOpciones);
 		radioCarguera.setFont(fuenteOpciones);
@@ -108,7 +97,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		gbc.insets = new Insets(5, 5, 12, 5);
 		panelNave.add(panelRadioButtons, gbc);
 
-		// Campo Nombre Nave
 		gbc.gridwidth = 1;
 		gbc.gridy = 2;
 		gbc.gridx = 0;
@@ -122,21 +110,15 @@ public class VistaCrearNave extends JFrame implements IVista {
 		txtNombreNave.setFont(fuenteInputs);
 		panelNave.add(txtNombreNave, gbc);
 
-		// =========================================================================
-		// COLUMNA DERECHA: ÍCONO + FORMULARIO CAPITÁN
-		// =========================================================================
 		JPanel panelSeccionCapitan = new JPanel(new BorderLayout(10, 0));
 		panelSeccionCapitan.setBorder(BorderFactory.createTitledBorder("Datos del Capitán"));
 		panelCentral.add(panelSeccionCapitan);
 
-		// Ícono de Capitán (A la izquierda del formulario)
-		// REEMPLAZÁ "capitan.png" por el nombre exacto de tu archivo en iconosFolder
 		JLabel lblIconoCapitan = new JLabel(formatearImagen("capitan.png", 64, 64));
 		lblIconoCapitan.setVerticalAlignment(SwingConstants.CENTER);
 		lblIconoCapitan.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
 		panelSeccionCapitan.add(lblIconoCapitan, BorderLayout.WEST);
 
-		// Formulario Capitán
 		JPanel panelCapitan = new JPanel(new GridBagLayout());
 		panelSeccionCapitan.add(panelCapitan, BorderLayout.CENTER);
 
@@ -144,7 +126,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		gbcCap.insets = new Insets(8, 5, 8, 5);
 		gbcCap.fill = GridBagConstraints.HORIZONTAL;
 
-		// Título Capitán
 		JLabel lblTituloCapitan = new JLabel("TRIPULACIÓN AL MANDO");
 		lblTituloCapitan.setFont(fuenteTitulo);
 		gbcCap.gridx = 0;
@@ -152,7 +133,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		gbcCap.gridwidth = 2;
 		panelCapitan.add(lblTituloCapitan, gbcCap);
 
-		// Campo Nombre Capitán
 		gbcCap.gridwidth = 1;
 		gbcCap.gridy = 1;
 		gbcCap.gridx = 0;
@@ -165,7 +145,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		txtNombreCapitan.setFont(fuenteInputs);
 		panelCapitan.add(txtNombreCapitan, gbcCap);
 
-		// Campo Origen Capitán
 		gbcCap.gridy = 2;
 		gbcCap.gridx = 0;
 		JLabel lblOrigenCapitan = new JLabel("Origen:");
@@ -178,7 +157,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		comboOrigenCapitan.setFont(fuenteInputs);
 		panelCapitan.add(comboOrigenCapitan, gbcCap);
 
-		// Campo Antigüedad Capitán
 		gbcCap.gridy = 3;
 		gbcCap.gridx = 0;
 		JLabel lblAntiguedadCapitan = new JLabel("Antigüedad:");
@@ -190,9 +168,6 @@ public class VistaCrearNave extends JFrame implements IVista {
 		txtAntiguedadCapitan.setFont(fuenteInputs);
 		panelCapitan.add(txtAntiguedadCapitan, gbcCap);
 
-		// =========================================================================
-		// PANEL INFERIOR: BOTÓN CREAR CENTRADO
-		// =========================================================================
 		JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelBoton.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
@@ -231,7 +206,7 @@ public class VistaCrearNave extends JFrame implements IVista {
 	@Override
 	public void arranca() {
 		pack();
-		setSize(680, 320); // Ancho ajustado para acomodar los íconos cómodamente
+		setSize(680, 320);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}

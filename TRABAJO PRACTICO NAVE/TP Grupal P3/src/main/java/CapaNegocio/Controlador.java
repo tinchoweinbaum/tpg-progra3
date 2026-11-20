@@ -6,27 +6,19 @@ import bitacora.RegistroBitacora;
 import destinoytablero.*;
 import elementosUniverso.*;
 import exceptions.*;
-import misiones.Mision;
-import misiones.Mision1;
-import misiones.Mision2;
-import misiones.Mision3;
+import misiones.*;
 import motorwarp.MotorWarp;
 import nave.*;
-import persistencia.Usuario;
-import persistencia.UsuariosDAO;
-import persistencia.UsuariosSqlDao;
+import persistencia.*;
 import tripulantes.*;
 import visorParalelo.Visor;
 
-import javax.security.auth.login.LoginException;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -141,7 +133,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         }
 
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.ACCESO_REGISTRO)) {
-            vistaInicioSesion.dispose(); // Abre ventana de registro, no checkea nada.
+            vistaInicioSesion.dispose();
             vistaRegistro.arranca();
         }
 
@@ -299,7 +291,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 }
             }
             if (mAct != null) {
-                agregaTripulantePrueba();  //despues borrar
                 ejecucionMisionVista(mAct);
                 mAct.agregarObservador(this);
                 misionBackGround(mAct);
@@ -330,19 +321,6 @@ public class Controlador implements DocumentListener, ActionListener , Observado
             }
         };
         worker.execute();
-    }
-
-    private void agregaTripulantePrueba() {
-        try {
-            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-            enlazador.agregaTripulante(FactoryPeople.creaPersonaje(FactoryPeople.TENIENTE,FactoryPeople.MARCIANO,"pedro",1));
-        } catch (ErrorCreacionPersonajeException e) {
-            //
-        } catch (ErrorAgregarTripulacionException e) {
-            //
-        }
     }
 
     private void creaTablero(){
@@ -717,7 +695,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         int xNave = enlazador.getTablero().getPosicionNave().getX();
         int yNave = enlazador.getTablero().getPosicionNave().getY();
 
-        vistaMapa.getBotonCelda(xNave,yNave).setBackground(new Color(0,0,0));
+        vistaMapa.getBotonCelda(xNave,yNave).setBackground(new Color(149, 0, 0));
         vistaMapa.getBotonCelda(xNave,yNave).actualizarIcono("src/main/java/CapaPresentacion/iconosFolder/calavera.png");
 
     }

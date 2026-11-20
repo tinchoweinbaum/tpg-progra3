@@ -47,7 +47,6 @@ public class VistaEstadoNave extends JFrame implements IVista {
         panelPrincipal.setBorder(new EmptyBorder(25, 25, 25, 25));
         setContentPane(panelPrincipal);
 
-        // 5 Filas: Título | Estado Motor | Desgaste | Combustible | Energía
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[] {125, 190, 50, 80, 80};
         gbl_panel.rowHeights = new int[] {35, 38, 38, 38, 38};
@@ -61,10 +60,6 @@ public class VistaEstadoNave extends JFrame implements IVista {
         Font fuenteControles = new Font("Tahoma", Font.PLAIN, 12);
         Font fuenteBotones = new Font("Tahoma", Font.BOLD, 11);
 
-        // --------------------------------------------------------------------
-        // FILA 0: TÍTULO PRINCIPAL
-        // --------------------------------------------------------------------
-
         lblTitulo.setFont(fuenteTitulo);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
@@ -75,9 +70,6 @@ public class VistaEstadoNave extends JFrame implements IVista {
         gbc_lblTitulo.gridy = 0;
         panelPrincipal.add(lblTitulo, gbc_lblTitulo);
 
-        // --------------------------------------------------------------------
-        // FILA 1: ESTADO MOTOR (Nueva barra indicadora de estado)
-        // --------------------------------------------------------------------
         JLabel lblEstadoMotor = new JLabel("ESTADO MOTOR:");
         lblEstadoMotor.setFont(fuenteLabels);
         GridBagConstraints gbc_lblEstadoMotor = new GridBagConstraints();
@@ -89,19 +81,16 @@ public class VistaEstadoNave extends JFrame implements IVista {
 
         barraEstado = new JProgressBar(0, 100);
         barraEstado.setValue(100);
-        barraEstado.setStringPainted(true); // Habilita el texto personalizado dentro de la barra
+        barraEstado.setStringPainted(true);
         barraEstado.setFont(fuenteBarras);
         GridBagConstraints gbc_barraEstado = new GridBagConstraints();
-        gbc_barraEstado.gridwidth = 4; // Se extiende a lo ancho sobre las columnas de controles
+        gbc_barraEstado.gridwidth = 4;
         gbc_barraEstado.fill = GridBagConstraints.HORIZONTAL;
         gbc_barraEstado.insets = new Insets(0, 0, 14, 0);
         gbc_barraEstado.gridx = 1;
         gbc_barraEstado.gridy = 1;
         panelPrincipal.add(barraEstado, gbc_barraEstado);
 
-        // --------------------------------------------------------------------
-        // FILA 2: DESGASTE + MANTENIMIENTO
-        // --------------------------------------------------------------------
         JLabel lblDesgaste = new JLabel("DESGASTE:");
         lblDesgaste.setFont(fuenteLabels);
         GridBagConstraints gbc_lblDesgaste = new GridBagConstraints();
@@ -135,9 +124,6 @@ public class VistaEstadoNave extends JFrame implements IVista {
         gbc_btnMantenimiento.gridy = 2;
         panelPrincipal.add(btnMantenimiento, gbc_btnMantenimiento);
 
-        // --------------------------------------------------------------------
-        // FILA 3: COMBUSTIBLE + INPUT + CARGAR + LLENAR
-        // --------------------------------------------------------------------
         JLabel lblCombustible = new JLabel("COMBUSTIBLE:");
         lblCombustible.setFont(fuenteLabels);
         GridBagConstraints gbc_lblCombustible = new GridBagConstraints();
@@ -191,9 +177,6 @@ public class VistaEstadoNave extends JFrame implements IVista {
         gbc_btnLlenarComb.gridy = 3;
         panelPrincipal.add(btnLlenarCombustible, gbc_btnLlenarComb);
 
-        // --------------------------------------------------------------------
-        // FILA 4: ENERGÍA + INPUT + CARGAR + LLENAR
-        // --------------------------------------------------------------------
         JLabel lblEnergia = new JLabel("ENERGÍA:");
         lblEnergia.setFont(fuenteLabels);
         GridBagConstraints gbc_lblEnergia = new GridBagConstraints();
@@ -246,7 +229,7 @@ public class VistaEstadoNave extends JFrame implements IVista {
     @Override
     public void arranca() {
         pack();
-        setSize(630, 290); // Alto ajustado para acomodar la fila extra de estado motor
+        setSize(630, 290);
         setLocationRelativeTo(null);
         setVisible(true);
     }

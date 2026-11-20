@@ -35,7 +35,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         panelPrincipal = new JPanel();
         setContentPane(panelPrincipal);
 
-        // GridBagLayout con filas espaciadas para título, 4 campos y botón
         GridBagLayout gbl_panelPrincipal = new GridBagLayout();
         gbl_panelPrincipal.columnWidths = new int[] {0};
         gbl_panelPrincipal.rowHeights = new int[] {15, 30, 15, 40, 10, 40, 10, 40, 10, 40, 15, 35, 15};
@@ -47,7 +46,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         Font fuenteCampos = new Font("Tahoma", Font.BOLD, 12);
         Font fuenteInputs = new Font("Tahoma", Font.PLAIN, 12);
 
-        // 1. TÍTULO (Fila 1)
         JLabel lblTitulo = new JLabel("DATOS DEL TRIPULANTE");
         lblTitulo.setFont(fuenteTitulo);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,7 +56,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         gbc_lblTitulo.gridy = 1;
         panelPrincipal.add(lblTitulo, gbc_lblTitulo);
 
-        // 2. CAMPO NOMBRE (Fila 3)
         JPanel panelNombre = new JPanel();
         panelNombre.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
 
@@ -78,7 +75,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         gbc_panelNombre.gridy = 3;
         panelPrincipal.add(panelNombre, gbc_panelNombre);
 
-        // 3. CAMPO ANTIGÜEDAD (Fila 5)
         JPanel panelAntiguedad = new JPanel();
         panelAntiguedad.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
 
@@ -98,7 +94,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         gbc_panelAntiguedad.gridy = 5;
         panelPrincipal.add(panelAntiguedad, gbc_panelAntiguedad);
 
-        // 4. CAMPO ORIGEN - MENÚ DESPLEGABLE (Fila 7)
         JPanel panelOrigen = new JPanel();
         panelOrigen.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
 
@@ -118,7 +113,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         gbc_panelOrigen.gridy = 7;
         panelPrincipal.add(panelOrigen, gbc_panelOrigen);
 
-        // 5. CAMPO CARGO - MENÚ DESPLEGABLE (Fila 9)
         JPanel panelCargo = new JPanel();
         panelCargo.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
 
@@ -138,7 +132,6 @@ public class VistaCrearTripulante extends JFrame implements IVista {
         gbc_panelCargo.gridy = 9;
         panelPrincipal.add(panelCargo, gbc_panelCargo);
 
-        // 6. BOTÓN REGISTRAR (Fila 11)
         btnCrear.setActionCommand(CREAR_TRIPULANTE);
         btnCrear.setEnabled(false);
         btnCrear.setFont(new Font("Tahoma", Font.BOLD, 13));

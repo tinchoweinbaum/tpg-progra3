@@ -27,7 +27,7 @@ public class BotonesMain extends JFrame implements IVista {
 	public final static String ACCESO_MAPA = "ACCESO_MAPA";
 
 	private JPanel panelPrincipal;
-	private JPanel panelDatos; // <--- Declarado como atributo para acceder desde los métodos de refresco
+	private JPanel panelDatos;
 	private JLabel lblCapitanMorsalo = new JLabel();
 	private JLabel lblNombreNave = new JLabel();
 	private JButton botonBorraCrearNave = new JButton("Start Again");
@@ -47,22 +47,18 @@ public class BotonesMain extends JFrame implements IVista {
 		panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(panelPrincipal);
 
-		// 1. Layout maestro del panel principal
 		GridBagLayout gbl_panelPrincipal = new GridBagLayout();
-		gbl_panelPrincipal.columnWidths = new int[] {370, 260}; // Dos columnas: izquierda controles, derecha referencias
+		gbl_panelPrincipal.columnWidths = new int[] {370, 260};
 		gbl_panelPrincipal.rowHeights = new int[] {60, 220};
 		gbl_panelPrincipal.columnWeights = new double[]{1.0, 0.8};
 		gbl_panelPrincipal.rowWeights = new double[]{0.0, 1.0};
 		panelPrincipal.setLayout(gbl_panelPrincipal);
 
-		// --------------------------------------------------------------------
-		// PANEL DATOS: Fila 0, Columna 0 (Rediseñado para dar prioridad a la Nave)
-		// --------------------------------------------------------------------
 		panelDatos = new JPanel();
 		GridBagLayout gbl_panelDatos = new GridBagLayout();
-		gbl_panelDatos.columnWidths = new int[] {110, 150, 90}; // Más espacio asignado por defecto a la columna del medio (Nave)
+		gbl_panelDatos.columnWidths = new int[] {110, 150, 90};
 		gbl_panelDatos.rowHeights = new int[] {0};
-		gbl_panelDatos.columnWeights = new double[]{0.5, 1.5, 0.0}; // El nombre de la nave recibe triple prioridad de estiramiento (1.5)
+		gbl_panelDatos.columnWeights = new double[]{0.5, 1.5, 0.0};
 		gbl_panelDatos.rowWeights = new double[]{1.0};
 		panelDatos.setLayout(gbl_panelDatos);
 
@@ -78,9 +74,9 @@ public class BotonesMain extends JFrame implements IVista {
 		lblNombreNave.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombreNave.setFont(new Font("Tahoma", Font.BOLD, 12));
 		GridBagConstraints gbc_lblNombreNave = new GridBagConstraints();
-		gbc_lblNombreNave.fill = GridBagConstraints.HORIZONTAL; // <--- Forzado HORIZONTAL para expandirse con el texto largo
+		gbc_lblNombreNave.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblNombreNave.insets = new Insets(0, 5, 0, 5);
-		gbc_lblNombreNave.gridx = 1; // Columna central
+		gbc_lblNombreNave.gridx = 1;
 		gbc_lblNombreNave.gridy = 0;
 		panelDatos.add(lblNombreNave, gbc_lblNombreNave);
 
@@ -93,7 +89,6 @@ public class BotonesMain extends JFrame implements IVista {
 		gbc_botonBorraCrearNave.gridy = 0;
 		panelDatos.add(botonBorraCrearNave, gbc_botonBorraCrearNave);
 
-		// Agregar panelDatos al panel principal
 		GridBagConstraints gbc_panelDatos = new GridBagConstraints();
 		gbc_panelDatos.fill = GridBagConstraints.BOTH;
 		gbc_panelDatos.insets = new Insets(0, 0, 8, 8);
@@ -101,9 +96,6 @@ public class BotonesMain extends JFrame implements IVista {
 		gbc_panelDatos.gridy = 0;
 		panelPrincipal.add(panelDatos, gbc_panelDatos);
 
-		// --------------------------------------------------------------------
-		// PANEL BOTONES: Fila 1, Columna 0
-		// --------------------------------------------------------------------
 		JPanel panelBotones = new JPanel();
 		panelBotones.setLayout(new GridLayout(3, 2, 6, 6));
 
@@ -132,9 +124,6 @@ public class BotonesMain extends JFrame implements IVista {
 		gbc_panelBotones.gridy = 1;
 		panelPrincipal.add(panelBotones, gbc_panelBotones);
 
-		// --------------------------------------------------------------------
-		// PANEL ELEMENTOS UNIVERSO: Lado Derecho (7 elementos con icono + texto)
-		// --------------------------------------------------------------------
 		JPanel panelElementos = new JPanel();
 		panelElementos.setBorder(new TitledBorder(null, "Tipos de Elementos Universo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelElementos.setLayout(new GridLayout(7, 1, 2, 4));
@@ -164,8 +153,8 @@ public class BotonesMain extends JFrame implements IVista {
 
 		JLabel lblItem = new JLabel(texto, new ImageIcon(imagenEscalada), SwingConstants.LEFT);
 		lblItem.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblItem.setIconTextGap(10); // Espacio horizontal entre el icono y el texto
-		lblItem.setBorder(new EmptyBorder(0, 8, 0, 5)); // Margen interno izquierdo para que no quede pegado al borde
+		lblItem.setIconTextGap(10);
+		lblItem.setBorder(new EmptyBorder(0, 8, 0, 5));
 		return lblItem;
 	}
 
@@ -188,9 +177,6 @@ public class BotonesMain extends JFrame implements IVista {
 		getBotonMapa().addActionListener(controlador);
 	}
 
-	// --------------------------------------------------------------------
-	// GETTERS COMPONENTES
-	// --------------------------------------------------------------------
 	public JLabel getLblCapitan() {
 		return lblCapitanMorsalo;
 	}
