@@ -53,6 +53,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     public Controlador(VistaInicioSesion vista) {
         this.vistaInicioSesion = vista;
         this.iniciaVistas();
+        this.enlazador = new Enlazador(new UsuariosSqlDao());
     }
 
     private void iniciaVistas(){
@@ -76,6 +77,10 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
     private void setEnlazador(Enlazador e){
         this.enlazador = e;
+    }
+
+    public Enlazador getEnlazador() {
+        return enlazador;
     }
 
     @Override
@@ -430,7 +435,9 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         //TABLERO;ASISTENTE;ENLAZADOR;VISOR PARALELO
         creaTablero();
-        setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo(), new UsuariosSqlDao())); // OJO: hardcodeo SQL, si se quisiese dar la opcion de usar XML hay que hacerlo de otra manera
+        this.enlazador.setAsistente(new Asistente(nave, tablero));
+        this.enlazador.setVisor(iniciaUniversoParalelo());
+
         enlazador.getBitacorasNave().agregarObservador(this);
         enlazador.getMotor().agregarObservador(this);
         enlazador.getAsistente().getDestino().turnoDestino();

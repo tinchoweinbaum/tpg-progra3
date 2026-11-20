@@ -62,6 +62,7 @@ public class UsuariosSqlDao implements UsuariosDAO{
     public ArrayList<Usuario> getUsuarios() {
         String query = "SELECT * FROM usuarios";
         ArrayList<Usuario> listaRet = new ArrayList<>();
+
         try (Connection conn = DriverManager.getConnection(URL); Statement stmt = conn.createStatement(); ResultSet queryRes = stmt.executeQuery(query)) {
             while (queryRes.next()){ // .next es una funcion booleana que devuelve si existe el próximo elemento del resultSet.
                 String usernameAct = queryRes.getString("username");

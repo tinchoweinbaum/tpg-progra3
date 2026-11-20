@@ -16,13 +16,20 @@ import java.util.ArrayList;
 
 public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
 
-    private final Asistente asistente;
-    private final Visor visor;
+    private Asistente asistente;
+    private Visor visor;
     private final UsuariosDAO persistencia;
 
     public Enlazador(Asistente asistente, Visor visor, UsuariosDAO persistencia){
         this.asistente = asistente;
         this.visor = visor;
+        this.persistencia = persistencia;
+    }
+
+    /**
+     * Constructor del enlazador que usa solamente persistencia para poder instanciarlo en el login, cuando no existen ni el asistente ni el visor.
+     */
+    public Enlazador(UsuariosDAO persistencia) {
         this.persistencia = persistencia;
     }
 
@@ -32,6 +39,14 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
 
     public Visor getVisor() {
         return visor;
+    }
+
+    public void setAsistente(Asistente asistente) {
+        this.asistente = asistente;
+    }
+
+    public void setVisor(Visor visor) {
+        this.visor = visor;
     }
 
     // --- Delegación de métodos al asistente ---
