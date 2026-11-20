@@ -1,4 +1,7 @@
 package CapaDatos.persistencia;
+import CapaDatos.exceptions.DAOAuxiliarException;
+import CapaDatos.exceptions.DatosRegistroInvalidosException;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +10,7 @@ import java.util.ArrayList;
  * <p><b>Invariante de clase:</b> true</p>
  */
 public interface UsuariosDAO {
-    Usuario buscarPorUsername(String username);
-    ArrayList<Usuario> getUsuarios();
-    void registrarUsuario(Usuario usuario);
+    Usuario buscarPorUsername(String username) throws DatosRegistroInvalidosException;
+    ArrayList<Usuario> getUsuarios() throws DAOAuxiliarException;
+    void registrarUsuario(Usuario usuario) throws DAOAuxiliarException;
 }

@@ -188,17 +188,18 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
     // --- Validacion y delegacion del DAO ---
 
     /**
-     * Valida las credenciales de inicio de sesión contra la capa de CapaDatos.persistencia.
-     * Si el usuario no existe o la contraseña no coincide, lanza la excepción de negocio correspondiente.
+     * Valida las credenciales de inicio de sesión contra la capa de persistencia.
+     * Si el usuario no existe, la contraseña no coincide o falla la consulta, lanza la excepción correspondiente.
      *
      * @param username Nombre de usuario ingresado.
      * @param contraIngresada Contraseña ingresada.
      * @throws UsuarioInexistenteException Si no existe ningún usuario registrado con ese username.
      * @throws ContrasenaInvalidaException Si el usuario existe pero la contraseña ingresada no coincide.
-     * @pre CapaDatos.persistencia != null
+     * @throws DatosRegistroInvalidosException Si ocurre un error al consultar el usuario en la capa de persistencia.
+     * @pre this.persistencia != null
      * @post No modifica el estado del sistema; retorna normalmente si y solo si el usuario existe y su contraseña coincide con contraIngresada.
      */
-    public void validaLoginUsuario(String username, String contraIngresada) throws UsuarioInexistenteException, ContrasenaInvalidaException {
+    public void validaLoginUsuario(String username, String contraIngresada) throws UsuarioInexistenteException, ContrasenaInvalidaException, DatosRegistroInvalidosException {
         Usuario usuarioRecuperado = this.buscarPorUsername(username);
 
         if(usuarioRecuperado == null)
@@ -216,11 +217,12 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
      * @param username Nombre de usuario deseado.
      * @param contraIngresada Contraseña deseada.
      * @throws UsuarioDuplicadoException Si ya existe un usuario registrado con el mismo username.
-     * @throws DatosRegistroInvalidosException Si username o contraIngresada son nulos o están en blanco.
-     * @pre CapaDatos.persistencia != null
+     * @throws DatosRegistroInvalidosException Si username o contraIngresada son nulos, están en blanco o falla la búsqueda previa.
+     * @throws DAOAuxiliarException Si ocurre un error en la capa de persistencia al registrar al usuario.
+     * @pre this.persistencia != null
      * @post Si no se lanza excepción, el nuevo usuario queda persistido en el sistema mediante registrarUsuario().
      */
-    public void validaRegistroUsuario(String username, String contraIngresada) throws UsuarioDuplicadoException, DatosRegistroInvalidosException{
+    public void validaRegistroUsuario(String username, String contraIngresada) throws UsuarioDuplicadoException, DatosRegistroInvalidosException, DAOAuxiliarException {
         Usuario usuarioRecuperado = buscarPorUsername(username);
         if(usuarioRecuperado != null)
             throw new UsuarioDuplicadoException("Nombre de usuario ingresado ocupado, intente con otro.");
@@ -232,18 +234,43 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
         this.registrarUsuario(new Usuario(username, contraIngresada));
     }
 
+    /**
+     * Delega en la capa de persistencia la búsqueda de un usuario por su nombre de usuario.
+     *
+     * @param username Nombre de usuario a buscar.
+     * @return Instancia de Usuario si existe; null en caso contrario.
+     * @throws DatosRegistroInvalidosException Si ocurre un error al consultar el usuario en la persistencia.
+     * @pre this.persistencia != null && username != null
+     * @post Retorna persistencia.buscarPorUsername(username) sin modificar los datos persistidos.
+     */
     @Override
-    public Usuario buscarPorUsername(String username) {
+    public Usuario buscarPorUsername(String username) throws DatosRegistroInvalidosException {
         return this.persistencia.buscarPorUsername(username);
     }
 
+    /**
+     * Delega en la capa de persistencia la obtención de la lista completa de usuarios registrados.
+     *
+     * @return ArrayList con todos los usuarios persistidos.
+     * @throws DAOAuxiliarException Si ocurre un error al consultar los usuarios en la persistencia.
+     * @pre this.persistencia != null
+     * @post Retorna persistencia.getUsuarios() sin modificar los datos persistidos.
+     */
     @Override
-    public ArrayList<Usuario> getUsuarios() {
+    public ArrayList<Usuario> getUsuarios() throws DAOAuxiliarException {
         return this.persistencia.getUsuarios();
     }
 
+    /**
+     * Delega en la capa de persistencia el almacenamiento de un nuevo usuario.
+     *
+     * @param usuario Objeto Usuario a registrar.
+     * @throws DAOAuxiliarException Si ocurre un error al insertar el usuario en la persistencia.
+     * @pre this.persistencia != null && usuario != null
+     * @post Se ejecuta persistencia.registrarUsuario(usuario).
+     */
     @Override
-    public void registrarUsuario(Usuario usuario) {
+    public void registrarUsuario(Usuario usuario) throws DAOAuxiliarException {
         this.persistencia.registrarUsuario(usuario);
     }
 }

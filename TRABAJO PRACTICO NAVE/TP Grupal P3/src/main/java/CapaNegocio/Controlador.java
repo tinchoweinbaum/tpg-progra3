@@ -47,16 +47,22 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     private UsuariosDAO dao;
 
     /**
-     * Construye una instancia del Controlador asociando la vista inicial y configurando las vistas secundarias.
+     * Construye una instancia del Controlador asociando la vista inicial, configurando las vistas secundarias
+     * e inicializando el enlazador con la persistencia SQL. Si falla la inicialización de la base de datos,
+     * muestra una ventana emergente de error.
      *
      * @param vista Vista inicial de inicio de sesión.
      * @pre vista != null
-     * @post Se inicializan todas las vistas secundarias y se instancia el enlazador con un DAO SQL.
+     * @post Se inicializan todas las vistas secundarias y, si no ocurre una DAOAuxiliarException, se instancia el enlazador con un UsuariosSqlDao; en caso de error, se despliega una ventana emergente informando el fallo.
      */
     public Controlador(VistaInicioSesion vista) {
-        this.vistaInicioSesion = vista;
-        this.iniciaVistas();
-        this.enlazador = new Enlazador(new UsuariosSqlDao());
+        try{
+            this.vistaInicioSesion = vista;
+            this.iniciaVistas();
+            this.enlazador = new Enlazador(new UsuariosSqlDao());
+        } catch (DAOAuxiliarException e) {
+            ventanaEmergente(e.getMessage(),"ERROR");
+        }
     }
 
     /**
@@ -178,7 +184,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 ventanaEmergente("INICIO DE SESION EXITOSO");
                 vistaCrearNave.arranca();
             }
-            catch (UsuarioLoginException e){
+            catch (RegistroException | UsuarioLoginException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
             }
         }
@@ -199,7 +205,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 ventanaEmergente("REGISTRO EXITOSO");
                 vistaCrearNave.arranca();
             }
-            catch (RegistroException e){
+            catch (DAOAuxiliarException | RegistroException e){
                 ventanaEmergente(e.getMessage(), "ERROR");
             }
         }
