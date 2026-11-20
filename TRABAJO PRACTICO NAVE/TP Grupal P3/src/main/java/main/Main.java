@@ -10,8 +10,6 @@ import persistencia.Usuario;
 import persistencia.UsuariosDAO;
 import tripulantes.*;
 
-import persistencia.UsuariosSqlDao; // import temporal para testear DAO de SQL
-
 import java.util.ArrayList;
 
 public class Main {
@@ -20,10 +18,6 @@ public class Main {
         Controlador controlador = new Controlador(vistaInicioSesion);
         vistaInicioSesion.setControlador(controlador);
         vistaInicioSesion.arranca();
-
-//        UsuariosDAO sqlDao = new UsuariosSqlDao();
-//        sqlDao.registrarUsuario(new Usuario("usuario", "12345"));
-//        System.out.print(sqlDao.getUsuarios());
     }
 
 }

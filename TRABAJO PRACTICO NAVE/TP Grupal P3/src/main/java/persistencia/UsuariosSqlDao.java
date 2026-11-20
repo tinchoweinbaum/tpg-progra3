@@ -23,9 +23,33 @@ public class UsuariosSqlDao implements UsuariosDAO{
         }
     }
 
+    /**
+     * <b>Pre: </b>La base de datos existe y fue inicializada por el constructor de esta clase correctamente.<br>
+     * <b>Post: </b>No se modifican los datos de la base de datos, solamente se leen.<br>
+     *
+     * @param username Nombre de usuario a buscar en la base de datos.
+     * @return El objeto Usuario si existe en la base de datos, o null en caso contrario.
+     */
     @Override
     public Usuario buscarPorUsername(String username) {
-        return null;
+        String query = "SELECT * FROM usuarios WHERE username = ?";
+        Usuario usuarioRet = null;
+
+        try (Connection conn = DriverManager.getConnection(URL); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, username);
+
+            try (ResultSet queryRes = pstmt.executeQuery()) {
+                if (queryRes.next()) { // Usamos 'if' en vez de 'while' porque username es PRIMARY KEY (hay como máximo 1 fila)
+                    String usernameAct = queryRes.getString("username");
+                    String passwordAct = queryRes.getString("password");
+                    usuarioRet = new Usuario(usernameAct, passwordAct);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el usuario en la base de datos local.");
+        }
+
+        return usuarioRet;
     }
 
     /**

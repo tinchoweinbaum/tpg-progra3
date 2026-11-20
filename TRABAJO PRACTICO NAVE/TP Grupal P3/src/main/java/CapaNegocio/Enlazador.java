@@ -18,10 +18,12 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
 
     private final Asistente asistente;
     private final Visor visor;
+    private final UsuariosDAO persistencia;
 
-    public Enlazador(Asistente asistente, Visor visor){
+    public Enlazador(Asistente asistente, Visor visor, UsuariosDAO persistencia){
         this.asistente = asistente;
         this.visor = visor;
+        this.persistencia = persistencia;
     }
 
     public Asistente getAsistente() {
@@ -150,21 +152,64 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
         getVisor().cambiarTope(t);
     }
 
-    // --- Delegación de métodos al DAO ---
+    // --- Validacion y delegacion del DAO ---
 
+    /**
+     * <b>Pre: </b>Ninguna.<br>
+     * <b>Post: </b>Ninguna.<br>
+     * Si el usuario no existe o la contraseña es incorrecta arroja una excepcion correspondiente.<br>
+     * En caso de que el usuario exista y la contraseña sea valida, simplemente retorna sin arrojar excepciones.
+     *
+     * @param username Nombre de usuario a buscar para validar si YA existe
+     * @param contraIngresada Contraseña del usuario ingresado
+     *
+     * @throws UsuarioInexistenteException Si no se encontro el usuario ingresado.
+     * @throws ContrasenaInvalidaException Si la contraseña ingresada no corresponde con el usuario que se ingreso.
+     */
+    public void validaLoginUsuario(String username, String contraIngresada) throws UsuarioInexistenteException, ContrasenaInvalidaException {
+        Usuario usuarioRecuperado = this.buscarPorUsername(username);
+
+        if(usuarioRecuperado == null)
+            throw new UsuarioInexistenteException("No existe el usuario ingresado.");
+
+        if (!usuarioRecuperado.getContra().equals(contraIngresada))
+            throw new ContrasenaInvalidaException("La contraseña ingresada es incorrecta para el usuario indicado.");
+
+        // Si no arroja ninguna excepcion es porque el usuario existe con su contraseña correcta, no hace falta devolver nada.
+    }
+
+    /**
+     *<b>Pre: </b>Ninguna<br>
+     * <b>Post: </b> Si no se arrojo ninguna excepcion, se registra al usuario en el sistema de persistencia.
+     * @param username Username a registar.
+     * @param contraIngresada Contraseña con la que se desea registrar al usuario.
+     *
+     * @throws UsuarioDuplicadoException Si el usuario que se quiere registrar ya existe, identificado por username.
+     */
+    public void validaRegistroUsuario(String username, String contraIngresada) throws UsuarioDuplicadoException, DatosRegistroInvalidosException{
+        Usuario usuarioRecuperado = buscarPorUsername(username);
+        if(usuarioRecuperado != null)
+            throw new UsuarioDuplicadoException("Nombre de usuario ingresado ocupado, intente con otro.");
+
+        if (username == null || username.isBlank() || contraIngresada == null || contraIngresada.isBlank()) {
+            throw new DatosRegistroInvalidosException("Los datos ingresados para el registro son invalidos, intente nuevamente");
+        }
+
+        this.registrarUsuario(new Usuario(username, contraIngresada));
+    }
 
     @Override
     public Usuario buscarPorUsername(String username) {
-        return null;
+        return this.persistencia.buscarPorUsername(username);
     }
 
     @Override
     public ArrayList<Usuario> getUsuarios() {
-        return null;
+        return this.persistencia.getUsuarios();
     }
 
     @Override
     public void registrarUsuario(Usuario usuario) {
-
+        this.persistencia.registrarUsuario(usuario);
     }
 }

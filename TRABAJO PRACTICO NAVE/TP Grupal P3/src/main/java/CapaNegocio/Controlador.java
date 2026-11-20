@@ -14,9 +14,11 @@ import motorwarp.MotorWarp;
 import nave.*;
 import persistencia.Usuario;
 import persistencia.UsuariosDAO;
+import persistencia.UsuariosSqlDao;
 import tripulantes.*;
 import visorParalelo.Visor;
 
+import javax.security.auth.login.LoginException;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -118,36 +120,40 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     public void actionPerformed(ActionEvent actionEvent) {
 
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.INICIO_SESION)) {
-            // No se tiene que encargar el modelo de esto???? va  acá en el controller???
-            String username = vistaInicioSesion.getTextUsuario().getText();
-            String pass = vistaInicioSesion.getPasswordField().getText();
+            String usuarioIngresado = vistaInicioSesion.getTextUsuario().getText();
+            String passIngresada = vistaInicioSesion.getPasswordField().getText();
 
-            Usuario usuarioRecuperado = dao.buscarPorUsername(username);
+            try {
+                enlazador.validaLoginUsuario(usuarioIngresado, passIngresada);
 
-            if(usuarioRecuperado == null){
-                ventanaEmergente("No se encontró el usuario ingresado, intente de nuevo.", "ERROR");
-                return;
+                vistaInicioSesion.dispose();
+                ventanaEmergente("INICIO DE SESION EXITOSO");
+                vistaCrearNave.arranca();
             }
-
-            // --- Sesión iniciada ---
-            vistaInicioSesion.dispose();
-            ventanaEmergente("INICIO DE SESION EXITOSO");
-            vistaCrearNave.arranca();
+            catch (UsuarioLoginException e){
+                ventanaEmergente(e.getMessage(),"ERROR");
+            }
         }
 
         if (actionEvent.getActionCommand().equals(VistaInicioSesion.ACCESO_REGISTRO)) {
-            // Checkeo en dao si ya existe un usuario con el username ingresado.
-            vistaInicioSesion.dispose();
+            vistaInicioSesion.dispose(); // Abre ventana de registro, no checkea nada.
             vistaRegistro.arranca();
         }
 
         if (actionEvent.getActionCommand().equals(VistaRegistro.REGISTRO_USER)) {
-            //metodo para registrar usuario
-            //metodo para rescatar el usuario ( que sera el capitan de la nave) y usarlo
+            try {
+                String usernameIngresado = vistaRegistro.getTextUsuario().getText();
+                String contraIngresada = vistaRegistro.getPasswordField().getText();
 
-            vistaRegistro.dispose();
-            ventanaEmergente("REGISTRO EXITOSO");
-            vistaCrearNave.arranca();
+                enlazador.validaRegistroUsuario(usernameIngresado, contraIngresada);
+
+                vistaRegistro.dispose();
+                ventanaEmergente("REGISTRO EXITOSO");
+                vistaCrearNave.arranca();
+            }
+            catch (RegistroException e){
+                ventanaEmergente(e.getMessage(), "ERROR");
+            }
         }
 
         if (actionEvent.getActionCommand().equals(VistaEstadoNave.CARGAR_COMBUSTIBLE))
@@ -424,7 +430,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
 
         //TABLERO;ASISTENTE;ENLAZADOR;VISOR PARALELO
         creaTablero();
-        setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo()));
+        setEnlazador(new Enlazador(new Asistente(nave,tablero),iniciaUniversoParalelo(), new UsuariosSqlDao())); // OJO: hardcodeo SQL, si se quisiese dar la opcion de usar XML hay que hacerlo de otra manera
         enlazador.getBitacorasNave().agregarObservador(this);
         enlazador.getMotor().agregarObservador(this);
         enlazador.getAsistente().getDestino().turnoDestino();
