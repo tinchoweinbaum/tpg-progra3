@@ -1,12 +1,11 @@
 package CapaNegocio;
 
-import destinoytablero.Posicion;
-import destinoytablero.Tablero;
-import nave.Nave;
-import motorwarp.MotorWarp;
-import bitacora.Bitacora;
-import exceptions.*;
-import tripulantes.Tripulante;
+import CapaDatos.destinoytablero.Tablero;
+import CapaDatos.nave.Nave;
+import CapaDatos.motorwarp.MotorWarp;
+import CapaDatos.bitacora.Bitacora;
+import CapaDatos.exceptions.*;
+import CapaDatos.tripulantes.Tripulante;
 
 public interface IAsistente {
 

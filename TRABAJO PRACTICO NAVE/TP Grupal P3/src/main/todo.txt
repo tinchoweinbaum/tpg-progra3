@@ -1,6 +1,6 @@
 
-->TODO: terminar interfaz asistente y comenzar interfaz DAO - enlazador las implemente y delega
-
-->TODO: Capa de persistencia DAO
+->TODO: REORDENAR PAQUETES
+->TODO: INFORME 2da PARTE
+->TODO: PRESENTACION
 
 

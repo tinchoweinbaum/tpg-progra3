@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="main.java.CapaDatos.misiones">
+  <ClassDiagramComponents>
+    <Class name="FactoryMision" package="CapaDatos.misiones" visibility="public" xPosition="71.0" yPosition="206.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="getTipo" returnType="Mision" visibility="public" isStatic="true">
+          <Argument type="int" name="tipoMision"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Mision" package="CapaDatos.misiones" visibility="public" isAbstract="true" xPosition="517.0" yPosition="36.0">
+      <Fields>
+        <Field name="nombre" type="String" visibility="private" isFinal="true"/>
+        <Field name="descripcion" type="String" visibility="private" isFinal="true"/>
+        <Field name="combustibleRequerido" type="float" visibility="private" isFinal="true"/>
+        <Field name="energiaAportada" type="float" visibility="private" isFinal="true"/>
+        <Field name="desgasteRequerido" type="float" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="descripcion"/>
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="energiaAportada"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getDescripcion" returnType="String" visibility="public"/>
+        <Method name="getCombustibleRequerido" returnType="float" visibility="public"/>
+        <Method name="getEnergiaAportada" returnType="float" visibility="public"/>
+        <Method name="getDesgasteRequerido" returnType="float" visibility="public"/>
+        <Method name="preparar" returnType="void" visibility="protected">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="saltar" returnType="void" visibility="protected">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="ejecutar" returnType="void" visibility="protected" isAbstract="true"/>
+        <Method name="evaluar" returnType="void" visibility="protected" isAbstract="true"/>
+        <Method name="cerrar" returnType="void" visibility="protected">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="ejecutarMision" returnType="void" visibility="public">
+          <Argument type="Asistente" name="ac"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Mision1" package="CapaDatos.misiones" visibility="public" xPosition="15.0" yPosition="639.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="energiaAportada"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ejecutar" returnType="void" visibility="public"/>
+        <Method name="evaluar" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Mision2" package="CapaDatos.misiones" visibility="public" xPosition="608.0" yPosition="779.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="energiaAportada"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ejecutar" returnType="void" visibility="public"/>
+        <Method name="evaluar" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Mision3" package="CapaDatos.misiones" visibility="public" xPosition="1201.0" yPosition="639.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="float" name="combustibleRequerido"/>
+          <Argument type="float" name="desgasteRequerido"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="ejecutar" returnType="void" visibility="public"/>
+        <Method name="evaluar" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <IsRelation name="is" source="CapaDatos.misiones.Mision1" target="CapaDatos.misiones.Mision"/>
+    <IsRelation name="is" source="CapaDatos.misiones.Mision3" target="CapaDatos.misiones.Mision"/>
+    <UseRelation source="CapaDatos.misiones.FactoryMision" target="CapaDatos.misiones.Mision" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="CapaDatos.misiones.Mision1" target="CapaDatos.misiones.Mision"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

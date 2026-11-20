@@ -1,7 +1,7 @@
 package CapaPresentacion;
 
 import CapaNegocio.Controlador;
-import tripulantes.FactoryPeople;
+import CapaDatos.tripulantes.FactoryPeople;
 
 import java.awt.FlowLayout;
 import java.awt.Font;

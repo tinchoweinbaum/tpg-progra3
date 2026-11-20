@@ -1,19 +1,22 @@
 package CapaNegocio;
 
-import asistentes.Asistente;
-import bitacora.Bitacora;
-import destinoytablero.Posicion;
-import destinoytablero.Tablero;
-import exceptions.*;
-import motorwarp.MotorWarp;
-import nave.Nave;
-import persistencia.Usuario;
-import persistencia.UsuariosDAO;
-import tripulantes.Tripulante;
-import visorParalelo.Visor;
-
+import CapaDatos.asistentes.Asistente;
+import CapaDatos.bitacora.Bitacora;
+import CapaDatos.destinoytablero.Tablero;
+import CapaDatos.exceptions.*;
+import CapaDatos.motorwarp.MotorWarp;
+import CapaDatos.nave.Nave;
+import CapaDatos.persistencia.*;
+import CapaDatos.tripulantes.Tripulante;
+import CapaDatos.visorParalelo.Visor;
 import java.util.ArrayList;
 
+/**
+ * Clase fachada y mediadora (Facade) de la capa de negocio que unifica y delega las operaciones
+ * hacia el Asistente de navegación, el Visor paralelo y la capa de CapaDatos.persistencia (UsuariosDAO),
+ * encargándose además de las validaciones de negocio de login y registro.
+ * <p><b>Invariante de clase:</b> CapaDatos.persistencia != null</p>
+ */
 public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
 
     private Asistente asistente;
@@ -21,16 +24,35 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
     private final UsuariosDAO persistencia;
 
     /**
-     * Constructor del enlazador que usa solamente persistencia para poder instanciarlo en el login, cuando no existen ni el asistente ni el visor.
+     * Constructor del enlazador que inicializa únicamente la dependencia de CapaDatos.persistencia,
+     * permitiendo su uso en la etapa de inicio de sesión y registro antes de crear la CapaDatos.nave y el visor.
+     *
+     * @param persistencia Implementación de UsuariosDAO para el acceso a datos de usuarios.
+     * @pre CapaDatos.persistencia != null
+     * @post this.CapaDatos.persistencia == CapaDatos.persistencia && getAsistente() == null && getVisor() == null
      */
     public Enlazador(UsuariosDAO persistencia) {
         this.persistencia = persistencia;
     }
 
+    /**
+     * Obtiene la instancia del asistente de navegación asociada al enlazador.
+     *
+     * @return Instancia de Asistente (puede ser null antes de iniciar la partida).
+     * @pre true
+     * @post Retorna asistente sin modificar el estado del enlazador.
+     */
     public Asistente getAsistente() {
         return asistente;
     }
 
+    /**
+     * Obtiene la instancia del visor del universo paralelo asociada al enlazador.
+     *
+     * @return Instancia de Visor (puede ser null antes de iniciar la partida).
+     * @pre true
+     * @post Retorna visor sin modificar el estado del enlazador.
+     */
     public Visor getVisor() {
         return visor;
     }
@@ -44,6 +66,7 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
     }
 
     // --- Delegación de métodos al asistente ---
+
     @Override
     public Tablero getTablero() {
         return getAsistente().getTablero();
@@ -131,6 +154,7 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
     }
 
     // --- Delegación de métodos al visor paralelo ---
+
     @Override
     public void actualizaBitacoraParalela(String text) {
         getVisor().actualizaBitacoraParalela(text);
@@ -164,16 +188,15 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
     // --- Validacion y delegacion del DAO ---
 
     /**
-     * <b>Pre: </b>Ninguna.<br>
-     * <b>Post: </b>Ninguna.<br>
-     * Si el usuario no existe o la contraseña es incorrecta arroja una excepcion correspondiente.<br>
-     * En caso de que el usuario exista y la contraseña sea valida, simplemente retorna sin arrojar excepciones.
+     * Valida las credenciales de inicio de sesión contra la capa de CapaDatos.persistencia.
+     * Si el usuario no existe o la contraseña no coincide, lanza la excepción de negocio correspondiente.
      *
-     * @param username Nombre de usuario a buscar para validar si YA existe
-     * @param contraIngresada Contraseña del usuario ingresado
-     *
-     * @throws UsuarioInexistenteException Si no se encontro el usuario ingresado.
-     * @throws ContrasenaInvalidaException Si la contraseña ingresada no corresponde con el usuario que se ingreso.
+     * @param username Nombre de usuario ingresado.
+     * @param contraIngresada Contraseña ingresada.
+     * @throws UsuarioInexistenteException Si no existe ningún usuario registrado con ese username.
+     * @throws ContrasenaInvalidaException Si el usuario existe pero la contraseña ingresada no coincide.
+     * @pre CapaDatos.persistencia != null
+     * @post No modifica el estado del sistema; retorna normalmente si y solo si el usuario existe y su contraseña coincide con contraIngresada.
      */
     public void validaLoginUsuario(String username, String contraIngresada) throws UsuarioInexistenteException, ContrasenaInvalidaException {
         Usuario usuarioRecuperado = this.buscarPorUsername(username);
@@ -184,16 +207,18 @@ public class Enlazador implements IAsistente, IVisor, UsuariosDAO {
         if (!usuarioRecuperado.getContra().equals(contraIngresada))
             throw new ContrasenaInvalidaException("La contraseña ingresada es incorrecta para el usuario indicado.");
 
-        // Si no arroja ninguna excepcion es porque el usuario existe con su contraseña correcta, no hace falta devolver nada.
     }
 
     /**
-     *<b>Pre: </b>Ninguna<br>
-     * <b>Post: </b> Si no se arrojo ninguna excepcion, se registra al usuario en el sistema de persistencia.
-     * @param username Username a registar.
-     * @param contraIngresada Contraseña con la que se desea registrar al usuario.
+     * Valida las reglas de negocio para el alta de un nuevo usuario (unicidad del nombre y campos no nulos/vacíos)
+     * y, si son válidas, lo persiste en el sistema.
      *
-     * @throws UsuarioDuplicadoException Si el usuario que se quiere registrar ya existe, identificado por username.
+     * @param username Nombre de usuario deseado.
+     * @param contraIngresada Contraseña deseada.
+     * @throws UsuarioDuplicadoException Si ya existe un usuario registrado con el mismo username.
+     * @throws DatosRegistroInvalidosException Si username o contraIngresada son nulos o están en blanco.
+     * @pre CapaDatos.persistencia != null
+     * @post Si no se lanza excepción, el nuevo usuario queda persistido en el sistema mediante registrarUsuario().
      */
     public void validaRegistroUsuario(String username, String contraIngresada) throws UsuarioDuplicadoException, DatosRegistroInvalidosException{
         Usuario usuarioRecuperado = buscarPorUsername(username);
