@@ -102,6 +102,7 @@ public abstract class Mision extends Observable{
         }catch (MisionImposibleException e){
             ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("No puede realizarse la mision " + getNombre() + "(" + getDescripcion() + ") - " + e.getMessage()));
             this.estadoActual = ESTADO_FALLIDO;
+            causaError = e.getMessage();
         }
 
     }
@@ -130,7 +131,6 @@ public abstract class Mision extends Observable{
 
             while (estadoActual.equals(ESTADO_ACTIVA) && !encontro) {
                 Thread.sleep(2000);
-                ac.chequeaPosicionActual();
                 ac.mueveNave();
                 if (ac.getNave().getCombustible()==0 || ac.getNave().getEnergia()==0 || ac.getNave().getDesgaste()==100){
                     throw new NaveDestruidaException("LA NAVE NO LOGRO SOBREVIVIR AL UNIVERSO");
@@ -166,15 +166,18 @@ public abstract class Mision extends Observable{
         if (!this.estadoActual.equals(ESTADO_NAVE_DESTRUIDA)) {
             if (this.estadoActual.equals(ESTADO_ACTIVA))
                 ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION REALIZADA CON EXITO - VARIACION RECURSOS TOTALES", this));
-            else
+            else{
                 ac.getBitacorasNave().agregarRegistro(new RegistroMision("MISION FALLIDA - MOTIVO: " + causaError + " - VARIACION RECURSOS TOTALES",this));
+                notificarObservadores("FIN_MISION");
+            }
             if(acumuladoPerdidaCombustible>0)
                 ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("COMBUSTIBLE", this.acumuladoPerdidaCombustible, ac.getNave().getCombustible()));
             if(acumuladoPerdidaEnergia>0)
                 ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("ENERGIA", this.acumuladoPerdidaEnergia, ac.getNave().getEnergia()));
-            ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("DESGASTE", this.acumuladoIncrementoDesgaste, ac.getNave().getDesgaste()));
+            if(acumuladoIncrementoDesgaste>0)
+                ac.getBitacorasNave().agregarRegistro(new RegistroRecursos("DESGASTE", this.acumuladoIncrementoDesgaste, ac.getNave().getDesgaste()));
         }else{
-            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("BITÁCORA EMITIDA DESDE CENTRO DE MANDO TERRESTRE - La CapaDatos.nave conocida como '" + ac.getNave().getName() + "' ha sido destruída en acción.\nMOTIVO: " + causaError));
+            ac.getBitacorasNave().agregarRegistro(new RegistroBitacora("BITÁCORA EMITIDA DESDE CENTRO DE MANDO TERRESTRE - La nave conocida como '" + ac.getNave().getName() + "' ha sido destruída en acción.\nMOTIVO: " + causaError));
         }
     }
 

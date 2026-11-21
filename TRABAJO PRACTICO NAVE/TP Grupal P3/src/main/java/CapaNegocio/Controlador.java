@@ -41,10 +41,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     private VistaMapa vistaMapa;
     private Tablero tablero;
     private ArrayList<ElementoDelUniverso> elementosUni = new ArrayList<>();
-
     private Enlazador enlazador;
 
-    private UsuariosDAO dao;
 
     /**
      * Construye una instancia del Controlador asociando la vista inicial, configurando las vistas secundarias
@@ -291,6 +289,8 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 ventanaEmergente("SE AGREGO CORRECTAMENTE EL TRIPULANTE");
             }catch(ErrorCreacionPersonajeException | ErrorAgregarTripulacionException e){
                 ventanaEmergente(e.getMessage(),"ERROR");
+            }catch(NumberFormatException e){
+                ventanaEmergente("Error de formato - Antigüedad","ERROR");
             }
             finally {
                 vistaCrearTripulante.dispose();
@@ -743,7 +743,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
     }
 
     /**
-     * Recibe notificaciones de los objetos observados (CapaDatos.misiones, tablero, bitácora, motor) y actualiza la UI en el EDT.
+     * Recibe notificaciones de los objetos observados (misiones, tablero, bitácora, motor) y actualiza la UI en el EDT.
      *
      * @param mensaje Identificador del evento notificado.
      * @pre mensaje != null
@@ -815,6 +815,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
         for (int i = 0; i < enlazador.getTablero().getX(); i++) {
             for (int j = 0; j < enlazador.getTablero().getY(); j++) {
                 vistaMapa.getBotonCelda(i, j).actualizarIcono(null);
+                vistaMapa.getBotonCelda(i, j).setToolTipText(null);
             }
         }
 
