@@ -86,7 +86,7 @@ public abstract class Mision extends Observable{
     protected void preparar(Asistente ac){
         Nave nave = ac.getNave();
         try{
-            if ((nave.getCapitan()==null ) || (nave.getTripulacion().size()<=4))
+            if ((nave.getCapitan()==null ) || (nave.getTripulacion().size()<5))
                 throw new ErrorTripulantesException("La tripulacion no cumple los minimos requisitos para realizar la mision");
 
             if (this.getCombustibleRequerido() >= nave.getCombustible())
