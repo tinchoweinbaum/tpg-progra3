@@ -335,7 +335,7 @@ public class Controlador implements DocumentListener, ActionListener , Observado
                 enlazador.getBitacorasNave().agregarRegistro(new RegistroBitacora("BUSCANDO COORDENADAS DEL TESORO..."));
             }
             if (vistaMisiones.getRadioThree().isSelected()){
-                if(enlazador.getTablero().getPosicionNave().getY()!=enlazador.getTablero().getY()/2 && enlazador.getTablero().getPosicionNave().getX()!=enlazador.getTablero().getX()/2){
+                if(enlazador.getTablero().getPosicionNave().getY()!=enlazador.getTablero().getY()/2 || enlazador.getTablero().getPosicionNave().getX()!=enlazador.getTablero().getX()/2){
                     int xOrigen = enlazador.getTablero().getX()/2;
                     int yOrigen = enlazador.getTablero().getY()/2;
                     Posicion objetivoCentro = enlazador.getTablero().obtenerObjetivo();

@@ -35,6 +35,9 @@ Desde el panel de control de la nave, el asistente permite supervisar y accionar
 * **Recursos:** Carga y consumo de combustible y energía, y reparación del desgaste del casco, estos recursos se pueden obtener por eventos del universo como las estaciones de carga, o realizando una misión de vuelta al origen.
 * **Motor Warp:** Control de estados del motor (*Disponible*, *Preparando Salto*, *Salto Warp*, *Enfriamiento*, y un caso especial, *Destruido*) y ejecución de saltos espaciales.
 * **Bitácora de A bordo:** Registro y consulta clasificada de eventos (misiones, combates, recursos y errores).
+* **Mapa:** Permite ver el tablero donde ocurren los eventos del universo y funciona como una especie de escáner para el usuario
+* **Visor:** Una sección paralela donde se registra mediante un panel los eventos concurrentes de naves generadoras y consumidoras de baterías
+* **Tripulación:** Gestion de empleados, se permite elegir los atributos deseados al contrataros y también se pueden despedir
 ---
 ## 2. Creación de la Tripulación
 Para operar la nave se debe conformar la tripulación asignando cargos y especies:
@@ -53,7 +56,7 @@ Para ejecutar operaciones espaciales, el asistente realiza un chequeo previo de 
 * **Tipos de Misiones:**
     * **1 - Intercepción y asistencia**
     * **2 - Recolección**
-    * **3 - Retorno seguro** (esta no se puede ejecutar si la nave se encuentra muy cerca del origen)
+    * **3 - Retorno seguro** (esta última no se puede ejecutar si la ya nave se encuentra en el origen)
 * **Mapa Galáctico:** Tablero interactivo donde se visualiza la posición de la nave y los diferentes elementos del universo (asteroides, naves aliadas/hostiles y estaciones de recarga espacial).
 ---
 ## 4. Visor Paralelo (Concurrencia)
@@ -68,7 +71,7 @@ El sistema fue diseñado bajo el patrón **MVC** (Modelo-Vista-Controlador), div
 | :--- | :--- |
 | **State** | Control de estados del `MotorWarp` (Disponible, Salto, Enfriamiento). |
 | **Decorator** | `EspecieDecorator` para asignar habilidades dinámicas a los `Tripulante`. |
-| **Observer** | Actualización en tiempo real del `Tablero` en la `VistaMapa`. |
+| **Observer** | Actualización en tiempo real del `Tablero`, `Visor`, y demás componentes. |
 | **Factory** | Creación de instancias en `FactoryNaves` y `FactoryPeople`. |
 | **Facade (Fachada)** | `Enlazador`: unifica y simplifica el acceso al Asistente, al Visor y a la persistencia. |
 | **DAO** | `UsuariosDAO` / `UsuariosSqlDao` para persistencia en SQLite. |
