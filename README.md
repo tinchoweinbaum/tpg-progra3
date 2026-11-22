@@ -75,3 +75,4 @@ El sistema fue diseñado bajo el patrón **MVC** (Modelo-Vista-Controlador), div
 | **Factory** | Creación de instancias en `FactoryNaves` y `FactoryPeople`. |
 | **Facade (Fachada)** | `Enlazador`: unifica y simplifica el acceso al Asistente, al Visor y a la persistencia. |
 | **DAO** | `UsuariosDAO` / `UsuariosSqlDao` para persistencia en SQLite. |
+| **Double Dispatch** | Utilizado para decidir el resultado de los combates entre naves. |
